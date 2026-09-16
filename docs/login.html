@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Assignment - Login</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBd4MI5xzSE4QYIjxe_DlBKnuuv-aiS3nk",
+            authDomain: "study-ug-osu.firebaseapp.com",
+            projectId: "study-ug-osu",
+            storageBucket: "study-ug-osu.firebasestorage.app",
+            messagingSenderId: "115284332881",
+            appId: "1:115284332881:web:351ebb762bad162fccc370"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Permuted block randomization over the three arms. Each block is a fresh
+        // random ordering of all three, so every 3 consecutive participants cover
+        // every condition once and the sequence cannot be predicted from outside.
+        const CONDITIONS = ['no_ai', 'mm', 'mm_cimo'];
+
+        // Test accounts - excluded from randomization counter
+        const TEST_ACCOUNTS = ['sh.bae@snu.ac.kr', 'shyun.bae@gmail.com', 'bae.332@osu.edu'];
+
+        const shuffled = () => {
+            const a = CONDITIONS.slice();
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        };
+
+        const getNextCondition = async (email) => {
+            if (TEST_ACCOUNTS.includes(email.toLowerCase())) {
+                const c = CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)];
+                console.log('Test account - assigned random condition:', c);
+                return c;
+            }
+
+            const counterRef = db.collection('randomization').doc('counter');
+            try {
+                return await db.runTransaction(async (transaction) => {
+                    const snap = await transaction.get(counterRef);
+                    let index = 0, block = null;
+                    if (snap.exists) {
+                        index = snap.data().index || 0;
+                        block = snap.data().block || null;
+                    }
+                    // Start a new block whenever the previous one is used up.
+                    if (!block || block.length !== CONDITIONS.length || index % CONDITIONS.length === 0) {
+                        block = shuffled();
+                    }
+                    const condition = block[index % CONDITIONS.length];
+                    transaction.set(counterRef, {
+                        index: index + 1,
+                        block,
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    return condition;
+                });
+            } catch (error) {
+                console.error('Error in randomization:', error);
+                return CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)];
+            }
+        };
+
+        // Email Link settings
+        const actionCodeSettings = {
+            url: 'https://bae4147.github.io/study-ug/login.html',
+            handleCodeInApp: true
+        };
+
+        function LoginPage() {
+            // Auth state
+            const [email, setEmail] = useState('');
+            const [error, setError] = useState('');
+            const [loading, setLoading] = useState(false);
+            const [checkingAuth, setCheckingAuth] = useState(true);
+            const [emailSent, setEmailSent] = useState(false);
+
+            // Profile state (for new users or profile update)
+            const [showProfileForm, setShowProfileForm] = useState(false);
+            const [isNewUser, setIsNewUser] = useState(false);
+            const [fullName, setFullName] = useState('');
+            const [currentUser, setCurrentUser] = useState(null);
+
+            // Check for email link sign-in and auth state
+            useEffect(() => {
+                // Check if this is a sign-in with email link
+                if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
+                    let storedEmail = window.localStorage.getItem('emailForSignIn');
+
+                    if (!storedEmail) {
+                        // User opened link on different device, ask for email
+                        storedEmail = window.prompt('Please provide your email for confirmation');
+                    }
+
+                    if (storedEmail) {
+                        setLoading(true);
+                        firebase.auth().signInWithEmailLink(storedEmail, window.location.href)
+                            .then((result) => {
+                                // Clear email from storage
+                                window.localStorage.removeItem('emailForSignIn');
+                                // Clear URL parameters
+                                window.history.replaceState({}, document.title, window.location.pathname);
+                                // Don't return here - let onAuthStateChanged handle the user
+                            })
+                            .catch((error) => {
+                                console.error('Error signing in with email link:', error);
+                                setError(getErrorMessage(error.code));
+                                setLoading(false);
+                                setCheckingAuth(false);
+                            });
+                    } else {
+                        setCheckingAuth(false);
+                    }
+                    // Don't return - still need to set up onAuthStateChanged listener
+                }
+
+                const unsubscribe = auth.onAuthStateChanged(async (user) => {
+                    if (user) {
+                        setCurrentUser(user);
+                        // Check if user has profile in Firestore
+                        try {
+                            const userDoc = await db.collection('users').doc(user.uid).get();
+                            if (userDoc.exists) {
+                                const userData = userDoc.data();
+                                setFullName(userData.fullName || '');
+                                setIsNewUser(false);
+                                // Redirect to index if profile is complete
+                                if (userData.fullName) {
+                                    sessionStorage.setItem('participantName', userData.fullName);
+                                    await startSession(user.uid, userData.condition);
+                                    return;
+                                }
+                            } else {
+                                setIsNewUser(true);
+                            }
+                            setShowProfileForm(true);
+                        } catch (err) {
+                            console.error('Error fetching user data:', err);
+                            setIsNewUser(true);
+                            setShowProfileForm(true);
+                        }
+                    }
+                    setLoading(false);
+                    setCheckingAuth(false);
+                });
+
+                return () => unsubscribe();
+            }, []);
+
+            const handleSendLink = async (e) => {
+                e.preventDefault();
+                setError('');
+                setLoading(true);
+
+                try {
+                    // Call our custom Cloud Function to send login email
+                    const response = await fetch('https://us-central1-study-ug-osu.cloudfunctions.net/sendLoginEmail', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to send email');
+                    }
+
+                    // Save email for later
+                    window.localStorage.setItem('emailForSignIn', email);
+                    setEmailSent(true);
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error sending email link:', error);
+                    setError(error.message || 'Failed to send sign-in link. Please try again.');
+                    setLoading(false);
+                }
+            };
+
+
+            // Creates the session document that index.html used to create on PDF
+            // upload. There is no upload any more: every participant reads the same
+            // paper, so the session can begin the moment the profile is saved.
+            const startSession = async (uid, condition) => {
+                const sessionId = `session_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+                // Shared secret for the pagehide beacon (see tracking.js / ingestEvents).
+                const beaconToken = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random())).replace(/-/g, '');
+                await db.collection('users').doc(uid).collection('sessions').doc(sessionId).set({
+                    startedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    currentPhase: 'pre_task',
+                    condition,
+                    paper: 'hafner2014',
+                    paperMetadata: {
+                        title: "Decreasing students' stress through time management training: an intervention study",
+                        firstAuthorLastName: 'Häfner',
+                        year: 2014,
+                        numPages: 14
+                    },
+                    beaconToken
+                });
+                sessionStorage.setItem('currentSessionId', sessionId);
+                const params = new URLSearchParams({
+                    participantId: uid, experimentId: sessionId, condition, paper: 'hafner2014', mode: 'experiment'
+                });
+                window.location.href = `pre-task.html?${params.toString()}`;
+            };
+
+            const handleProfileSave = async (e) => {
+                e.preventDefault();
+                if (!fullName.trim()) {
+                    setError('Please fill in all fields.');
+                    return;
+                }
+
+                setLoading(true);
+                setError('');
+
+                try {
+                    const userData = {
+                        fullName: fullName.trim(),
+                        email: currentUser.email,
+                        lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
+                    if (isNewUser) {
+                        userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                        // Assign condition using block randomization for new users
+                        const assignedCondition = await getNextCondition(currentUser.email);
+                        userData.condition = assignedCondition;
+                        console.log('Assigned condition:', assignedCondition);
+                    }
+
+                    await db.collection('users').doc(currentUser.uid).set(userData, { merge: true });
+                    sessionStorage.setItem('participantName', userData.fullName);
+                    await startSession(currentUser.uid, userData.condition || (await getNextCondition(currentUser.email)));
+                } catch (err) {
+                    console.error('Error saving profile:', err);
+                    setError('Failed to save profile. Please try again.');
+                    setLoading(false);
+                }
+            };
+
+            const handleLogout = async () => {
+                await auth.signOut();
+                setShowProfileForm(false);
+                setCurrentUser(null);
+                setEmail('');
+                setFullName('');
+                setUserClass('');
+                setEmailSent(false);
+            };
+
+            const handleResendLink = () => {
+                setEmailSent(false);
+            };
+
+            const getErrorMessage = (code) => {
+                switch (code) {
+                    case 'auth/invalid-email':
+                        return 'Invalid email address.';
+                    case 'auth/user-disabled':
+                        return 'This account has been disabled.';
+                    case 'auth/invalid-action-code':
+                        return 'The sign-in link has expired or already been used. Please request a new one.';
+                    case 'auth/expired-action-code':
+                        return 'The sign-in link has expired. Please request a new one.';
+                    default:
+                        return 'An error occurred. Please try again.';
+                }
+            };
+
+            // Loading state
+            if (checkingAuth) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                        <div className="text-center">
+                            <svg className="animate-spin h-10 w-10 text-blue-600 mx-auto mb-4" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <p className="text-gray-600">Signing you in...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Profile form (for new users or users without complete profile)
+            if (showProfileForm && currentUser) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                        <div className="max-w-md mx-auto">
+                            <div className="bg-white rounded-xl shadow-2xl p-8">
+                                <div className="text-center mb-8">
+                                    <div className="text-5xl mb-4">👤</div>
+                                    <h1 className="text-2xl font-bold text-gray-800 mb-2">
+                                        {isNewUser ? 'Complete Your Profile' : 'Welcome Back!'}
+                                    </h1>
+                                    <p className="text-gray-600 text-sm">
+                                        {isNewUser
+                                            ? 'Please enter your information to continue.'
+                                            : 'Please confirm your information.'}
+                                    </p>
+                                    <p className="text-gray-500 text-xs mt-2">{currentUser.email}</p>
+                                </div>
+
+                                <form onSubmit={handleProfileSave} className="space-y-5">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Full Name *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={fullName}
+                                            onChange={(e) => setFullName(e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Enter your full name"
+                                            required
+                                        />
+                                    </div>
+
+
+                                    {error && (
+                                        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                                            {error}
+                                        </div>
+                                    )}
+
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className={`w-full px-6 py-3 rounded-lg font-medium transition-colors ${
+                                            loading
+                                                ? 'bg-gray-400 cursor-not-allowed'
+                                                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                        }`}
+                                    >
+                                        {loading ? 'Saving...' : 'Continue'}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={handleLogout}
+                                        className="w-full px-6 py-2 text-gray-500 hover:text-gray-700 text-sm"
+                                    >
+                                        Use a different account
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Email sent confirmation
+            if (emailSent) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                        <div className="max-w-md mx-auto">
+                            <div className="bg-white rounded-xl shadow-2xl p-8">
+                                <div className="text-center mb-8">
+                                    <div className="text-5xl mb-4">📧</div>
+                                    <h1 className="text-2xl font-bold text-gray-800 mb-2">Check Your Email</h1>
+                                    <p className="text-gray-600 text-sm mb-4">
+                                        We sent a sign-in link to:
+                                    </p>
+                                    <p className="text-blue-600 font-medium mb-4">{email}</p>
+                                    <p className="text-gray-500 text-sm">
+                                        Click the link in the email to sign in. The link will expire after a short time.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="p-4 bg-blue-50 rounded-lg">
+                                        <p className="text-sm text-blue-800">
+                                            <strong>Tip:</strong> Check your spam folder if you don't see the email.
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        onClick={handleResendLink}
+                                        className="w-full px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                    >
+                                        Use a different email
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Login form (email input only)
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                    <div className="max-w-md mx-auto">
+                        <div className="bg-white rounded-xl shadow-2xl p-8">
+                            <div className="text-center mb-8">
+                                <div className="text-5xl mb-4">📖</div>
+                                <h1 className="text-2xl font-bold text-gray-800 mb-2">Reading Assignment</h1>
+                                <p className="text-gray-600 text-sm">Enter your email to sign in</p>
+                            </div>
+
+                            <form onSubmit={handleSendLink} className="space-y-5">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="your.email@example.com"
+                                        required
+                                    />
+                                    <p className="text-xs text-gray-400 mt-1">
+                                        OSU mail recommended. We'll send you a sign-in link.
+                                    </p>
+                                </div>
+
+                                {error && (
+                                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                                        {error}
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className={`w-full px-6 py-3 rounded-lg font-medium transition-colors ${
+                                        loading
+                                            ? 'bg-gray-400 cursor-not-allowed'
+                                            : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                    }`}
+                                >
+                                    {loading ? (
+                                        <span className="flex items-center justify-center">
+                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Sending link...
+                                        </span>
+                                    ) : (
+                                        'Send Sign-in Link'
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<LoginPage />, document.getElementById('root'));
+    </script>
+</body>
+</html>

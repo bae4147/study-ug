@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Assignment - Post-Reading Task</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBd4MI5xzSE4QYIjxe_DlBKnuuv-aiS3nk",
+            authDomain: "study-ug-osu.firebaseapp.com",
+            projectId: "study-ug-osu",
+            storageBucket: "study-ug-osu.firebasestorage.app",
+            messagingSenderId: "115284332881",
+            appId: "1:115284332881:web:351ebb762bad162fccc370"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function PostTask() {
+            // Auth state
+            const [currentUser, setCurrentUser] = useState(null);
+            const [checkingAuth, setCheckingAuth] = useState(true);
+
+            // Get session info from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('sessionId') || sessionStorage.getItem('currentSessionId');
+            const condition = urlParams.get('condition') || 'without_llm';
+            const paper = urlParams.get('paper') || 'custom';
+            const mode = urlParams.get('mode') || 'experiment';
+
+            // Pre-task strategies (loaded from Firebase)
+            const [preStrategies, setPreStrategies] = useState([]);
+            const [isLoading, setIsLoading] = useState(true);
+
+            // Auth guard
+            useEffect(() => {
+                const unsubscribe = auth.onAuthStateChanged((user) => {
+                    if (!user) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    setCurrentUser(user);
+                    setCheckingAuth(false);
+                });
+                return () => unsubscribe();
+            }, []);
+
+            // Post-task strategies (1 field by default)
+            const [postStrategies, setPostStrategies] = useState(['']);
+
+            // Q2: Context translation responses
+            const [contextResponses, setContextResponses] = useState(['']);
+
+            // Other post-task responses
+            const [newStrategyConfidence, setNewStrategyConfidence] = useState('');
+            const [implementationLikelihood, setImplementationLikelihood] = useState('');
+
+            // Submitting state
+            const [isSubmitting, setIsSubmitting] = useState(false);
+
+            // Load pre-task data from Firebase (if exists in session)
+            useEffect(() => {
+                if (checkingAuth || !currentUser) return;
+
+                if (!sessionId) {
+                    alert('Missing session information. Please start from the beginning.');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const loadPreTaskData = async () => {
+                    try {
+                        const sessionRef = db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId);
+                        const doc = await sessionRef.get();
+                        if (doc.exists && doc.data().preTask?.strategies) {
+                            const strategies = doc.data().preTask.strategies;
+                            setPreStrategies(strategies);
+                            // Initialize post-strategies with pre-task strategies
+                            setPostStrategies([...strategies]);
+                        }
+                    } catch (error) {
+                        console.error('Error loading pre-task data:', error);
+                    } finally {
+                        setIsLoading(false);
+                    }
+                };
+
+                loadPreTaskData();
+            }, [checkingAuth, currentUser, sessionId]);
+
+            // Strategy management functions
+            const addStrategyField = () => {
+                setPostStrategies([...postStrategies, '']);
+            };
+
+            const updateStrategy = (index, value) => {
+                const newStrategies = [...postStrategies];
+                newStrategies[index] = value;
+                setPostStrategies(newStrategies);
+            };
+
+            const removeStrategy = (index) => {
+                if (postStrategies.length > 1) {
+                    const newStrategies = postStrategies.filter((_, i) => i !== index);
+                    setPostStrategies(newStrategies);
+                }
+            };
+
+            const getFilledStrategies = () => {
+                return postStrategies.filter(s => s.trim().length > 0);
+            };
+
+            // Q2: Context translation management functions
+            const addContextField = () => {
+                setContextResponses([...contextResponses, '']);
+            };
+
+            const updateContextResponse = (index, value) => {
+                const newResponses = [...contextResponses];
+                newResponses[index] = value;
+                setContextResponses(newResponses);
+            };
+
+            const removeContextResponse = (index) => {
+                if (contextResponses.length > 1) {
+                    const newResponses = contextResponses.filter((_, i) => i !== index);
+                    setContextResponses(newResponses);
+                }
+            };
+
+            const getFilledContextResponses = () => {
+                return contextResponses.filter(s => s.trim().length > 0);
+            };
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (isSubmitting) return;
+
+                // Validate context responses (at least 1 non-empty)
+                const filledContextResponses = getFilledContextResponses();
+                if (filledContextResponses.length === 0) {
+                    alert('Please enter at least one response for Q1.');
+                    return;
+                }
+                // Validate strategies (at least 1 non-empty)
+                const filledStrategies = getFilledStrategies();
+                if (filledStrategies.length === 0) {
+                    alert('Please enter at least one takeaway for Q2.');
+                    return;
+                }
+                if (!newStrategyConfidence) {
+                    alert('Please rate your confidence in new strategies.');
+                    return;
+                }
+                if (!implementationLikelihood) {
+                    alert('Please rate your likelihood to implement changes.');
+                    return;
+                }
+
+                setIsSubmitting(true);
+
+                const postTaskData = {
+                    strategies: filledStrategies,
+                    contextTranslation: filledContextResponses,
+                    newStrategyConfidence: parseInt(newStrategyConfidence),
+                    implementationLikelihood: parseInt(implementationLikelihood),
+                    completedAt: new Date().toISOString()
+                };
+
+                try {
+                    if (!sessionId) {
+                        throw new Error('Missing sessionId');
+                    }
+
+                    console.log('💾 Post-task data:', postTaskData);
+
+                    // Save to users/{uid}/sessions/{sessionId}
+                    const sessionRef = db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId);
+                    await sessionRef.set({
+                        postTask: postTaskData,
+                        currentPhase: 'survey'
+                    }, { merge: true });
+
+                    console.log('✅ Post-task saved successfully');
+
+                    // Navigate to post-study survey
+                    const params = new URLSearchParams({
+                        sessionId,
+                        mode,
+                        condition,
+                        paper
+                    });
+                    window.location.href = `post-study-survey.html?${params.toString()}`;
+
+                } catch (error) {
+                    console.error('Error saving post-task:', error);
+                    alert('Failed to save. Please try again.');
+                    setIsSubmitting(false);
+                }
+            };
+
+            if (checkingAuth || isLoading) {
+                return (
+                    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+                        <div className="text-center">
+                            <svg className="animate-spin h-10 w-10 text-blue-600 mx-auto mb-4" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <p className="text-gray-600">Loading...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-gray-100 py-8 px-4">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white rounded-xl shadow-2xl p-8">
+                            {/* Header */}
+                            <div className="text-center mb-8">
+                                <div className="text-5xl mb-4">🎯</div>
+                                <h1 className="text-3xl font-bold text-gray-800 mb-2">Post-Reading Task</h1>
+                            </div>
+
+                            <form onSubmit={handleSubmit} className="space-y-8">
+                                {/* Context */}
+                                <div className="bg-teal-100 border-2 border-teal-400 p-5 rounded-xl">
+                                    <p className="text-gray-700 text-base font-bold">Going forward, you'll be asked to reflect on your experience.</p>
+                                    <p className="text-gray-600 text-sm mt-2">Think about how the article might apply to your work.</p>
+                                </div>
+
+                                {/* Q1: Context Translation */}
+                                <div>
+                                    <label className="block text-base font-bold text-gray-800 mb-4">
+                                        Q1. Considering how to translate the article's conclusions to your own context, what are the key differences between the research context and your own situation? Would these matter for applying the findings? *
+                                    </label>
+
+                                    <div className="space-y-3">
+                                        {contextResponses.map((response, index) => (
+                                            <div key={index} className="flex items-start space-x-2">
+                                                <span className="text-sm font-medium text-gray-500 w-5 pt-2">{index + 1}.</span>
+                                                <textarea
+                                                    value={response}
+                                                    onChange={(e) => {
+                                                        updateContextResponse(index, e.target.value);
+                                                        e.target.style.height = 'auto';
+                                                        e.target.style.height = e.target.scrollHeight + 'px';
+                                                    }}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                                            e.target.style.height = 'auto';
+                                                            e.target.style.height = e.target.scrollHeight + 'px';
+                                                        }
+                                                    }}
+                                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm resize-none overflow-hidden"
+                                                    placeholder={`Response ${index + 1}`}
+                                                    rows={3}
+                                                />
+                                                {contextResponses.length > 1 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeContextResponse(index)}
+                                                        className="text-gray-400 hover:text-red-500 pt-2"
+                                                        title="Remove"
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+                                        <div className="flex items-start space-x-2">
+                                            <span className="w-5"></span>
+                                            <button
+                                                type="button"
+                                                onClick={addContextField}
+                                                className="px-4 py-2 border-2 border-teal-500 text-teal-600 hover:bg-teal-50 rounded-lg text-sm font-medium"
+                                            >
+                                                + Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Q2: Strategies Comparison */}
+                                <div>
+                                    <label className="block text-base font-bold text-gray-800 mb-4">
+                                        Q2. What are practical takeaways from this article that you could realistically implement or test in your workplace? Briefly explain your approach. *
+                                    </label>
+
+                                    <div className="space-y-3">
+                                        {postStrategies.map((strategy, index) => (
+                                            <div key={index} className="flex items-start space-x-2">
+                                                <span className="text-sm font-medium text-gray-500 w-5 pt-2">{index + 1}.</span>
+                                                <textarea
+                                                    value={strategy}
+                                                    onChange={(e) => {
+                                                        updateStrategy(index, e.target.value);
+                                                        e.target.style.height = 'auto';
+                                                        e.target.style.height = e.target.scrollHeight + 'px';
+                                                    }}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                                            e.target.style.height = 'auto';
+                                                            e.target.style.height = e.target.scrollHeight + 'px';
+                                                        }
+                                                    }}
+                                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm resize-none overflow-hidden"
+                                                    placeholder={`Takeaway ${index + 1}`}
+                                                    rows={3}
+                                                />
+                                                {postStrategies.length > 1 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeStrategy(index)}
+                                                        className="text-gray-400 hover:text-red-500 pt-2"
+                                                        title="Remove"
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+                                        <div className="flex items-start space-x-2">
+                                            <span className="w-5"></span>
+                                            <button
+                                                type="button"
+                                                onClick={addStrategyField}
+                                                className="px-4 py-2 border-2 border-teal-500 text-teal-600 hover:bg-teal-50 rounded-lg text-sm font-medium"
+                                            >
+                                                + Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Q3: Confidence in Takeaways */}
+                                <div>
+                                    <label className="block text-base font-bold text-gray-800 mb-2">
+                                        Q3. How confident are you that your takeaways will be effective in your workplace? *
+                                    </label>
+                                    <div className="flex items-center justify-between mt-3">
+                                        <span className="text-xs text-gray-500 w-24">Not at all confident</span>
+                                        <div className="flex space-x-1">
+                                            {[1, 2, 3, 4, 5, 6, 7].map(value => (
+                                                <button
+                                                    key={value}
+                                                    type="button"
+                                                    onClick={() => setNewStrategyConfidence(value.toString())}
+                                                    className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
+                                                        newStrategyConfidence === value.toString()
+                                                            ? 'bg-teal-500 text-white'
+                                                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+                                                    }`}
+                                                >
+                                                    {value}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <span className="text-xs text-gray-500 w-24 text-right">Extremely confident</span>
+                                    </div>
+                                </div>
+
+                                {/* Q4: Implementation Likelihood */}
+                                <div>
+                                    <label className="block text-base font-bold text-gray-800 mb-2">
+                                        Q4. How likely are you to actually implement these takeaways? *
+                                    </label>
+                                    <div className="flex items-center justify-between mt-3">
+                                        <span className="text-xs text-gray-500 w-20">Very unlikely</span>
+                                        <div className="flex space-x-1">
+                                            {[1, 2, 3, 4, 5, 6, 7].map(value => (
+                                                <button
+                                                    key={value}
+                                                    type="button"
+                                                    onClick={() => setImplementationLikelihood(value.toString())}
+                                                    className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
+                                                        implementationLikelihood === value.toString()
+                                                            ? 'bg-teal-500 text-white'
+                                                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+                                                    }`}
+                                                >
+                                                    {value}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <span className="text-xs text-gray-500 w-20 text-right">Very likely</span>
+                                    </div>
+                                </div>
+
+                                {/* Submit */}
+                                <div className="pt-6 border-t">
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="w-full bg-teal-500 text-white py-3 px-6 rounded-lg hover:bg-teal-600 font-medium transition-colors text-lg disabled:bg-teal-300 disabled:cursor-not-allowed flex items-center justify-center"
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Saving...
+                                            </>
+                                        ) : (
+                                            'Continue →'
+                                        )}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<PostTask />, document.getElementById('root'));
+    </script>
+
+</body>
+</html>

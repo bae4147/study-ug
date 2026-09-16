@@ -1,0 +1,45 @@
+rules_version = '2';
+
+// study-ug — same collection layout as study2 (users/{uid}/sessions/{sid}),
+// plus append-only event batches. Participants can only touch their own data;
+// the randomization counter is written by the login transaction and never
+// read back by anyone but the next login.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(uid) { return request.auth != null && request.auth.uid == uid; }
+
+    match /users/{uid} {
+      allow read, create, update: if isOwner(uid);
+      allow delete: if false;
+
+      match /sessions/{sessionId} {
+        allow read, create, update: if isOwner(uid);
+        allow delete: if false;
+
+        // The single most important rule: observational data, once written,
+        // cannot be rewritten or removed from the browser.
+        match /eventBatches/{batchId} {
+          allow read, create: if isOwner(uid);
+          allow update, delete: if false;
+        }
+      }
+
+      // study2's pre-task wrote here (currently disabled in code); keep it open
+      // to the owner so re-enabling it needs no rules change.
+      match /experiments/{experimentId} {
+        allow read, create, update: if isOwner(uid);
+        allow delete: if false;
+      }
+    }
+
+    // Block randomization counter (study2 mechanism). Any signed-in user may
+    // advance it inside a transaction; nobody may delete it.
+    match /randomization/{docId} {
+      allow read, create, update: if request.auth != null;
+      allow delete: if false;
+    }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}
