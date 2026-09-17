@@ -1,15 +1,5 @@
 {
   "projects": {
     "default": "study-ug-osu"
-  },
-  "targets": {
-    "study-ug-osu": {
-      "hosting": {
-        "main": [
-          "study-ug"
-        ]
-      }
-    }
-  },
-  "etags": {}
+  }
 }
