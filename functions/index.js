@@ -26,6 +26,29 @@ const corsHeaders = {
 // Admin email for error notifications
 const ADMIN_EMAIL = "bae.332@osu.edu";
 
+// ---------------------------------------------------------------------------
+// Sign-in links that never touch the Firebase auth domain
+// ---------------------------------------------------------------------------
+//
+// generateSignInWithEmailLink() returns a URL on <project>.firebaseapp.com whose
+// only job is to redirect to continueUrl with the same query string. For a
+// brand-new project that hop is a brand-new domain, and Microsoft 365 (which
+// @osu.edu runs on) quarantines mail linking to domains it has never seen --
+// the message reaches the Gmail Sent folder and never arrives. login.html
+// already handles the post-redirect URL shape, so build that URL directly and
+// the only domain in the email is github.io.
+function directSignInLink(firebaseLink, continueUrl) {
+  const src = new URL(firebaseLink);
+  const oobCode = src.searchParams.get("oobCode");
+  if (!oobCode) return firebaseLink;                 // unexpected shape; fall back
+  const out = new URL(continueUrl);
+  out.searchParams.set("mode", "signIn");
+  out.searchParams.set("oobCode", oobCode);
+  out.searchParams.set("apiKey", src.searchParams.get("apiKey") || "");
+  out.searchParams.set("lang", src.searchParams.get("lang") || "en");
+  return out.toString();
+}
+
 // Helper function to send error notification email
 async function sendErrorNotification(subject, errorDetails, userEmail = null) {
   try {
@@ -179,9 +202,9 @@ exports.sendLoginEmail = onRequest(
         handleCodeInApp: true
       };
 
-      const signInLink = await admin.auth().generateSignInWithEmailLink(
-        email,
-        actionCodeSettings
+      const signInLink = directSignInLink(
+        await admin.auth().generateSignInWithEmailLink(email, actionCodeSettings),
+        actionCodeSettings.url
       );
 
       console.log("Sign-in link generated successfully");
@@ -456,9 +479,11 @@ exports.devLogin = onRequest({ cors: true, secrets: [devAccessToken] }, async (r
     const address = String(email || "").trim().toLowerCase();
     try { await admin.auth().getUserByEmail(address); }
     catch (e) { await admin.auth().createUser({ email: address, emailVerified: true }); }
-    const link = await admin.auth().generateSignInWithEmailLink(address, {
-      url: String(continueUrl || "https://bae4147.github.io/study-ug/login.html"), handleCodeInApp: true
-    });
+    const target = String(continueUrl || "https://bae4147.github.io/study-ug/login.html");
+    const link = directSignInLink(
+      await admin.auth().generateSignInWithEmailLink(address, { url: target, handleCodeInApp: true }),
+      target
+    );
     res.set(corsHeaders); res.json({ ok: true, link, email: address });
   } catch (error) {
     console.error("devLogin error:", error);

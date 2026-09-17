@@ -73,16 +73,22 @@ users/{uid}/sessions/{sid}/eventBatches/{batchId}   ← append-only, immutable
 randomization/counter             { index, block[] }
 ```
 
-**Point events** — every `logEvent()` call study2 already made is kept and now
-persisted without a whitelist: `reading_started`, `reading_phase_complete`,
-`finish_reading_*`, `focus_switch`, `resource_tab_switch`, `pdf_activity`,
-`scroll_action`, `llm_activity` (typing / non-typing bursts),
-`llm_question_asked`, `llm_answer_received` (+ CIMO context fields),
-`audio_*` / `video_*` (`*_seeked` now carries `from`), `text_selection`,
-`panel_resized`, `window_focus_change`. Added: `reading_start`, `reading_end`,
-`reading_paused`, `reading_resumed`, `reading_scroll`, `panel_focus`,
-`tab_click`, `window_activated` / `window_deactivated` (with `documentHidden`),
-`window_closed_during_reading`.
+**Point events** — every `logEvent()` call study2 already made is kept and
+persisted without a whitelist. Duplicates between study2's events and the
+recorder's were removed, keeping whichever carries more information.
+
+| group | types |
+|---|---|
+| session | `reading_start` `reading_paused` `reading_resumed` `reading_phase_complete` (summary payload) `reading_end` `finish_reading_clicked/confirmed/cancelled` |
+| window | `window_activated` `window_deactivated` (`cause`, `documentHidden`) `window_closed_during_reading` (beacon only) |
+| panel | `focus_switch` (`from`, `to`, `timeOnPreviousFocus`) `resource_tab_switch` `panel_resized` |
+| paper | `pdf_activity` (`area_enter` / `area_leave` / `wheel`) `scroll_action` (reading / scanning / scrolling classification at focus change) |
+| media | `audio_play/pause/ended/seeked` (`seeked` carries `from`) `video_*` likewise |
+| chat | `llm_activity` (typing / none-typing bursts) `llm_question_asked` `llm_answer_received` (+ CIMO context fields) |
+
+Not persisted (by study2 design, unchanged): the **pre-task answers** — the
+Firestore write in `pre-task.html` is commented out and only `console.log`s.
+Paper scroll position is intentionally not logged for now.
 
 **Interval streams** — closed spans written at the moment of the real event,
 sharing one timestamp between the end of one span and the start of the next,
@@ -98,6 +104,16 @@ Flushed every 25 events or 10 s; on `pagehide` the remainder goes by
 `sendBeacon` to `ingestEvents`, authenticated by the session's `beaconToken`.
 
 Reassemble a session: read all `eventBatches`, sort by `batchSeq`, then by `seq`.
+
+## Sign-in email
+
+`sendLoginEmail` sends through the study Gmail account like study2, but the link
+in the message points **directly at `bae4147.github.io/study-ug/login.html`**
+with the `oobCode` in the query string, instead of at
+`study-ug-osu.firebaseapp.com/__/auth/action` (which only redirects there).
+Microsoft 365 quarantines mail that links to domains it has never seen, and a
+new Firebase project's auth domain is exactly that. `login.html` already
+handles this URL shape — it is what the redirect produced anyway.
 
 ## Before recruiting
 
