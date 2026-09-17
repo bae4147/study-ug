@@ -105,6 +105,22 @@ Flushed every 25 events or 10 s; on `pagehide` the remainder goes by
 
 Reassemble a session: read all `eventBatches`, sort by `batchSeq`, then by `seq`.
 
+## Reading session rules
+
+- **Minimum 15 minutes** of reading before Finish is accepted, measured on the
+  header clock (`⏱`), which stops while paused. Refusals are logged as
+  `finish_blocked_min_time`. The check is client-side, like the rest of
+  study2's flow; the recorder's `reading` interval stream has the exact
+  on/paused spans if a session ever needs auditing. Constant:
+  `MIN_READING_SECONDS` in `docs/reading.html`.
+- Test bypass: `localStorage.devSkipMinTime = '1'` in the browser console. It
+  is only meaningful to someone who reads this file.
+- The only pre-reading instruction participants see is the start popup in
+  `reading.html` ("Before You Start … only use the tools provided on this
+  platform" + agreement checkbox). There is no separate instruction page; if
+  the 15-minute rule, the pause button and the do-not-close warning should be
+  stated up front, that popup is the place.
+
 ## Sign-in email
 
 `sendLoginEmail` sends through the study Gmail account like study2, but the link
