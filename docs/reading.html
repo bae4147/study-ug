@@ -183,6 +183,7 @@
             const [scrollPosition, setScrollPosition] = useState(0);
             const [currentSection, setCurrentSection] = useState('Introduction');
             const [selectedText, setSelectedText] = useState('');
+            const MIN_READING_SECONDS = 15 * 60;
             const [readingActive, setReadingActive] = useState(false);
             // Reading time shown in the header: seconds while reading is active and
             // not paused. Display only -- the recorder's interval streams are the
@@ -3668,6 +3669,16 @@ Provide constructive feedback to help the reader think more critically about thi
                                 <button
                                     onClick={() => {
                                         logEvent('finish_reading_clicked');
+                                        // Minimum reading time, counted on the header clock (pauses excluded).
+                                        // Client-side only, like the rest of study2's flow; the recorder
+                                        // has the exact on/paused spans if this ever needs auditing.
+                                        const skip = (() => { try { return localStorage.getItem('devSkipMinTime') === '1'; } catch (e) { return false; } })();
+                                        if (!skip && activeSeconds < MIN_READING_SECONDS) {
+                                            const left = MIN_READING_SECONDS - activeSeconds;
+                                            logEvent('finish_blocked_min_time', { activeSeconds, remainingSeconds: left });
+                                            window.alert(`Please keep reading. The reading session is at least ${Math.round(MIN_READING_SECONDS / 60)} minutes; you have ${Math.floor(left / 60)} min ${left % 60} s to go (time spent paused does not count).`);
+                                            return;
+                                        }
                                         if (window.confirm('Are you sure you want to finish reading?')) {
                                             logEvent('finish_reading_confirmed');
                                             completeReading();
