@@ -168,16 +168,6 @@
             const [isPaused, setIsPaused] = useState(false);
             const isPausedRef = useRef(false);
             useEffect(() => { isPausedRef.current = isPaused; }, [isPaused]);
-            // Reading time shown in the header: seconds while reading is active and
-            // not paused. Display only -- the recorder's interval streams are the
-            // measurement.
-            const [activeSeconds, setActiveSeconds] = useState(0);
-            useEffect(() => {
-                if (!readingActive) return;
-                const id = setInterval(() => { if (!isPausedRef.current) setActiveSeconds(s => s + 1); }, 1000);
-                return () => clearInterval(id);
-            }, [readingActive]);
-            const clock = `${String(Math.floor(activeSeconds / 60)).padStart(2, '0')}:${String(activeSeconds % 60).padStart(2, '0')}`;
             const audioSeekFromRef = useRef(null);
             const videoSeekFromRef = useRef(null);
             const [currentPaper, setCurrentPaper] = useState(''); // Will be set from URL params
@@ -194,6 +184,18 @@
             const [currentSection, setCurrentSection] = useState('Introduction');
             const [selectedText, setSelectedText] = useState('');
             const [readingActive, setReadingActive] = useState(false);
+            // Reading time shown in the header: seconds while reading is active and
+            // not paused. Display only -- the recorder's interval streams are the
+            // measurement. Must sit below the readingActive declaration: in-browser
+            // Babel hoists it as a var, so a dependency read above it is always undefined.
+            const [activeSeconds, setActiveSeconds] = useState(0);
+            useEffect(() => {
+                if (!readingActive) return;
+                const id = setInterval(() => { if (!isPausedRef.current) setActiveSeconds(s => s + 1); }, 1000);
+                return () => clearInterval(id);
+            }, [readingActive]);
+            const clock = `${String(Math.floor(activeSeconds / 60)).padStart(2, '0')}:${String(activeSeconds % 60).padStart(2, '0')}`;
+
             const [paperContent, setPaperContent] = useState('');
 
             // Custom PDF state
