@@ -1078,7 +1078,6 @@
             // For condition 2, newFocus is: 'reading' or 'chat'
             const switchFocus = (newFocus) => {
                 if (newFocus === activeFocus) return;
-                if (trackerRef.current) trackerRef.current.setPanelFocus(newFocus === 'reading' ? 'reading' : 'ai');
 
                 const now = Date.now();
                 const isRightPanel = (focus) => focus !== 'reading';
@@ -3707,7 +3706,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                     showRightPanel && activeFocus === 'reading' ? 'border-4 border-purple-500' : 'border-4 border-transparent'
                                 }`}
                                 style={{ width: showRightPanel ? `calc(${leftPanelWidth}% - 4px)` : '100%' }}
-                                onMouseEnter={() => showRightPanel && switchFocus('reading')}
+                                onMouseEnter={() => { if (trackerRef.current) trackerRef.current.setPanelFocus('reading'); if (showRightPanel) switchFocus('reading'); }}
                             >
                                 <div
                                     ref={pdfContainerRef}
@@ -4115,7 +4114,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                         activeFocus !== 'reading' ? 'border-4 border-purple-500' : 'border-4 border-transparent'
                                     }`}
                                     style={{ width: `calc(${100 - leftPanelWidth}% - 4px)` }}
-                                    onMouseEnter={() => switchFocus(activeTab || 'chat')}
+                                    onMouseEnter={() => { if (trackerRef.current) trackerRef.current.setPanelFocus('ai'); switchFocus(activeTab || 'chat'); }}
                                 >
                                     {/* Extended UI with tabs for both conditions */}
                                         <>
