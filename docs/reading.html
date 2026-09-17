@@ -411,25 +411,32 @@
                     lastActivityTimeRef.current = now;
                     focusStartTimeRef.current = now;
 
-                    if (!trackerRef.current && currentUser && sessionId && window.firebaseDb) {
-                        const t = new Tracker({
-                            uid: currentUser.uid,
-                            sessionId,
-                            topic: currentPaper,
-                            condition,
-                            write: (path, body) => window.firebaseSetDoc(window.firebaseDoc(window.firebaseDb, path), body)
-                        });
-                        trackerRef.current = t;
-                        t.startSession();
-                        t.setPanelFocus('reading');
-                        window.firebaseGetDoc(window.firebaseDoc(window.firebaseDb, `users/${currentUser.uid}/sessions/${sessionId}`))
-                            .then(d => { if (d.exists()) t.beaconToken = d.data().beaconToken || null; })
-                            .catch(() => {});
-                    }
-
                     logEvent('reading_started');
                 }
             }, [phase, readingActive, showStartPopup]);
+
+            // Start the recorder as soon as reading is active AND the user and
+            // session are known. These arrive asynchronously (auth restore, URL
+            // parsing), so this is its own effect keyed on all three rather than a
+            // check inside the effect above, which ran once and could miss them.
+            useEffect(() => {
+                if (!readingActive || trackerRef.current) return;
+                if (!currentUser || !sessionId || !window.firebaseDb) return;
+
+                const t = new Tracker({
+                    uid: currentUser.uid,
+                    sessionId,
+                    topic: currentPaper,
+                    condition,
+                    write: (path, body) => window.firebaseSetDoc(window.firebaseDoc(window.firebaseDb, path), body)
+                });
+                trackerRef.current = t;
+                t.startSession();
+                t.setPanelFocus('reading');
+                window.firebaseGetDoc(window.firebaseDoc(window.firebaseDb, `users/${currentUser.uid}/sessions/${sessionId}`))
+                    .then(d => { if (d.exists()) t.beaconToken = d.data().beaconToken || null; })
+                    .catch(() => {});
+            }, [readingActive, currentUser, sessionId]);
 
             // Window focus/blur tracking for activity monitoring
             const windowFocusStartRef = useRef(Date.now());
