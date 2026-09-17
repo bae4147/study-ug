@@ -168,6 +168,7 @@
             const [isPaused, setIsPaused] = useState(false);
             const audioSeekFromRef = useRef(null);
             const videoSeekFromRef = useRef(null);
+            const lastScrollLogRef = useRef(0);
             const [currentPaper, setCurrentPaper] = useState(''); // Will be set from URL params
             const [showFinishPopup, setShowFinishPopup] = useState(false);
             const [showStartPopup, setShowStartPopup] = useState(true); // Show start warning popup
@@ -649,6 +650,20 @@
                             currentPage = i + 1;
                         }
                     }
+                }
+
+                // Scroll position on the paper, throttled. Page and section come from
+                // the same page geometry the section tracker uses.
+                const nowTs = Date.now();
+                if (nowTs - lastScrollLogRef.current > 300) {
+                    lastScrollLogRef.current = nowTs;
+                    const sec = customPdfData?.sections?.find(x => currentPage >= x.startPage && currentPage <= x.endPage);
+                    logEvent('reading_scroll', {
+                        page: currentPage,
+                        section: sec ? sec.sectionName : null,
+                        scrollTop: Math.round(scrollTop),
+                        percent: container.scrollHeight ? Math.round((scrollTop + containerHeight) / container.scrollHeight * 100) : null
+                    });
                 }
 
                 if (currentPage !== pdfCurrentPage) {
@@ -3721,22 +3736,29 @@ Provide constructive feedback to help the reader think more critically about thi
                                                             <p className="text-gray-600 font-medium">Loading PDF...</p>
                                                         </div>
                                                     </div>
-                                                ) : isCustomPdf && pdfBlobUrl ? (
+                                                ) : isCustomPdf && pdfRenderedPages.length > 0 ? (
                                                     /* Custom PDF: Embed for text selection with activity tracking */
                                                     <div
-                                                        className="w-full h-full"
+                                                        ref={pdfContainerScrollRef}
+                                                        onScroll={handlePdfScroll}
+                                                        className="w-full h-full overflow-y-auto bg-gray-200"
                                                         onMouseEnter={handlePdfAreaEnter}
                                                         onMouseLeave={handlePdfAreaLeave}
                                                         onWheel={handlePdfWheel}
                                                     >
-                                                        <embed
-                                                            src={`${pdfBlobUrl}#toolbar=0&navpanes=0`}
-                                                            type="application/pdf"
-                                                            className="w-full h-full"
-                                                            style={{ minHeight: 'calc(100vh - 120px)' }}
-                                                        />
+                                                        {pdfRenderedPages.map((pg, i) => (
+                                                            <img
+                                                                key={pg.pageNum}
+                                                                ref={el => { pageRefs.current[i] = el; }}
+                                                                src={pg.dataUrl}
+                                                                data-page={pg.pageNum}
+                                                                alt={`Page ${pg.pageNum}`}
+                                                                draggable={false}
+                                                                style={{ width: '100%', maxWidth: '900px', display: 'block', margin: '12px auto', boxShadow: '0 2px 10px rgba(0,0,0,0.3)', background: '#fff' }}
+                                                            />
+                                                        ))}
                                                     </div>
-                                                ) : isCustomPdf && customPdfData?.base64 && !pdfBlobUrl ? (
+                                                ) : isCustomPdf && customPdfData?.base64 ? (
                                                     /* PDF data exists but Blob URL not created yet - show loading */
                                                     <div className="w-full h-full flex items-center justify-center" style={{ minHeight: 'calc(100vh - 120px)' }}>
                                                         <div className="text-center">
@@ -3744,7 +3766,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                             </svg>
-                                                            <p className="text-gray-600 font-medium">Preparing PDF viewer...</p>
+                                                            <p className="text-gray-600 font-medium">Rendering pages...</p>
                                                         </div>
                                                     </div>
                                                 ) : isCustomPdf ? (
@@ -4005,22 +4027,29 @@ Provide constructive feedback to help the reader think more critically about thi
                                                     <p className="text-gray-600 font-medium">Loading PDF...</p>
                                                 </div>
                                             </div>
-                                        ) : isCustomPdf && pdfBlobUrl ? (
+                                        ) : isCustomPdf && pdfRenderedPages.length > 0 ? (
                                             /* Custom PDF viewer - embed for text selection with activity tracking */
                                             <div
-                                                className="w-full h-full"
+                                                ref={pdfContainerScrollRef}
+                                                onScroll={handlePdfScroll}
+                                                className="w-full h-full overflow-y-auto bg-gray-200"
                                                 onMouseEnter={handlePdfAreaEnter}
                                                 onMouseLeave={handlePdfAreaLeave}
                                                 onWheel={handlePdfWheel}
                                             >
-                                                <embed
-                                                    src={`${pdfBlobUrl}#toolbar=0&navpanes=0`}
-                                                    type="application/pdf"
-                                                    className="w-full h-full"
-                                                    style={{ minHeight: 'calc(100vh - 120px)' }}
-                                                />
+                                                {pdfRenderedPages.map((pg, i) => (
+                                                    <img
+                                                        key={pg.pageNum}
+                                                        ref={el => { pageRefs.current[i] = el; }}
+                                                        src={pg.dataUrl}
+                                                        data-page={pg.pageNum}
+                                                        alt={`Page ${pg.pageNum}`}
+                                                        draggable={false}
+                                                        style={{ width: '100%', maxWidth: '900px', display: 'block', margin: '12px auto', boxShadow: '0 2px 10px rgba(0,0,0,0.3)', background: '#fff' }}
+                                                    />
+                                                ))}
                                             </div>
-                                        ) : isCustomPdf && customPdfData?.base64 && !pdfBlobUrl ? (
+                                        ) : isCustomPdf && customPdfData?.base64 ? (
                                             /* PDF data exists but Blob URL not created yet - show loading */
                                             <div className="w-full h-full flex items-center justify-center" style={{ minHeight: 'calc(100vh - 120px)' }}>
                                                 <div className="text-center">
@@ -4028,7 +4057,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                     </svg>
-                                                    <p className="text-gray-600 font-medium">Preparing PDF viewer...</p>
+                                                    <p className="text-gray-600 font-medium">Rendering pages...</p>
                                                 </div>
                                             </div>
                                         ) : isCustomPdf ? (
