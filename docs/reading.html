@@ -166,6 +166,18 @@
             // Observational recorder (tracking.js). Created when reading actually starts.
             const trackerRef = useRef(null);
             const [isPaused, setIsPaused] = useState(false);
+            const isPausedRef = useRef(false);
+            useEffect(() => { isPausedRef.current = isPaused; }, [isPaused]);
+            // Reading time shown in the header: seconds while reading is active and
+            // not paused. Display only -- the recorder's interval streams are the
+            // measurement.
+            const [activeSeconds, setActiveSeconds] = useState(0);
+            useEffect(() => {
+                if (!readingActive) return;
+                const id = setInterval(() => { if (!isPausedRef.current) setActiveSeconds(s => s + 1); }, 1000);
+                return () => clearInterval(id);
+            }, [readingActive]);
+            const clock = `${String(Math.floor(activeSeconds / 60)).padStart(2, '0')}:${String(activeSeconds % 60).padStart(2, '0')}`;
             const audioSeekFromRef = useRef(null);
             const videoSeekFromRef = useRef(null);
             const [currentPaper, setCurrentPaper] = useState(''); // Will be set from URL params
@@ -3639,6 +3651,9 @@ Provide constructive feedback to help the reader think more critically about thi
                                 </p>
                             </div>
                             <div className="flex items-center space-x-4">
+                                <span className="font-mono text-lg font-semibold text-gray-700 px-3 py-2 bg-gray-100 rounded-lg" title="Reading time (pauses excluded)">
+                                    ⏱ {clock}
+                                </span>
                                 <button
                                     onClick={() => {
                                         setIsPaused(true);

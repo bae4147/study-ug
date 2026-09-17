@@ -100,9 +100,6 @@
             const [emailSent, setEmailSent] = useState(false);
 
             // Profile state (for new users or profile update)
-            const [showProfileForm, setShowProfileForm] = useState(false);
-            const [isNewUser, setIsNewUser] = useState(false);
-            const [fullName, setFullName] = useState('');
             const [currentUser, setCurrentUser] = useState(null);
 
             // Check for email link sign-in and auth state
@@ -142,26 +139,30 @@
                     if (user) {
                         setCurrentUser(user);
                         // Check if user has profile in Firestore
+                        // Nothing to collect at sign-in: the verified email is the
+                        // identity. Register on first visit, then go straight to the study.
                         try {
-                            const userDoc = await db.collection('users').doc(user.uid).get();
-                            if (userDoc.exists) {
-                                const userData = userDoc.data();
-                                setFullName(userData.fullName || '');
-                                setIsNewUser(false);
-                                // Redirect to index if profile is complete
-                                if (userData.fullName) {
-                                    sessionStorage.setItem('participantName', userData.fullName);
-                                    await startSession(user.uid, userData.condition);
-                                    return;
-                                }
+                            const userRef = db.collection('users').doc(user.uid);
+                            const userDoc = await userRef.get();
+                            let condition;
+                            if (userDoc.exists && userDoc.data().condition) {
+                                condition = userDoc.data().condition;
+                                await userRef.set({ lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
                             } else {
-                                setIsNewUser(true);
+                                condition = await getNextCondition(user.email);
+                                await userRef.set({
+                                    email: user.email,
+                                    condition,
+                                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                    lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+                                }, { merge: true });
+                                console.log('Assigned condition:', condition);
                             }
-                            setShowProfileForm(true);
+                            await startSession(user.uid, condition);
+                            return;
                         } catch (err) {
-                            console.error('Error fetching user data:', err);
-                            setIsNewUser(true);
-                            setShowProfileForm(true);
+                            console.error('Error starting session:', err);
+                            setError('Could not start your session. Please try again.');
                         }
                     }
                     setLoading(false);
@@ -231,48 +232,10 @@
                 window.location.href = `pre-task.html?${params.toString()}`;
             };
 
-            const handleProfileSave = async (e) => {
-                e.preventDefault();
-                if (!fullName.trim()) {
-                    setError('Please fill in all fields.');
-                    return;
-                }
-
-                setLoading(true);
-                setError('');
-
-                try {
-                    const userData = {
-                        fullName: fullName.trim(),
-                        email: currentUser.email,
-                        lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-
-                    if (isNewUser) {
-                        userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                        // Assign condition using block randomization for new users
-                        const assignedCondition = await getNextCondition(currentUser.email);
-                        userData.condition = assignedCondition;
-                        console.log('Assigned condition:', assignedCondition);
-                    }
-
-                    await db.collection('users').doc(currentUser.uid).set(userData, { merge: true });
-                    sessionStorage.setItem('participantName', userData.fullName);
-                    await startSession(currentUser.uid, userData.condition || (await getNextCondition(currentUser.email)));
-                } catch (err) {
-                    console.error('Error saving profile:', err);
-                    setError('Failed to save profile. Please try again.');
-                    setLoading(false);
-                }
-            };
-
             const handleLogout = async () => {
                 await auth.signOut();
-                setShowProfileForm(false);
                 setCurrentUser(null);
                 setEmail('');
-                setFullName('');
-                setUserClass('');
                 setEmailSent(false);
             };
 
@@ -311,72 +274,6 @@
             }
 
             // Profile form (for new users or users without complete profile)
-            if (showProfileForm && currentUser) {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
-                        <div className="max-w-md mx-auto">
-                            <div className="bg-white rounded-xl shadow-2xl p-8">
-                                <div className="text-center mb-8">
-                                    <div className="text-5xl mb-4">👤</div>
-                                    <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                                        {isNewUser ? 'Complete Your Profile' : 'Welcome Back!'}
-                                    </h1>
-                                    <p className="text-gray-600 text-sm">
-                                        {isNewUser
-                                            ? 'Please enter your information to continue.'
-                                            : 'Please confirm your information.'}
-                                    </p>
-                                    <p className="text-gray-500 text-xs mt-2">{currentUser.email}</p>
-                                </div>
-
-                                <form onSubmit={handleProfileSave} className="space-y-5">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Full Name *
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={fullName}
-                                            onChange={(e) => setFullName(e.target.value)}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Enter your full name"
-                                            required
-                                        />
-                                    </div>
-
-
-                                    {error && (
-                                        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
-                                            {error}
-                                        </div>
-                                    )}
-
-                                    <button
-                                        type="submit"
-                                        disabled={loading}
-                                        className={`w-full px-6 py-3 rounded-lg font-medium transition-colors ${
-                                            loading
-                                                ? 'bg-gray-400 cursor-not-allowed'
-                                                : 'bg-blue-600 hover:bg-blue-700 text-white'
-                                        }`}
-                                    >
-                                        {loading ? 'Saving...' : 'Continue'}
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        onClick={handleLogout}
-                                        className="w-full px-6 py-2 text-gray-500 hover:text-gray-700 text-sm"
-                                    >
-                                        Use a different account
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
             // Email sent confirmation
             if (emailSent) {
                 return (

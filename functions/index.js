@@ -238,7 +238,7 @@ exports.sendLoginEmail = onRequest(
 
   <p>Click the button below to sign in to your reading assignment:</p>
 
-  <a href="${signInLink}" class="button">Sign In</a>
+  <a href="${signInLink}" class="button" style="display:inline-block;background:#2563eb;color:#ffffff !important;padding:14px 28px;text-decoration:none;border-radius:8px;font-weight:bold;margin:20px 0;"><span style="color:#ffffff !important;">Sign In</span></a>
 
   <p>Or copy and paste this link into your browser:</p>
   <p style="word-break: break-all; color: #2563eb; font-size: 14px;">${signInLink}</p>
@@ -348,68 +348,24 @@ exports.sendCompletionEmail = onRequest(
       const emailHtml = `
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-    h1 { color: #2563eb; }
-    h2 { color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; margin-top: 30px; }
-    .response-box { background: #f9fafb; border-left: 4px solid #2563eb; padding: 15px; margin: 10px 0; }
-    .rating { background: #ecfdf5; padding: 10px 15px; border-radius: 8px; display: inline-block; margin: 5px 0; }
-    ul { padding-left: 20px; }
-    li { margin: 8px 0; }
-    .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; }
-  </style>
-</head>
-<body>
-  <h1>📚 Your Reading Study Summary</h1>
-
-  <p>Hi ${recipientName},</p>
-
-  <p>Thank you for completing the reading assignment! Here's a summary of your responses for your records.</p>
-
-  <p><strong>Paper:</strong> ${paperTitle}</p>
-  <p><strong>Completed:</strong> ${new Date().toLocaleString("en-US", { timeZone: "America/New_York", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true })} (ET)</p>
-
-  <h2>Q1. Context Differences</h2>
-  <p><em>Key differences between the research context and your own situation:</em></p>
-  ${contextTranslation.length > 0 ? `
-    <ul>
-      ${contextTranslation.map(item => `<li class="response-box">${item}</li>`).join("")}
-    </ul>
-  ` : "<p><em>No responses recorded</em></p>"}
-
-  <h2>Q2. Practical Takeaways</h2>
-  <p><em>What you could realistically implement or test in your workplace:</em></p>
-  ${strategies.length > 0 ? `
-    <ul>
-      ${strategies.map((item, idx) => `<li class="response-box"><strong>${idx + 1}.</strong> ${item}</li>`).join("")}
-    </ul>
-  ` : "<p><em>No responses recorded</em></p>"}
-
-  <h2>Self-Assessment</h2>
-  ${newStrategyConfidence ? `
-    <p><strong>Confidence in takeaways being effective:</strong></p>
-    <div class="rating">⭐ ${newStrategyConfidence} / 7</div>
-  ` : ""}
-  ${implementationLikelihood ? `
-    <p><strong>Likelihood to implement changes:</strong></p>
-    <div class="rating">📊 ${implementationLikelihood} / 7</div>
-  ` : ""}
-
-  <div class="footer">
-    <p>This email was automatically generated as part of the reading study.</p>
-    <p>If you have any questions, please contact your instructor.</p>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <h1 style="font-size: 22px;">You have completed the reading study</h1>
+  <p>Hello,</p>
+  <p>This email confirms that you completed all parts of the reading study
+     &mdash; the reading session, the task and the survey. Thank you for taking part.</p>
+  <p>Nothing further is needed from you.</p>
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+    <p>Questions about the study? Reply to this email or contact <a href="mailto:bae.332@osu.edu" style="color:#6b7280;">bae.332@osu.edu</a>.</p>
   </div>
 </body>
 </html>
       `;
 
-      // Send email
       const mailOptions = {
         from: `"UG Reading Study" <${gmailUser.value()}>`,
         to: recipientEmail,
-        subject: `Your Reading Study Summary: ${paperTitle}`,
+        subject: "Reading study: completed",
         html: emailHtml
       };
 
