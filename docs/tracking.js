@@ -211,7 +211,8 @@
     this.panelDesired = which;
     if (this.gateOpen) {
       this._transition('panel', which, t);
-      this.point('panel_focus', { panel: which });
+      // No point event here: study2's focus_switch already records the switch
+      // with its target and dwell time; the panel interval stream holds the span.
     }
   };
 

@@ -411,7 +411,6 @@
                     lastActivityTimeRef.current = now;
                     focusStartTimeRef.current = now;
 
-                    logEvent('reading_started');
                 }
             }, [phase, readingActive, showStartPopup]);
 
@@ -453,19 +452,9 @@
                     if (document.hidden) {
                         // Window became inactive
                         setIsWindowActive(false);
-                        logEvent('window_focus_change', {
-                            isActive: false,
-                            previousState: 'active',
-                            previousDuration
-                        });
                     } else {
                         // Window became active
                         setIsWindowActive(true);
-                        logEvent('window_focus_change', {
-                            isActive: true,
-                            previousState: 'inactive',
-                            previousDuration
-                        });
                     }
                     windowFocusStartRef.current = now;
                 };
@@ -1229,7 +1218,6 @@
                     to: newTab,
                     timestamp: now
                 });
-                if (trackerRef.current) trackerRef.current.tabClick(activeTab, newTab);
 
                 // Update focusTimes for the previous focus
                 if (condition === 'mm' || condition === 'ebm' || condition === 'ebm_coach' || condition === 'ebm_action' || condition === 'mm_cimo') {
