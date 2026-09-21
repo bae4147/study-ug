@@ -187,6 +187,7 @@ users/{uid}/sessions/{sessionId}/eventBatches/{batchId}
 | `reading_completed_redirecting` | 레코더 종료 후 발생 |
 | `isFinalSegment: true`인 `scroll_action` / `llm_activity` / `resource_tab_switch` | 종료 시 메모리에만 만들어 `classificationSummary`·`focusTimes` 계산에 씀. batch에는 없음 |
 | `text_selection` | 논문이 페이지 이미지라 텍스트 선택 불가 |
+| 논문 패널 안의 휠·스크롤 (`pdf_activity` `wheel` / `scrolling` 전환) | 논문을 브라우저 기본 PDF 뷰어(`<iframe>`)로 보여주므로 휠 이벤트가 페이지에 전달되지 않는다. 패널 진입·이탈(`area_enter`/`area_leave`)만 남는다 |
 | 외부 스크롤 컨테이너의 `scroll_action`(시간 기반 분류의 스크롤 버전) | 현재 레이아웃에서 그 컨테이너는 스크롤되지 않음 |
 | `reading_scroll` (페이지·섹션·위치) | 요청에 따라 제거 |
 | `*_generation_*`, `socratic_*`, `reading_guide_shown` | 호출 경로 없음 (미디어 사전 제공 / 패널 비활성 / 레거시) |

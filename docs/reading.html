@@ -23,12 +23,6 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 
-    <style>
-        .pdfTextLayer { position: absolute; left: 0; top: 0; line-height: 1; }
-        .pdfTextLayer span, .pdfTextLayer br { color: transparent; position: absolute; white-space: pre; cursor: text; transform-origin: 0% 0%; }
-        .pdfTextLayer ::selection { background: rgba(0, 100, 255, 0.3); }
-    </style>
-
     <!-- Papers data -->
     <script src="tracking.js"></script>
 
@@ -160,59 +154,6 @@
         }
 
         // Main Application Component
-        // One PDF page: the rendered bitmap plus an invisible pdf.js text layer on top,
-        // so the paper looks the same but its text can be selected and copied.
-        // The layer is laid out at the page's natural size (scale 1) and scaled with
-        // CSS to whatever width the page is currently displayed at.
-        function PdfPageView({ pg, pageRef }) {
-            const wrapRef = React.useRef(null);
-            const layerRef = React.useRef(null);
-            const [k, setK] = React.useState(1);
-
-            React.useEffect(() => {
-                const layer = layerRef.current;
-                if (!layer || !pg.textContent || !window.pdfjsLib.renderTextLayer) return;
-                layer.replaceChildren();
-                const task = pdfjsLib.renderTextLayer({
-                    textContentSource: pg.textContent,
-                    container: layer,
-                    viewport: pg.viewport,
-                    textDivs: []
-                });
-                return () => { try { task.cancel(); } catch (e) {} };
-            }, [pg]);
-
-            React.useEffect(() => {
-                const wrap = wrapRef.current;
-                if (!wrap) return;
-                const update = () => setK(wrap.clientWidth / pg.width);
-                update();
-                const ro = new ResizeObserver(update);
-                ro.observe(wrap);
-                return () => ro.disconnect();
-            }, [pg.width]);
-
-            return (
-                <div
-                    ref={el => { wrapRef.current = el; if (pageRef) pageRef(el); }}
-                    data-page={pg.pageNum}
-                    style={{ position: 'relative', width: '100%', maxWidth: '900px', margin: '12px auto', boxShadow: '0 2px 10px rgba(0,0,0,0.3)', background: '#fff' }}
-                >
-                    <img
-                        src={pg.dataUrl}
-                        alt={`Page ${pg.pageNum}`}
-                        draggable={false}
-                        style={{ width: '100%', display: 'block' }}
-                    />
-                    <div
-                        ref={layerRef}
-                        className="pdfTextLayer"
-                        style={{ width: pg.width, height: pg.height, transform: `scale(${k})`, transformOrigin: '0 0' }}
-                    />
-                </div>
-            );
-        }
-
         function ReadingExperimentAOM() {
             // Auth state
             const [currentUser, setCurrentUser] = useState(null);
@@ -621,46 +562,21 @@
                         pdfDocRef.current = pdf;
                         console.log(`📄 PDF loaded: ${pdf.numPages} pages`);
 
-                        // Render all pages with high quality
                         const pages = [];
-                        const devicePixelRatio = window.devicePixelRatio || 1;
-                        const qualityScale = 2; // Higher scale for better quality
 
                         // Extract text from all pages for LLM context
                         let fullPdfText = '';
 
                         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                             const page = await pdf.getPage(pageNum);
-                            const viewport = page.getViewport({ scale: qualityScale * devicePixelRatio });
-
                             // Extract text content from this page
                             const textContent = await page.getTextContent();
                             const pageText = textContent.items.map(item => item.str).join(' ');
                             fullPdfText += pageText + '\n\n';
 
-                            // Create canvas for this page
-                            const canvas = document.createElement('canvas');
-                            const context = canvas.getContext('2d');
+                            pages.push({ pageNum });
 
-                            canvas.width = viewport.width;
-                            canvas.height = viewport.height;
-
-                            await page.render({
-                                canvasContext: context,
-                                viewport: viewport
-                            }).promise;
-
-                            // Convert to data URL for display
-                            pages.push({
-                                pageNum,
-                                dataUrl: canvas.toDataURL('image/png'),
-                                textContent,
-                                viewport: page.getViewport({ scale: 1 }),
-                                width: viewport.width / (qualityScale * devicePixelRatio),
-                                height: viewport.height / (qualityScale * devicePixelRatio)
-                            });
-
-                            console.log(`📄 Rendered page ${pageNum}/${pdf.numPages}`);
+                            console.log(`📄 Read text of page ${pageNum}/${pdf.numPages}`);
                         }
 
                         setPdfRenderedPages(pages);
@@ -3800,14 +3716,16 @@ Provide constructive feedback to help the reader think more critically about thi
                                                     <div
                                                         ref={pdfContainerScrollRef}
                                                         onScroll={handlePdfScroll}
-                                                        className="w-full h-full overflow-y-auto bg-gray-200"
+                                                        className="w-full h-full bg-gray-200"
                                                         onMouseEnter={handlePdfAreaEnter}
                                                         onMouseLeave={handlePdfAreaLeave}
                                                         onWheel={handlePdfWheel}
                                                     >
-                                                        {pdfRenderedPages.map((pg, i) => (
-                                                            <PdfPageView key={pg.pageNum} pg={pg} pageRef={el => { pageRefs.current[i] = el; }} />
-                                                        ))}
+                                                        <iframe
+                                                            src="papers/hafner2014/paper.pdf"
+                                                            title="Paper"
+                                                            style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
+                                                        />
                                                     </div>
                                                 ) : isCustomPdf && customPdfData?.base64 ? (
                                                     /* PDF data exists but Blob URL not created yet - show loading */
@@ -4083,14 +4001,16 @@ Provide constructive feedback to help the reader think more critically about thi
                                             <div
                                                 ref={pdfContainerScrollRef}
                                                 onScroll={handlePdfScroll}
-                                                className="w-full h-full overflow-y-auto bg-gray-200"
+                                                className="w-full h-full bg-gray-200"
                                                 onMouseEnter={handlePdfAreaEnter}
                                                 onMouseLeave={handlePdfAreaLeave}
                                                 onWheel={handlePdfWheel}
                                             >
-                                                {pdfRenderedPages.map((pg, i) => (
-                                                    <PdfPageView key={pg.pageNum} pg={pg} pageRef={el => { pageRefs.current[i] = el; }} />
-                                                ))}
+                                                <iframe
+                                                    src="papers/hafner2014/paper.pdf"
+                                                    title="Paper"
+                                                    style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
+                                                />
                                             </div>
                                         ) : isCustomPdf && customPdfData?.base64 ? (
                                             /* PDF data exists but Blob URL not created yet - show loading */
