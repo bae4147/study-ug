@@ -60,11 +60,7 @@
 
             // Section 1: NASA-TLX (7-point scale)
             const [mentalDemand, setMentalDemand] = useState('');
-            const [physicalDemand, setPhysicalDemand] = useState('');
-            const [temporalDemand, setTemporalDemand] = useState('');
             const [performance, setPerformance] = useState('');
-            const [effort, setEffort] = useState('');
-            const [frustration, setFrustration] = useState('');
 
             // Section 2: Self-efficacy
             // Overall Article Comprehension
@@ -231,7 +227,7 @@
                 if (isSubmitting) return;
 
                 // Validation for required fields
-                if (!mentalDemand || !physicalDemand || !temporalDemand || !performance || !effort || !frustration ||
+                if (!mentalDemand || !performance ||
                     !overallComprehension || !keyConceptsUnderstanding || !findingsUnderstanding ||
                     !evidenceUnderstanding || !keyResultsUnderstanding || !keyTermsUnderstanding ||
                     !researchDesignUnderstanding || !sampleContextUnderstanding || !limitationsUnderstanding ||
@@ -277,11 +273,7 @@
                 const surveyData = {
                     nasaTLX: {
                         mentalDemand: parseInt(mentalDemand),
-                        physicalDemand: parseInt(physicalDemand),
-                        temporalDemand: parseInt(temporalDemand),
                         performance: parseInt(performance),
-                        effort: parseInt(effort),
-                        frustration: parseInt(frustration)
                     },
                     selfEfficacy: {
                         overallComprehension: {
@@ -442,111 +434,6 @@
                                                             onClick={() => setMentalDemand(value.toString())}
                                                             className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
                                                                 mentalDemand === value.toString()
-                                                                    ? 'bg-blue-600 text-white'
-                                                                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                            }`}
-                                                        >
-                                                            {value}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                                <span className="text-xs text-gray-500">Very High</span>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                Physical Demand: How physically demanding was the task?*
-                                            </label>
-                                            <p className="text-xs text-gray-600 mb-3">(e.g., clicking, scrolling, typing)</p>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs text-gray-500">Very Low</span>
-                                                <div className="flex space-x-1">
-                                                    {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                        <button
-                                                            key={value}
-                                                            type="button"
-                                                            onClick={() => setPhysicalDemand(value.toString())}
-                                                            className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                physicalDemand === value.toString()
-                                                                    ? 'bg-blue-600 text-white'
-                                                                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                            }`}
-                                                        >
-                                                            {value}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                                <span className="text-xs text-gray-500">Very High</span>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                Temporal Demand: How hurried or rushed was the pace of the task?*
-                                            </label>
-                                            <div className="flex items-center justify-between mt-3">
-                                                <span className="text-xs text-gray-500">Very Low</span>
-                                                <div className="flex space-x-1">
-                                                    {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                        <button
-                                                            key={value}
-                                                            type="button"
-                                                            onClick={() => setTemporalDemand(value.toString())}
-                                                            className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                temporalDemand === value.toString()
-                                                                    ? 'bg-blue-600 text-white'
-                                                                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                            }`}
-                                                        >
-                                                            {value}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                                <span className="text-xs text-gray-500">Very High</span>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                Effort: How much effort did you need to put in to read and understand the article?*
-                                            </label>
-                                            <div className="flex items-center justify-between mt-3">
-                                                <span className="text-xs text-gray-500">Very Low</span>
-                                                <div className="flex space-x-1">
-                                                    {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                        <button
-                                                            key={value}
-                                                            type="button"
-                                                            onClick={() => setEffort(value.toString())}
-                                                            className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                effort === value.toString()
-                                                                    ? 'bg-blue-600 text-white'
-                                                                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                            }`}
-                                                        >
-                                                            {value}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                                <span className="text-xs text-gray-500">Very High</span>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                Frustration: How insecure, discouraged, irritated, stressed, or annoyed were you during the task?*
-                                            </label>
-                                            <div className="flex items-center justify-between mt-3">
-                                                <span className="text-xs text-gray-500">Very Low</span>
-                                                <div className="flex space-x-1">
-                                                    {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                        <button
-                                                            key={value}
-                                                            type="button"
-                                                            onClick={() => setFrustration(value.toString())}
-                                                            className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                frustration === value.toString()
                                                                     ? 'bg-blue-600 text-white'
                                                                     : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
                                                             }`}
@@ -1146,7 +1033,7 @@
                                         type="button"
                                         onClick={() => {
                                             // Validate Page 1 fields
-                                            if (!mentalDemand || !physicalDemand || !temporalDemand || !performance || !effort || !frustration ||
+                                            if (!mentalDemand || !performance ||
                                                 !overallComprehension || !keyConceptsUnderstanding || !findingsUnderstanding ||
                                                 !evidenceUnderstanding || !keyResultsUnderstanding || !keyTermsUnderstanding ||
                                                 !researchDesignUnderstanding || !sampleContextUnderstanding || !limitationsUnderstanding ||
