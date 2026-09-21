@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Assignment - Consent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8 px-4">
+<div class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 text-gray-800 text-sm leading-relaxed space-y-4">
+    <h1 class="text-2xl font-bold">The Ohio State University Consent to Participate in Research</h1>
+
+    <p><strong>Study Title:</strong> Gen AI use<br>
+    <strong>Protocol Number:</strong> STUDY20260132<br>
+    <strong>Researcher:</strong> Hun Whee Lee<br>
+    <strong>Sponsor:</strong> The Ohio State University</p>
+
+    <p>This is a consent form for research participation. It contains important information about this study and what to expect if you decide to participate. Your participation is voluntary. Please consider the information carefully. Feel free to ask questions before making your decision whether or not to participate.</p>
+
+    <h2 class="font-bold text-base">Purpose</h2>
+    <p>You are being asked to take part in an online activity about comprehending an academic article. The data can be used for academic and educational purposes.</p>
+
+    <h2 class="font-bold text-base">Procedures/Tasks</h2>
+    <p>You will complete an online learning activity. The activity involves reading an academic article and then answering a brief set of questions about your learning experience and background.</p>
+    <p>If you choose to participate in the research, you are consenting only to allow your responses to be used for research purposes.</p>
+
+    <h2 class="font-bold text-base">Duration</h2>
+    <p>There is no time limit but the study can take about 30 minutes.</p>
+
+    <h2 class="font-bold text-base">Risks and Benefits</h2>
+    <p>This activity involves minimal risk as it is part of your education learning. There is a slight risk of a breach of confidentiality, but efforts will be made to keep your responses confidential by using appropriate storage methods. There are no direct benefits to you for participating.</p>
+
+    <h2 class="font-bold text-base">Confidentiality</h2>
+    <p>We will work to make sure that no one sees your online responses without approval. But, because we are using the Internet, there is a chance that someone could access your online responses without permission. In some cases, this information could be used to identify you.</p>
+    <p>Also, there may be circumstances where this information must be released. For example, personal information regarding your participation in this study may be disclosed if required by state law. Also, your records may be reviewed by the following groups (as applicable to the research):</p>
+    <ul class="list-disc pl-6 space-y-1">
+        <li>Office for Human Research Protections or other federal, state, or international regulatory agencies;</li>
+        <li>The Ohio State University Institutional Review Board or Office of Responsible Research Practices;</li>
+        <li>Authorized Ohio State University staff not involved in the study may be aware that you are participating in a research study and have access to your information; and</li>
+        <li>The sponsor, if any, or agency (including the Food and Drug Administration for FDA-regulated research) supporting the study.</li>
+    </ul>
+
+    <h2 class="font-bold text-base">Future Research</h2>
+    <p>Your de-identified information will not be used or shared for future research.</p>
+
+    <h2 class="font-bold text-base">Incentives</h2>
+    <p>You will receive course credit.</p>
+
+    <h2 class="font-bold text-base">Participant Rights</h2>
+    <p>You may refuse to participate in this class activity without penalty or loss of benefits to which you are otherwise entitled. By agreeing to participate, you do not give up any personal legal rights you may have as a participant in this study. If you wish not to complete this class activity, please reach out to the instructor (Dr. Hun Lee; <a class="text-blue-600 underline" href="mailto:lee.7313@osu.edu">lee.7313@osu.edu</a>) so that you can still receive course credit with an alternative assignment.</p>
+    <p>This study has been determined Exempt from IRB review.</p>
+
+    <h2 class="font-bold text-base">Contacts and Questions</h2>
+    <p>For questions, concerns, or complaints about the study, or you feel you have been harmed as a result of study participation, you may contact:</p>
+    <p>Hun Lee<br>Associate Professor, Fisher College of Business<br>Email: <a class="text-blue-600 underline" href="mailto:lee.7313@osu.edu">lee.7313@osu.edu</a></p>
+    <p>For questions about your rights as a participant in this study or to discuss other study-related concerns or complaints with someone who is not part of the research team, you may contact the Office of Responsible Research Practices at 1-800-678-6251 or <a class="text-blue-600 underline" href="mailto:hsconcerns@osu.edu">hsconcerns@osu.edu</a>.</p>
+
+    <h2 class="font-bold text-base">Providing consent</h2>
+    <p>I have read (or someone has read to me) this page and I am aware that I am being asked to participate in a research study. I have had the opportunity to ask questions and have had them answered to my satisfaction. I voluntarily agree to participate in this study. I am not giving up any legal rights by agreeing to participate.</p>
+    <p>To print or save a copy of this page, select the print button on your web browser.</p>
+    <p>Please click the button below to proceed and participate in this study. If you do not wish to participate, please close out your browser window.</p>
+
+    <button id="consent" class="w-full px-6 py-3 rounded-lg font-medium bg-blue-600 hover:bg-blue-700 text-white">CONSENT</button>
+
+    <p class="text-xs text-gray-500">Consent Template-Online Research · IRB Study Number: STUDY20260132 · Version: 1.0 · Template date: 04/08/2025</p>
+</div>
+<script>
+    document.getElementById('consent').addEventListener('click', function () {
+        try { localStorage.setItem('consentGivenAt', new Date().toISOString()); } catch (e) {}
+        window.location.href = 'login.html' + window.location.search;
+    });
+</script>
+</body>
+</html>

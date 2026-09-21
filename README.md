@@ -14,7 +14,7 @@ listed under *What changed* is study2's code, byte for byte.
 ## Flow
 
 ```
-landing → login (email link; name only) → pre-task → reading → post-task → post-study-survey → complete
+landing → consent → login (email link) → reading → post-task → post-study-survey → complete
 ```
 
 `index.html` (upload) and `preparation.html` (generation) are gone. The session
@@ -39,7 +39,7 @@ Tabs are study2's: 💬 AI Chatbot first, then 🎬 Video Overview / 👥 Podcas
 
 | area | change |
 |---|---|
-| `login.html` | class dropdown removed (not collected); creates the session; 3-arm permuted blocks; redirects to `pre-task.html` |
+| `login.html` | class dropdown removed (not collected); creates the session; 3-arm permuted blocks; redirects to `reading.html`; sends anyone without consent to `consent.html`; stores `consentGivenAt` on the user doc |
 | `reading.html` | fixed paper fetched from `papers/…/paper.pdf` into the existing renderer; static media; **paper shown as rendered page images instead of `<embed>`** (see below); study1's mp4 video tab; Pause button + veil; recorder wired in; `simplified` tab removed |
 | `functions/` | trimmed to `chatCompletion`, `sendLoginEmail`, `sendCompletionEmail` + new `ingestEvents` (beacon) and `devLogin` (trial); Node 22 |
 | all pages | Firebase config → `study-ug-osu`; function URLs → `us-central1-study-ug-osu.cloudfunctions.net` |
@@ -86,8 +86,7 @@ recorder's were removed, keeping whichever carries more information.
 | media | `audio_play/pause/ended/seeked` (`seeked` carries `from`) `video_*` likewise |
 | chat | `llm_activity` (typing / none-typing bursts) `llm_question_asked` `llm_answer_received` (+ CIMO context fields) |
 
-Not persisted (by study2 design, unchanged): the **pre-task answers** — the
-Firestore write in `pre-task.html` is commented out and only `console.log`s.
+The pre-reading task page (`pre-task.html`) has been removed; login goes straight to reading.
 Paper scroll position is intentionally not logged for now.
 
 **Interval streams** — closed spans written at the moment of the real event,
@@ -134,7 +133,7 @@ handles this URL shape — it is what the redirect produced anyway.
 ## Before recruiting
 
 - [ ] Replace the temporary media in `docs/papers/hafner2014/`
-- [ ] Edit participant-facing copy (pre-task / post-task / survey still read as the MBA study)
+- [ ] Edit participant-facing copy (post-task / survey still read as the MBA study)
 - [ ] Delete `docs/dev.html`, remove `devLogin` from `functions/index.js`, rotate `DEV_ACCESS_TOKEN`
 - [ ] Delete test users (`tester-*@example.com`) under `users/` and `firebase firestore:delete randomization/counter`
 - [ ] `admin.html` still reads `reading.events` — update it to `eventBatches`
