@@ -86,13 +86,19 @@
             const [criticalQuestionClaims, setCriticalQuestionClaims] = useState('');
             const [criticalBroaderImplications, setCriticalBroaderImplications] = useState('');
 
-            // Applicability
-            const [appContextDifferences, setAppContextDifferences] = useState('');
-            const [appDifferencesImpact, setAppDifferencesImpact] = useState('');
-            const [appMechanisms, setAppMechanisms] = useState('');
-            const [appOutcomes, setAppOutcomes] = useState('');
-            const [appConfidence, setAppConfidence] = useState('');
-            const [appDecision, setAppDecision] = useState('');
+            // Context, Interventions, Mechanisms, and Outcomes (stored under `applicability`)
+            const APP_ITEMS = [
+                { group: 'Context', key: 'contextReflection', text: 'I have critically reflected on how I currently manage my time.' },
+                { key: 'contextFit', text: 'I can assess how closely the research context in this article matches my situation.' },
+                { group: 'Intervention', key: 'interventionUnderstanding', text: 'I have a clear understanding of the interventions described in this article.' },
+                { key: 'interventionEffectiveness', text: 'I can assess whether the interventions described in this article would be effective in my situation.' },
+                { group: 'Mechanism', key: 'mechanismUnderstanding', text: 'I have a clear understanding of why the interventions described in this article work.' },
+                { key: 'mechanismApplicability', text: "I can assess whether the mechanisms behind this article's findings would also apply in my situation." },
+                { group: 'Outcome', key: 'outcomeUnderstanding', text: 'I have a clear understanding of the expected outcomes described in this article.' },
+                { key: 'outcomeSimilarity', text: 'I can assess whether applying the interventions described in this article would produce similar outcomes in my situation.' }
+            ];
+            const [appAnswers, setAppAnswers] = useState({});
+            const appComplete = APP_ITEMS.every(i => appAnswers[i.key]);
 
             // Section 3: LLM Usefulness (only for with_llm conditions)
             const [llmOverallUsefulness, setLlmOverallUsefulness] = useState('');
@@ -232,7 +238,7 @@
                     !evidenceUnderstanding || !keyResultsUnderstanding || !keyTermsUnderstanding ||
                     !researchDesignUnderstanding || !sampleContextUnderstanding || !limitationsUnderstanding ||
                     !criticalOwnIdeas || !criticalAlternativePerspectives || !criticalVerifyCredibility || !criticalQuestionClaims || !criticalBroaderImplications ||
-                    !appContextDifferences || !appDifferencesImpact || !appMechanisms || !appOutcomes || !appConfidence || !appDecision ||
+                    !appComplete ||
                     !attentionFocus || !attentionCheck) {
                     alert('Please complete all required fields.');
                     return;
@@ -294,14 +300,7 @@
                             questionClaims: parseInt(criticalQuestionClaims),
                             broaderImplications: parseInt(criticalBroaderImplications)
                         },
-                        applicability: {
-                            contextDifferences: parseInt(appContextDifferences),
-                            differencesImpact: parseInt(appDifferencesImpact),
-                            mechanisms: parseInt(appMechanisms),
-                            outcomes: parseInt(appOutcomes),
-                            confidence: parseInt(appConfidence),
-                            decision: parseInt(appDecision)
-                        }
+                        applicability: Object.fromEntries(APP_ITEMS.map(i => [i.key, parseInt(appAnswers[i.key])]))
                     },
                     attentionCheck: {
                         focus: parseInt(attentionFocus),
@@ -862,167 +861,42 @@
                                         </div>
                                     </div>
 
-                                    {/* Applicability */}
+                                    {/* Context, Interventions, Mechanisms, and Outcomes */}
                                     <div className="mt-8">
-                                        <h3 className="text-lg font-semibold text-gray-700 mb-3">4. Applicability</h3>
+                                        <h3 className="text-lg font-semibold text-gray-700 mb-3">4. Context, Interventions, Mechanisms, and Outcomes</h3>
                                         <p className="text-sm text-gray-600 mb-4">Please rate your agreement with the following statements.</p>
 
                                         <div className="space-y-8">
-                                            <div>
-                                                <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                    I can clearly identify the key differences between the research context and my own situation. *
-                                                </label>
-                                                <div className="flex items-center justify-between mt-3">
-                                                    <span className="text-xs text-gray-500">Strongly disagree</span>
-                                                    <div className="flex space-x-1">
-                                                        {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                            <button
-                                                                key={value}
-                                                                type="button"
-                                                                onClick={() => setAppContextDifferences(value.toString())}
-                                                                className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                    appContextDifferences === value.toString()
-                                                                        ? 'bg-blue-600 text-white'
-                                                                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                                }`}
-                                                            >
-                                                                {value}
-                                                            </button>
-                                                        ))}
+                                            {APP_ITEMS.map(item => (
+                                                <div key={item.key}>
+                                                    {item.group && (
+                                                        <h4 className="text-sm font-semibold text-blue-700 uppercase tracking-wide mb-3">{item.group}</h4>
+                                                    )}
+                                                    <label className="block text-sm font-bold text-gray-800 mb-2">
+                                                        {item.text} *
+                                                    </label>
+                                                    <div className="flex items-center justify-between mt-3">
+                                                        <span className="text-xs text-gray-500">Strongly disagree</span>
+                                                        <div className="flex space-x-1">
+                                                            {[1, 2, 3, 4, 5, 6, 7].map(value => (
+                                                                <button
+                                                                    key={value}
+                                                                    type="button"
+                                                                    onClick={() => setAppAnswers(prev => ({ ...prev, [item.key]: value.toString() }))}
+                                                                    className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
+                                                                        appAnswers[item.key] === value.toString()
+                                                                            ? 'bg-blue-600 text-white'
+                                                                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+                                                                    }`}
+                                                                >
+                                                                    {value}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                        <span className="text-xs text-gray-500">Strongly agree</span>
                                                     </div>
-                                                    <span className="text-xs text-gray-500">Strongly agree</span>
                                                 </div>
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                    I can tell which of these differences would matter for applying the findings to my situation. *
-                                                </label>
-                                                <div className="flex items-center justify-between mt-3">
-                                                    <span className="text-xs text-gray-500">Strongly disagree</span>
-                                                    <div className="flex space-x-1">
-                                                        {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                            <button
-                                                                key={value}
-                                                                type="button"
-                                                                onClick={() => setAppDifferencesImpact(value.toString())}
-                                                                className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                    appDifferencesImpact === value.toString()
-                                                                        ? 'bg-blue-600 text-white'
-                                                                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                                }`}
-                                                            >
-                                                                {value}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-xs text-gray-500">Strongly agree</span>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                    I can judge whether the underlying mechanisms behind the study's results would also apply in my situation. *
-                                                </label>
-                                                <div className="flex items-center justify-between mt-3">
-                                                    <span className="text-xs text-gray-500">Strongly disagree</span>
-                                                    <div className="flex space-x-1">
-                                                        {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                            <button
-                                                                key={value}
-                                                                type="button"
-                                                                onClick={() => setAppMechanisms(value.toString())}
-                                                                className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                    appMechanisms === value.toString()
-                                                                        ? 'bg-blue-600 text-white'
-                                                                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                                }`}
-                                                            >
-                                                                {value}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-xs text-gray-500">Strongly agree</span>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                    I can assess whether I would achieve similar outcomes if I applied the article's conclusions in my situation. *
-                                                </label>
-                                                <div className="flex items-center justify-between mt-3">
-                                                    <span className="text-xs text-gray-500">Strongly disagree</span>
-                                                    <div className="flex space-x-1">
-                                                        {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                            <button
-                                                                key={value}
-                                                                type="button"
-                                                                onClick={() => setAppOutcomes(value.toString())}
-                                                                className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                    appOutcomes === value.toString()
-                                                                        ? 'bg-blue-600 text-white'
-                                                                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                                }`}
-                                                            >
-                                                                {value}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-xs text-gray-500">Strongly agree</span>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                    I feel confident in judging the applicability of this research to my specific situation. *
-                                                </label>
-                                                <div className="flex items-center justify-between mt-3">
-                                                    <span className="text-xs text-gray-500">Strongly disagree</span>
-                                                    <div className="flex space-x-1">
-                                                        {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                            <button
-                                                                key={value}
-                                                                type="button"
-                                                                onClick={() => setAppConfidence(value.toString())}
-                                                                className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                    appConfidence === value.toString()
-                                                                        ? 'bg-blue-600 text-white'
-                                                                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                                }`}
-                                                            >
-                                                                {value}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-xs text-gray-500">Strongly agree</span>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-bold text-gray-800 mb-2">
-                                                    I can make an informed decision about whether to apply these findings in my context. *
-                                                </label>
-                                                <div className="flex items-center justify-between mt-3">
-                                                    <span className="text-xs text-gray-500">Strongly disagree</span>
-                                                    <div className="flex space-x-1">
-                                                        {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                                                            <button
-                                                                key={value}
-                                                                type="button"
-                                                                onClick={() => setAppDecision(value.toString())}
-                                                                className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
-                                                                    appDecision === value.toString()
-                                                                        ? 'bg-blue-600 text-white'
-                                                                        : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-                                                                }`}
-                                                            >
-                                                                {value}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-xs text-gray-500">Strongly agree</span>
-                                                </div>
-                                            </div>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
@@ -1038,7 +912,7 @@
                                                 !evidenceUnderstanding || !keyResultsUnderstanding || !keyTermsUnderstanding ||
                                                 !researchDesignUnderstanding || !sampleContextUnderstanding || !limitationsUnderstanding ||
                                                 !criticalOwnIdeas || !criticalAlternativePerspectives || !criticalVerifyCredibility || !criticalQuestionClaims || !criticalBroaderImplications ||
-                                                !appContextDifferences || !appDifferencesImpact || !appMechanisms || !appOutcomes || !appConfidence || !appDecision) {
+                                                !appComplete) {
                                                 alert('Please complete all required fields before continuing.');
                                                 return;
                                             }
