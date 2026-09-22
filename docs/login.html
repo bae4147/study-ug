@@ -239,7 +239,7 @@
                 const params = new URLSearchParams({
                     participantId: uid, experimentId: sessionId, condition, paper: 'hafner2014', mode: 'experiment'
                 });
-                window.location.href = `reading.html?${params.toString()}`;
+                window.location.replace(`reading.html?${params.toString()}`);
             };
 
             const handleLogout = async () => {
