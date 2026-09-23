@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reading Assignment</title>
     <script>
-        // Redirect to index page if no sessionId is provided
+        // No session to resume: send them back to sign-in, which creates one
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('sessionId') || sessionStorage.getItem('currentSessionId');
         if (!sessionId) {
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
         }
     </script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -3314,7 +3314,7 @@ Provide constructive feedback to help the reader think more critically about thi
 
                         await window.firebaseUpdateDoc(sessionRef, {
                             reading: readingData,
-                            currentPhase: 'post_task'
+                            currentPhase: 'survey'
                         });
 
                         console.log('✅ Reading data saved to Firebase');
@@ -3325,7 +3325,7 @@ Provide constructive feedback to help the reader think more critically about thi
 
                 setShowFinishPopup(false);  // Reset popup state
 
-                // Redirect to post-task.html
+                // Redirect to the post-reading survey
                 setIsRedirecting(true);
                 logEvent('reading_completed_redirecting');
 
@@ -3337,7 +3337,7 @@ Provide constructive feedback to help the reader think more critically about thi
                     condition,
                     paper: currentPaper
                 });
-                window.location.replace(`post-task.html?${params.toString()}`);
+                window.location.replace(`survey.html?${params.toString()}`);
             };
 
             // Return to start

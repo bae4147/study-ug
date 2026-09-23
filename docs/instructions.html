@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Assignment - Instructions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="no-back.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8 px-4">
+
+<div id="gate" class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 text-center text-gray-600">Loading…</div>
+
+<div id="main" class="hidden max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 space-y-6">
+    <div class="text-center">
+        <div class="text-5xl mb-3">📖</div>
+        <h1 class="text-3xl font-bold text-gray-800">Before you begin</h1>
+        <p class="text-gray-600 mt-2">Here is what this assignment involves, start to finish.</p>
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-6">
+        <h2 class="font-bold text-lg text-gray-800 mb-4">What you will do</h2>
+        <ol class="space-y-3 text-gray-700">
+            <li class="flex items-start space-x-3">
+                <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                <span><strong>Read an academic article.</strong> At least 15 minutes. You can pause if you need to step away.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+                <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                <span><strong>Answer a short survey</strong> about your reading experience.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+                <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                <span><strong>Take a comprehension quiz.</strong> Closed-book, 5 minutes. The article and any tools are no longer available at that point, so read carefully in step 1.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+                <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                <span><strong>Complete a short written task</strong> about applying the article to your own situation.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+                <span class="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
+                <span><strong>Answer a final survey</strong> and you are done.</span>
+            </li>
+        </ol>
+    </div>
+
+    <div class="bg-amber-50 border-2 border-amber-300 rounded-lg p-5 space-y-2">
+        <p class="font-bold text-amber-900">Please keep in mind</p>
+        <ul class="list-disc pl-5 space-y-1 text-amber-800">
+            <li>Use <strong>only the tools provided on this platform</strong>. No external AI tools (e.g., ChatGPT, Claude, Gemini) and no external PDF viewers or apps.</li>
+            <li>Do not close this window until you reach the completion page. Your progress is recorded as you go.</li>
+            <li>Work through the steps in one sitting if you can. The whole assignment takes about 30 minutes.</li>
+        </ul>
+    </div>
+
+    <button id="next" class="w-full px-6 py-4 rounded-lg text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white">
+        Continue →
+    </button>
+</div>
+
+<script>
+(function () {
+    firebase.initializeApp({
+        apiKey: "AIzaSyBd4MI5xzSE4QYIjxe_DlBKnuuv-aiS3nk",
+        authDomain: "study-ug-osu.firebaseapp.com",
+        projectId: "study-ug-osu",
+        storageBucket: "study-ug-osu.firebasestorage.app",
+        messagingSenderId: "115284332881",
+        appId: "1:115284332881:web:351ebb762bad162fccc370"
+    });
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) { window.location.href = 'login.html'; return; }
+        document.getElementById('gate').classList.add('hidden');
+        document.getElementById('main').classList.remove('hidden');
+    });
+
+    document.getElementById('next').addEventListener('click', function () {
+        window.location.href = 'reading-instructions.html' + window.location.search;
+    });
+})();
+</script>
+</body>
+</html>

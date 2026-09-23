@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Assignment - Reading Session</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="no-back.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8 px-4">
+
+<div id="gate" class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 text-center text-gray-600">Loading…</div>
+
+<div id="main" class="hidden max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 space-y-6">
+    <div class="text-center">
+        <div class="text-5xl mb-3">📄</div>
+        <h1 class="text-3xl font-bold text-gray-800">The reading session</h1>
+        <p class="text-gray-600 mt-2">Häfner, Stock &amp; Oberst (2014) — <em>Decreasing students' stress through time management training</em></p>
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-6 space-y-4">
+        <div>
+            <h2 class="font-bold text-gray-800 mb-1">⏱ At least 15 minutes</h2>
+            <p class="text-gray-700 text-sm">The <strong>Finish</strong> button becomes available once you have spent 15 minutes reading. The clock in the header shows your reading time. Take as long as you need beyond that.</p>
+        </div>
+        <div>
+            <h2 class="font-bold text-gray-800 mb-1">⏸ Pausing</h2>
+            <p class="text-gray-700 text-sm">If you need to step away, use the <strong>Pause</strong> button. Paused time does not count toward the 15 minutes, and it does not count against you.</p>
+        </div>
+        <div id="tools-block">
+            <h2 class="font-bold text-gray-800 mb-1">🧰 Tools on the right</h2>
+            <p id="tools-text" class="text-gray-700 text-sm"></p>
+        </div>
+        <div>
+            <h2 class="font-bold text-gray-800 mb-1">✅ Finishing</h2>
+            <p class="text-gray-700 text-sm">When you are done, press <strong>Finish</strong>. You will not be able to return to the article afterwards, and the quiz later on is closed-book — so make sure you understand the article before you finish.</p>
+        </div>
+    </div>
+
+    <div class="bg-amber-50 border-2 border-amber-300 rounded-lg p-5">
+        <p class="text-amber-900 font-bold">Please only use the tools provided on this platform.</p>
+        <p class="text-amber-800 text-sm mt-1">No external AI tools (e.g., ChatGPT, Claude, Gemini). No external PDF viewers or apps. Do not close this window during the session.</p>
+    </div>
+
+    <button id="next" class="w-full px-6 py-4 rounded-lg text-lg font-medium bg-blue-600 hover:bg-blue-700 text-white">
+        Start reading →
+    </button>
+</div>
+
+<script>
+(function () {
+    firebase.initializeApp({
+        apiKey: "AIzaSyBd4MI5xzSE4QYIjxe_DlBKnuuv-aiS3nk",
+        authDomain: "study-ug-osu.firebaseapp.com",
+        projectId: "study-ug-osu",
+        storageBucket: "study-ug-osu.firebasestorage.app",
+        messagingSenderId: "115284332881",
+        appId: "1:115284332881:web:351ebb762bad162fccc370"
+    });
+
+    var params = new URLSearchParams(window.location.search);
+    var condition = params.get('condition');
+
+    // What sits beside the article depends on the arm, so the instruction must too:
+    // promising an AI chatbot to a no_ai participant would be its own confound.
+    var hasTools = (condition === 'mm' || condition === 'mm_cimo');
+    if (hasTools) {
+        document.getElementById('tools-text').textContent =
+            'Beside the article you will find an AI chatbot, a video overview, an audio overview (podcast) and an infographic, all about this article. Use as many or as few of them as you like.';
+    } else {
+        document.getElementById('tools-block').classList.add('hidden');
+    }
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) { window.location.href = 'login.html'; return; }
+        document.getElementById('gate').classList.add('hidden');
+        document.getElementById('main').classList.remove('hidden');
+    });
+
+    document.getElementById('next').addEventListener('click', function () {
+        window.location.replace('reading.html' + window.location.search);
+    });
+})();
+</script>
+</body>
+</html>

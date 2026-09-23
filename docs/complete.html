@@ -44,6 +44,11 @@
             const [sessionCompleted, setSessionCompleted] = useState(false);
             const [emailStatus, setEmailStatus] = useState('pending'); // pending, sending, sent, error
 
+            // Course credit is granted through an OSU account. Participants who signed
+            // in with some other address have to tell us their OSU name.# themselves.
+            const [nameNumber, setNameNumber] = useState('');
+            const [nameNumberStatus, setNameNumberStatus] = useState('idle'); // idle, saving, saved, error
+
             // Get session info from URL
             const urlParams = new URLSearchParams(window.location.search);
             const sessionId = urlParams.get('sessionId') || sessionStorage.getItem('currentSessionId');
@@ -112,6 +117,28 @@
                 return () => unsubscribe();
             }, [sessionId]);
 
+            const isOsuEmail = (email) => /@(buckeyemail\.)?osu\.edu$/i.test((email || '').trim());
+
+            const handleSaveNameNumber = async () => {
+                const value = nameNumber.trim();
+                if (!value) return;
+                setNameNumberStatus('saving');
+                try {
+                    await db.collection('users').doc(currentUser.uid).set({
+                        osuNameNumber: value,
+                        osuNameNumberAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    if (sessionId) {
+                        await db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId)
+                            .set({ osuNameNumber: value }, { merge: true });
+                    }
+                    setNameNumberStatus('saved');
+                } catch (err) {
+                    console.error('Error saving name.#:', err);
+                    setNameNumberStatus('error');
+                }
+            };
+
             const handleStartNewAssignment = () => {
                 window.location.href = 'login.html';
             };
@@ -167,6 +194,45 @@
                                     </div>
                                 )}
                             </div>
+
+                            {/* OSU name.# -- only for participants who used another address */}
+                            {currentUser && !isOsuEmail(currentUser.email) && (
+                                <div className="mb-6 text-left bg-blue-50 border-2 border-blue-200 rounded-lg p-5">
+                                    <h2 className="font-bold text-gray-800 mb-1">One last thing</h2>
+                                    <p className="text-sm text-gray-700 mb-3">
+                                        You signed in as <strong>{currentUser.email}</strong>, which is not an OSU address.
+                                        Course credit is assigned through your OSU account, so please enter your
+                                        OSU <strong>name.#</strong> (for example, <em>brutus.1</em>).
+                                    </p>
+                                    {nameNumberStatus === 'saved' ? (
+                                        <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-green-700 text-sm">
+                                            ✓ Thank you. We recorded <strong>{nameNumber.trim()}</strong> for your course credit.
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-2">
+                                            <div className="flex space-x-2">
+                                                <input
+                                                    type="text"
+                                                    value={nameNumber}
+                                                    onChange={(e) => setNameNumber(e.target.value)}
+                                                    placeholder="name.#"
+                                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                />
+                                                <button
+                                                    onClick={handleSaveNameNumber}
+                                                    disabled={!nameNumber.trim() || nameNumberStatus === 'saving'}
+                                                    className="px-5 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                                                >
+                                                    {nameNumberStatus === 'saving' ? 'Saving…' : 'Submit'}
+                                                </button>
+                                            </div>
+                                            {nameNumberStatus === 'error' && (
+                                                <p className="text-sm text-red-600">Could not save. Please try again.</p>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                             <div className="space-y-3 pt-4 border-t">
                                 <button

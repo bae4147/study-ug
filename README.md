@@ -14,8 +14,14 @@ listed under *What changed* is study2's code, byte for byte.
 ## Flow
 
 ```
-landing → consent → login (email link) → reading → post-task → post-study-survey → complete
+landing → login (email link) → consent → instructions → reading-instructions
+       → reading → survey → quiz → post-task → survey2 → complete
 ```
+
+Sign-in comes first so that consent is recorded against a known participant.
+The two instruction pages are static: `instructions.html` describes the whole
+assignment, `reading-instructions.html` only the reading session (and names the
+GenAI tools only in the `mm` / `mm_cimo` arms).
 
 `index.html` (upload) and `preparation.html` (generation) are gone. The session
 document study2 created on upload is now created in `login.html` right after the
@@ -39,7 +45,12 @@ Tabs are study2's: 💬 AI Chatbot first, then 🎬 Video Overview / 👥 Podcas
 
 | area | change |
 |---|---|
-| `login.html` | class dropdown removed (not collected); creates the session; 3-arm permuted blocks; redirects to `reading.html`; sends anyone without consent to `consent.html`; stores `consentGivenAt` on the user doc |
+| `login.html` | class dropdown removed (not collected); creates the session; 3-arm permuted blocks; redirects to `consent.html` |
+| `consent.html` | new; the OSU consent form, gated on sign-in, with an agreement checkbox; writes `consentGivenAt` to the user doc and the session |
+| `instructions.html`, `reading-instructions.html` | new; static, auth-guarded, pass the query string through |
+| `quiz.html` | new; study-aom's closed-book comprehension quiz carried over as-is (9 MC items + "Not Sure", 5-minute timer, confidence rating, auto-grading) |
+| `survey.html` / `survey2.html` | `post-study-survey.html` split in two: reading experience before the quiz, comprehension and application after the post-task |
+| `complete.html` | asks for an OSU `name.#` when the participant signed in with a non-OSU address |
 | `reading.html` | fixed paper fetched from `papers/…/paper.pdf` into the existing renderer; static media; **paper shown as rendered page images instead of `<embed>`** (see below); study1's mp4 video tab; Pause button + veil; recorder wired in; `simplified` tab removed |
 | `functions/` | trimmed to `chatCompletion`, `sendLoginEmail`, `sendCompletionEmail` + new `ingestEvents` (beacon) and `devLogin` (trial); Node 22 |
 | all pages | Firebase config → `study-ug-osu`; function URLs → `us-central1-study-ug-osu.cloudfunctions.net` |
@@ -86,7 +97,6 @@ recorder's were removed, keeping whichever carries more information.
 | media | `audio_play/pause/ended/seeked` (`seeked` carries `from`) `video_*` likewise |
 | chat | `llm_activity` (typing / none-typing bursts) `llm_question_asked` `llm_answer_received` (+ CIMO context fields) |
 
-The pre-reading task page (`pre-task.html`) has been removed; login goes straight to reading.
 Paper scroll position is intentionally not logged for now.
 
 **Interval streams** — closed spans written at the moment of the real event,
@@ -133,7 +143,8 @@ handles this URL shape — it is what the redirect produced anyway.
 ## Before recruiting
 
 - [ ] Replace the temporary media in `docs/papers/hafner2014/`
-- [ ] Edit participant-facing copy (post-task / survey still read as the MBA study)
+- [ ] **Replace the quiz questions in `docs/quiz.html`** — they are study-aom's, about its meetings paper, not about Häfner (2014)
+- [ ] Edit participant-facing copy (post-task / surveys still read as the MBA study)
 - [ ] Delete `docs/dev.html`, remove `devLogin` from `functions/index.js`, rotate `DEV_ACCESS_TOKEN`
 - [ ] Delete test users (`tester-*@example.com`) under `users/` and `firebase firestore:delete randomization/counter`
 - [ ] `admin.html` still reads `reading.events` — update it to `eventBatches`

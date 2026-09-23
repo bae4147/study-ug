@@ -170,7 +170,7 @@ users/{uid}/sessions/{sessionId}/eventBatches/{batchId}
 ## 5. 분석 시 유의
 
 - 시각은 모두 참여자 브라우저의 `Date.now()`(epoch ms). 서버 시각과 수십 ms 차이가 있을 수 있다.
-- `sinceStart`의 0점 = `reading_start` = 시작 팝업 확인 시각. 로그인·동의 등 이전 단계는 포함되지 않는다.
+- `sinceStart`의 0점 = `reading_start` = 시작 팝업 확인 시각. 로그인·동의·안내 페이지 등 이전 단계는 포함되지 않는다.
 - `t`와 payload의 `timestamp`는 같은 시계다. 후자는 study2 유산.
 - `focus_switch`는 경계 넘기, `resource_tab_switch`는 패널 내 탭 이동 — 서로 다른 사건이다.
 - `audio_pause`는 `audio_ended` 직전에 한 번 더 찍힌다(브라우저 동작).

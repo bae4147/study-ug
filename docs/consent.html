@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reading Assignment - Consent</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="no-back.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8 px-4">
-<div class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 text-gray-800 text-sm leading-relaxed space-y-4">
+<div id="gate" class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 text-center text-gray-600">Loading…</div>
+<div id="form" class="hidden max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 text-gray-800 text-sm leading-relaxed space-y-4">
     <h1 class="text-2xl font-bold">The Ohio State University Consent to Participate in Research</h1>
 
     <p><strong>Study Title:</strong> Gen AI use<br>
@@ -60,15 +67,79 @@
     <p>To print or save a copy of this page, select the print button on your web browser.</p>
     <p>Please click the button below to proceed and participate in this study. If you do not wish to participate, please close out your browser window.</p>
 
-    <button id="consent" class="w-full px-6 py-3 rounded-lg font-medium bg-blue-600 hover:bg-blue-700 text-white">CONSENT</button>
+    <label class="flex items-start space-x-3 cursor-pointer p-4 border-2 border-gray-300 rounded-lg hover:bg-gray-50">
+        <input id="agree" type="checkbox" class="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+        <span class="font-medium text-gray-800">I have read this form, I am aware that I am being asked to participate in a research study, and I voluntarily agree to participate.</span>
+    </label>
+
+    <button id="consent" disabled class="w-full px-6 py-3 rounded-lg font-medium bg-gray-300 text-gray-500 cursor-not-allowed">CONSENT</button>
+
+    <p id="error" class="hidden text-sm text-red-600"></p>
 
     <p class="text-xs text-gray-500">Consent Template-Online Research · IRB Study Number: STUDY20260132 · Version: 1.0 · Template date: 04/08/2025</p>
 </div>
 <script>
-    document.getElementById('consent').addEventListener('click', function () {
-        try { localStorage.setItem('consentGivenAt', new Date().toISOString()); } catch (e) {}
-        window.location.href = 'login.html' + window.location.search;
+(function () {
+    firebase.initializeApp({
+        apiKey: "AIzaSyBd4MI5xzSE4QYIjxe_DlBKnuuv-aiS3nk",
+        authDomain: "study-ug-osu.firebaseapp.com",
+        projectId: "study-ug-osu",
+        storageBucket: "study-ug-osu.firebasestorage.app",
+        messagingSenderId: "115284332881",
+        appId: "1:115284332881:web:351ebb762bad162fccc370"
     });
+    var auth = firebase.auth();
+    var db = firebase.firestore();
+
+    var params = new URLSearchParams(window.location.search);
+    var sessionId = params.get('experimentId') || params.get('sessionId') || sessionStorage.getItem('currentSessionId');
+
+    var gate = document.getElementById('gate');
+    var form = document.getElementById('form');
+    var agree = document.getElementById('agree');
+    var btn = document.getElementById('consent');
+    var err = document.getElementById('error');
+    var user = null;
+
+    // Consent is recorded against the signed-in participant, so sign-in comes first.
+    auth.onAuthStateChanged(function (u) {
+        if (!u) { window.location.href = 'login.html'; return; }
+        user = u;
+        gate.classList.add('hidden');
+        form.classList.remove('hidden');
+    });
+
+    var ON = 'w-full px-6 py-3 rounded-lg font-medium bg-blue-600 hover:bg-blue-700 text-white';
+    var OFF = 'w-full px-6 py-3 rounded-lg font-medium bg-gray-300 text-gray-500 cursor-not-allowed';
+    agree.addEventListener('change', function () {
+        btn.disabled = !agree.checked;
+        btn.className = agree.checked ? ON : OFF;
+    });
+
+    btn.addEventListener('click', function () {
+        if (!agree.checked || !user) return;
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+        var consentGivenAt = new Date().toISOString();
+        var writes = [
+            db.collection('users').doc(user.uid).set({ consentGivenAt: consentGivenAt }, { merge: true })
+        ];
+        if (sessionId) {
+            writes.push(db.collection('users').doc(user.uid).collection('sessions').doc(sessionId)
+                .set({ consentGivenAt: consentGivenAt, currentPhase: 'instructions' }, { merge: true }));
+        }
+        Promise.all(writes).then(function () {
+            window.location.replace('instructions.html' + window.location.search);
+        }).catch(function (e) {
+            console.error('Error saving consent:', e);
+            err.textContent = 'Could not save your consent. Please try again.';
+            err.classList.remove('hidden');
+            btn.disabled = false;
+            btn.textContent = 'CONSENT';
+            btn.className = ON;
+        });
+    });
+})();
 </script>
 </body>
 </html>

@@ -83,7 +83,7 @@
 
                 if (!sessionId) {
                     alert('Missing session information. Please start from the beginning.');
-                    window.location.href = 'index.html';
+                    window.location.href = 'login.html';
                     return;
                 }
 
@@ -197,7 +197,7 @@
                     const sessionRef = db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId);
                     await sessionRef.set({
                         postTask: postTaskData,
-                        currentPhase: 'survey'
+                        currentPhase: 'survey2'
                     }, { merge: true });
 
                     console.log('✅ Post-task saved successfully');
@@ -209,7 +209,7 @@
                         condition,
                         paper
                     });
-                    window.location.replace(`post-study-survey.html?${params.toString()}`);
+                    window.location.replace(`survey2.html?${params.toString()}`);
 
                 } catch (error) {
                     console.error('Error saving post-task:', error);

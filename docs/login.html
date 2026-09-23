@@ -104,15 +104,6 @@
 
             // Check for email link sign-in and auth state
             useEffect(() => {
-                // Consent comes first: send anyone who has not consented (and is not
-                // returning through an emailed sign-in link) to the consent page.
-                let consentGivenAt = null;
-                try { consentGivenAt = window.localStorage.getItem('consentGivenAt'); } catch (e) {}
-                if (!consentGivenAt && !firebase.auth().isSignInWithEmailLink(window.location.href)) {
-                    window.location.href = 'consent.html';
-                    return;
-                }
-
                 // Check if this is a sign-in with email link
                 if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
                     let storedEmail = window.localStorage.getItem('emailForSignIn');
@@ -162,7 +153,6 @@
                                 await userRef.set({
                                     email: user.email,
                                     condition,
-                                    consentGivenAt: consentGivenAt || null,
                                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                                     lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
                                 }, { merge: true });
@@ -224,7 +214,7 @@
                 const beaconToken = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random())).replace(/-/g, '');
                 await db.collection('users').doc(uid).collection('sessions').doc(sessionId).set({
                     startedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    currentPhase: 'reading',
+                    currentPhase: 'consent',
                     condition,
                     paper: 'hafner2014',
                     paperMetadata: {
@@ -239,7 +229,7 @@
                 const params = new URLSearchParams({
                     participantId: uid, experimentId: sessionId, condition, paper: 'hafner2014', mode: 'experiment'
                 });
-                window.location.replace(`reading.html?${params.toString()}`);
+                window.location.replace(`consent.html?${params.toString()}`);
             };
 
             const handleLogout = async () => {
