@@ -3603,12 +3603,9 @@ Provide constructive feedback to help the reader think more critically about thi
 
                     return (
                         <div className="mt-6 border-t pt-5">
-                            <div className="flex items-baseline justify-between mb-1">
-                                <h4 className="font-bold text-gray-800">Make your own {copy.noun}</h4>
-                                <span className="text-xs text-gray-500">{done ? 'used' : 'one chance'}</span>
-                            </div>
+                            <h4 className="font-bold text-gray-800 mb-1">Make your own {copy.noun}</h4>
                             <p className="text-sm text-gray-600 mb-3">
-                                {copy.blurb} Takes {CUSTOM_WAIT[modality]} — you can keep reading meanwhile.
+                                {copy.blurb} Takes {CUSTOM_WAIT[modality]}.
                             </p>
 
                             {!done && !running && (
@@ -3685,6 +3682,9 @@ Provide constructive feedback to help the reader think more critically about thi
                                                     <div className="h-full bg-purple-500" style={{ width: `${Math.round(((job.done || 0) / job.total) * 100)}%` }}></div>
                                                 </div>
                                             )}
+                                            <p className="text-xs text-purple-700 mt-2">
+                                                You can keep reading the article while this is made.
+                                            </p>
                                             <button
                                                 type="button"
                                                 onClick={() => cancelCustom(modality)}
