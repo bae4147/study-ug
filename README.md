@@ -185,7 +185,9 @@ UI on top of them:
 - **One customised run per modality** (failures and cancellations not counted),
   driven from inside the existing tabs, with the request and result shown as a
   short exchange. `generation.js` already takes a `focus` string and a video
-  `length`, so the UI is what is missing, not the generation.
+  `length`, so the UI is what is missing, not the generation. Decided: the
+  default content stays and a switch flips between it and the participant's own;
+  they may leave the tab while it generates.
 - **Cost has to be capped server-side.** A browser check is not enough, and a
   cancelled request does not stop a Cloud Function that is already running: the
   function has to look for an abort flag before each expensive step.

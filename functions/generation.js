@@ -193,12 +193,15 @@ Generate the infographic now.`;
 // video — narrated slideshow, the shape study2 settled on
 // ---------------------------------------------------------------------------
 
-// Each scene runs about 9 seconds, so the scene count is what the length option
-// really controls.
+// The scene count is what the length option really controls. The labels are the
+// measured pace, not the outline's: 25–30 words of narration is read in about
+// 5.7 seconds, not the 9 the outline plans for, so the estimates used to promise
+// roughly half again the running time that came out.
+const SECONDS_PER_SCENE = 5.7;
 const VIDEO_LENGTHS = {
-    short: { scenes: 7, label: "30 sec – 1 min" },
-    default: { scenes: 24, label: "3 – 4 min" },
-    long: { scenes: 42, label: "6 – 7 min" }
+    short: { scenes: 11, label: "about 1 min" },
+    default: { scenes: 26, label: "2 – 3 min" },
+    long: { scenes: 45, label: "4 – 5 min" }
 };
 
 const VISUAL_STYLE = `- Background: solid cream/off-white (#F9F7F2), clean, no patterns
@@ -395,6 +398,7 @@ module.exports = {
     generateInfographic,
     generateVideo,
     VIDEO_LENGTHS,
+    SECONDS_PER_SCENE,
     MAX_FOCUS_CHARS,
     paperText
 };
