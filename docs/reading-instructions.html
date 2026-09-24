@@ -17,9 +17,11 @@
 
 <div id="main" class="hidden max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 space-y-6">
     <div class="text-center">
-        <div class="text-5xl mb-3">📄</div>
-        <h1 class="text-3xl font-bold text-gray-800">The reading session</h1>
-        <p class="text-gray-600 mt-2">Häfner, Stock &amp; Oberst (2014) — <em>Decreasing students' stress through time management training</em></p>
+        <div class="flex items-center justify-center space-x-3 mb-2">
+            <span class="flex-shrink-0 w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center text-base font-bold">1</span>
+            <h1 class="text-3xl font-bold text-gray-800">The reading session</h1>
+        </div>
+        <p class="text-gray-600">Häfner, Stock &amp; Oberst (2014) — <em>Decreasing students' stress through time management training</em></p>
     </div>
 
     <div class="bg-gray-50 rounded-lg p-6 space-y-4">
@@ -29,7 +31,7 @@
         </div>
         <div>
             <h2 class="font-bold text-gray-800 mb-1">⏸ Pausing</h2>
-            <p class="text-gray-700 text-sm">If you need to step away, use the <strong>Pause</strong> button. Paused time does not count toward the 15 minutes, and it does not count against you.</p>
+            <p class="text-gray-700 text-sm">If you need to step away, use the <strong>Pause</strong> button. Paused time does not count toward the 15 minutes, and it does not count against you. Feel free to take time as much as you can.</p>
         </div>
         <div id="tools-block">
             <h2 class="font-bold text-gray-800 mb-1">🧰 Tools on the right</h2>
@@ -37,7 +39,7 @@
         </div>
         <div>
             <h2 class="font-bold text-gray-800 mb-1">✅ Finishing</h2>
-            <p class="text-gray-700 text-sm">When you are done, press <strong>Finish</strong>. You will not be able to return to the article afterwards, and the quiz later on is closed-book — so make sure you understand the article before you finish.</p>
+            <p class="text-gray-700 text-sm">When you are done, press <strong>Finish</strong>. You will not be able to return to the article afterwards. Make sure you understand the article before you finish.</p>
         </div>
     </div>
 
@@ -69,8 +71,9 @@
     // promising an AI chatbot to a no_ai participant would be its own confound.
     var hasTools = (condition === 'mm' || condition === 'mm_cimo');
     if (hasTools) {
-        document.getElementById('tools-text').textContent =
-            'Beside the article you will find an AI chatbot, a video overview, an audio overview (podcast) and an infographic, all about this article. Use as many or as few of them as you like.';
+        document.getElementById('tools-text').innerHTML =
+            'Beside the article you will find an AI chatbot, a video overview, an audio overview (podcast) and an infographic, all about this article. Use as many or as few of them as you like. ' +
+            '<strong>Please ask the AI chatbot at least one question about the article before you finish.</strong>';
     } else {
         document.getElementById('tools-block').classList.add('hidden');
     }

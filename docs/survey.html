@@ -147,13 +147,13 @@
                     const sessionRef = db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId);
                     await sessionRef.set({
                         survey: surveyData,
-                        currentPhase: 'quiz'
+                        currentPhase: 'post_task'
                     }, { merge: true });
 
                     console.log('✅ Survey saved');
 
                     const params = new URLSearchParams({ sessionId, mode, condition, paper });
-                    window.location.replace(`quiz.html?${params.toString()}`);
+                    window.location.replace(`post-task.html?${params.toString()}`);
 
                 } catch (error) {
                     console.error('Error saving survey:', error);

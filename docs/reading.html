@@ -1754,7 +1754,6 @@
                     // Define system prompts based on condition
                     const controlSystemPrompt = `You are an academic assistant.
 Provide clear, concise explanations, summaries, and direct answers to the user's questions.
-Do not require the user to explain their own reasoning first.
 Focus on efficiency and clarity.
 
 **Paper Content:**
@@ -1774,8 +1773,7 @@ ${paperContent.replace(/<[^>]*>/g, '')}
   - ...
   ### Implications (if relevant)
   - ...
-- Keep responses concise, structured, and easy to scan.
-- Use Korean if the user asks in Korean, English if they ask in English.`;
+- Keep responses concise, structured, and easy to scan.`;
 
                     const ebmSystemPrompt = `You are not an answer-giving chatbot.
 You are an Evidence-Based Management (EBM) reasoning coach.
@@ -3655,8 +3653,29 @@ Provide constructive feedback to help the reader think more critically about thi
                                             window.alert(`Please keep reading. The reading session is at least ${Math.round(MIN_READING_SECONDS / 60)} minutes; you have ${Math.floor(left / 60)} min ${left % 60} s to go (time spent paused does not count).`);
                                             return;
                                         }
-                                        if (window.confirm('Are you sure you want to finish reading?')) {
-                                            logEvent('finish_reading_confirmed');
+                                        // Every arm that is given a chatbot is asked to use it at least
+                                        // once. This is a nudge, not a gate: whoever still does not want
+                                        // to may go on, and the choice is logged so that the two groups
+                                        // can be told apart in analysis.
+                                        const llmQueryCount = messages.filter(m => m.role === 'user').length;
+                                        let chatSkipped = false;
+                                        if (!skip && showRightPanel && llmQueryCount === 0) {
+                                            logEvent('finish_no_llm_prompted', { condition });
+                                            const goBack = window.confirm(
+                                                'You have not asked the AI chatbot anything yet.\n\n' +
+                                                'We recommend asking it at least one question about the article before you finish.\n\n' +
+                                                'OK — go back and use the chatbot\n' +
+                                                'Cancel — finish without using it'
+                                            );
+                                            if (goBack) {
+                                                logEvent('finish_no_llm_returned', { condition });
+                                                return;
+                                            }
+                                            chatSkipped = true;
+                                            logEvent('finish_no_llm_skipped', { condition });
+                                        }
+                                        if (chatSkipped || window.confirm('Are you sure you want to finish reading?')) {
+                                            logEvent('finish_reading_confirmed', { llmQueryCount, chatSkipped });
                                             completeReading();
                                         } else {
                                             logEvent('finish_reading_cancelled');

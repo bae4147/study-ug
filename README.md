@@ -15,7 +15,7 @@ listed under *What changed* is study2's code, byte for byte.
 
 ```
 landing → login (email link) → consent → instructions → reading-instructions
-       → reading → survey → quiz → post-task → survey2 → complete
+       → reading → survey → post-task (CIMO reflection) → quiz → survey2 → complete
 ```
 
 Sign-in comes first so that consent is recorded against a known participant.
@@ -48,7 +48,8 @@ Tabs are study2's: 💬 AI Chatbot first, then 🎬 Video Overview / 👥 Podcas
 | `login.html` | class dropdown removed (not collected); creates the session; 3-arm permuted blocks; redirects to `consent.html` |
 | `consent.html` | new; the OSU consent form, gated on sign-in, with an agreement checkbox; writes `consentGivenAt` to the user doc and the session |
 | `instructions.html`, `reading-instructions.html` | new; static, auth-guarded, pass the query string through |
-| `quiz.html` | new; study-aom's closed-book comprehension quiz carried over as-is (9 MC items + "Not Sure", 5-minute timer, confidence rating, auto-grading) |
+| `post-task.html` | rebuilt as four open CIMO reflection questions, one text box each (Context / Intervention / Mechanism / Outcome); saved under `postTask.reflection` |
+| `quiz.html` | new; study-aom's closed-book quiz mechanics (single-choice + "Not Sure", timer, confidence rating, auto-grading) with 15 items on Häfner (2014) from `quiz_review.csv` (rows marked `final_15`) |
 | `survey.html` / `survey2.html` | `post-study-survey.html` split in two: reading experience before the quiz, comprehension and application after the post-task |
 | `complete.html` | asks for an OSU `name.#` when the participant signed in with a non-OSU address |
 | `reading.html` | fixed paper fetched from `papers/…/paper.pdf` into the existing renderer; static media; **paper shown as rendered page images instead of `<embed>`** (see below); study1's mp4 video tab; Pause button + veil; recorder wired in; `simplified` tab removed |
@@ -122,8 +123,15 @@ Reassemble a session: read all `eventBatches`, sort by `batchSeq`, then by `seq`
   study2's flow; the recorder's `reading` interval stream has the exact
   on/paused spans if a session ever needs auditing. Constant:
   `MIN_READING_SECONDS` in `docs/reading.html`.
-- Test bypass: `localStorage.devSkipMinTime = '1'` in the browser console. It
-  is only meaningful to someone who reads this file.
+- **Any arm with a chatbot is asked to use it at least once.** Pressing Finish
+  with no questions sent brings up a prompt; the participant may still go on.
+  Logged as `finish_no_llm_prompted` and then `finish_no_llm_returned` or
+  `finish_no_llm_skipped`, and `finish_reading_confirmed` carries `llmQueryCount`
+  and `chatSkipped`. Stated up front in `reading-instructions.html` (that page
+  shows the tools block only in the arms that have them).
+- Test bypass: `localStorage.devSkipMinTime = '1'` in the browser console skips
+  both the 15-minute floor and the chat requirement. It is only meaningful to
+  someone who reads this file.
 - The only pre-reading instruction participants see is the start popup in
   `reading.html` ("Before You Start … only use the tools provided on this
   platform" + agreement checkbox). There is no separate instruction page; if
@@ -143,7 +151,6 @@ handles this URL shape — it is what the redirect produced anyway.
 ## Before recruiting
 
 - [ ] Replace the temporary media in `docs/papers/hafner2014/`
-- [ ] **Replace the quiz questions in `docs/quiz.html`** — they are study-aom's, about its meetings paper, not about Häfner (2014)
 - [ ] Edit participant-facing copy (post-task / surveys still read as the MBA study)
 - [ ] Delete `docs/dev.html`, remove `devLogin` from `functions/index.js`, rotate `DEV_ACCESS_TOKEN`
 - [ ] Delete test users (`tester-*@example.com`) under `users/` and `firebase firestore:delete randomization/counter`

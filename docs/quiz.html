@@ -36,142 +36,195 @@
 
         const QUIZ_SECONDS = 5 * 60;
 
-        // Carried over from study-aom unchanged. These questions are about study-aom's
-        // meetings paper, NOT about Häfner (2014); they stand in until the real ones exist.
+        // 15 comprehension items on Häfner, Stock & Oberst (2014), selected in
+        // quiz_review.csv (the rows marked final_15). Four were revised there;
+        // the ids below carry the review file's numbering in a comment.
         const QUIZ_QUESTIONS = [
-        {
-            id: 1,
-            question: "What is the primary goal of this review on the science of workplace meetings?",
-            options: [
-                "To analyze the historical evolution of meeting structures since the early 20th century.",
-                "To argue for the complete elimination of meetings in modern organizations.",
-                "To apply scientific findings about activities before, during, and after meetings to improve their success.",
-                "To introduce a new psychological theory explaining why managers schedule so many meetings."
-            ],
-            correctAnswer: "To apply scientific findings about activities before, during, and after meetings to improve their success.",
-            type: "multiple_choice"
-        },
-        {
-            id: 2,
-            question: "The authors structure their evidence-based recommendations around which three key phases?",
-            options: [
-                "Design, Interaction, and Outcome.",
-                "Planning, Execution, and Follow-up.",
-                "Individual, Group, and Organization.",
-                "Before, During, and After."
-            ],
-            correctAnswer: "Before, During, and After.",
-            type: "multiple_choice"
-        },
-        {
-            id: 3,
-            question: "According to the abstract, what is a common perception of meetings among employees?",
-            options: [
-                "They are seen as a valuable opportunity for social interaction.",
-                "They are the most productive part of the workday.",
-                "They are considered essential for career advancement.",
-                "Their value is often questioned and they are viewed as a routine necessity."
-            ],
-            correctAnswer: "Their value is often questioned and they are viewed as a routine necessity.",
-            type: "multiple_choice"
-        },
-        {
-            id: 4,
-            question: "The 'Before the meeting' section advises against holding a meeting for which of the following purposes?",
-            options: [
-                "To solve a new problem that requires different expertise.",
-                "To share routine, nonurgent information without discussion.",
-                "To develop and implement an organizational strategy.",
-                "To have a team debrief after a performance episode."
-            ],
-            correctAnswer: "To share routine, nonurgent information without discussion.",
-            type: "multiple_choice"
-        },
-        {
-            id: 5,
-            question: "In the 'During the meeting' section, what effect of humor and laughter patterns is mentioned?",
-            options: [
-                "They can stimulate positive behaviors that predict team performance.",
-                "They are effective only when initiated by the meeting leader.",
-                "They are typically used by low-performing employees to avoid contributing to the discussion.",
-                "They are a common cause of meetings getting off topic and running too long."
-            ],
-            correctAnswer: "They can stimulate positive behaviors that predict team performance.",
-            type: "multiple_choice"
-        },
-        {
-            id: 6,
-            question: "According to the 'After the meeting' section, what is a primary reason for sending out meeting minutes?",
-            options: [
-                "To facilitate follow-through by clarifying action plans and responsibilities.",
-                "To survey attendees about their satisfaction with the meeting's length.",
-                "To serve as an official agenda for the next scheduled meeting.",
-                "To allow attendees to dispute any decisions that were made."
-            ],
-            correctAnswer: "To facilitate follow-through by clarifying action plans and responsibilities.",
-            type: "multiple_choice"
-        },
-        {
-            id: 7,
-            question: "By synthesizing information from the 'Before' and 'After' meeting sections, what can be inferred about the link between meeting attendance and job satisfaction?",
-            options: [
-                "Carefully selecting relevant attendees before a meeting can positively impact their long-term job satisfaction.",
-                "Higher job satisfaction causes employees to seek out and attend more meetings.",
-                "The more meetings an employee attends, regardless of quality, the lower their job satisfaction will be.",
-                "Job satisfaction is primarily linked to meeting length, which is determined before the meeting begins."
-            ],
-            correctAnswer: "Carefully selecting relevant attendees before a meeting can positively impact their long-term job satisfaction.",
-            type: "multiple_choice"
-        },
-        {
-            id: 8,
-            question: "Based on the article, a manager aiming to improve their team's meetings should focus on which two distinct areas of responsibility?",
-            options: [
-                "The psychological well-being of attendees and the financial cost of the meeting.",
-                "The use of advanced technology and the enforcement of punctuality.",
-                "The structural design before the meeting and active facilitation during the meeting.",
-                "The frequency of meetings and the long-term career growth of participants."
-            ],
-            correctAnswer: "The structural design before the meeting and active facilitation during the meeting.",
-            type: "multiple_choice"
-        },
-        {
-            id: 9,
-            question: "What long-term strategy, combining multiple evidence-based practices from the article, would most effectively improve an organization's overall meeting culture?",
-            options: [
-                "Train all high-performing employees on how to participate more effectively in meetings.",
-                "Systematically survey meeting satisfaction, use the feedback to re-evaluate routine meetings, and adjust their design accordingly.",
-                "Invest heavily in videoconferencing technology to reduce the need for in-person meetings.",
-                "Implement a strict policy that all meetings must start on time and have an agenda."
-            ],
-            correctAnswer: "Systematically survey meeting satisfaction, use the feedback to re-evaluate routine meetings, and adjust their design accordingly.",
-            type: "multiple_choice"
-        },
-    ];
+            {
+                id: 1,   // quiz_review.csv #1
+                question: "What did the authors conclude about the time management training?",
+                options: [
+                    "It reduced stress, but perceived control of time did not change at any point.",
+                    "It may benefit students' well-being by reducing stress and increasing perceived control of time.",
+                    "It increased perceived control of time, but its effect on stress was unclear.",
+                    "It reduced stress mainly by lowering the amount of work students faced."
+                ],
+                correctAnswer: "It may benefit students' well-being by reducing stress and increasing perceived control of time.",
+                type: "multiple_choice"
+            },
+            {
+                id: 2,   // quiz_review.csv #2
+                question: "In the final statistical analysis of this study, how many undergraduate students were included in the dataset?",
+                options: [
+                    "23",
+                    "212",
+                    "48",
+                    "1,000"
+                ],
+                correctAnswer: "23",
+                type: "multiple_choice"
+            },
+            {
+                id: 3,   // quiz_review.csv #3
+                question: "What was the total duration of the time management training intervention evaluated in this research?",
+                options: [
+                    "A full semester",
+                    "10 hours",
+                    "4 hours",
+                    "Two weeks"
+                ],
+                correctAnswer: "4 hours",
+                type: "multiple_choice"
+            },
+            {
+                id: 4,   // quiz_review.csv #5
+                question: "According to the results, how did the students' perceived control of time change two weeks after the training?",
+                options: [
+                    "It reached its peak immediately and then declined by the fourth week.",
+                    "It showed a significant immediate increase.",
+                    "It decreased as students struggled to implement the new tools.",
+                    "It remained unchanged with only a non-significant upward trend."
+                ],
+                correctAnswer: "It remained unchanged with only a non-significant upward trend.",
+                type: "multiple_choice"
+            },
+            {
+                id: 5,   // quiz_review.csv #6
+                question: "Why did the researchers also measure \"demands\"?",
+                options: [
+                    "To make sure all participants had a similar workload.",
+                    "To test whether the training reduced students' workload.",
+                    "As a stress-related variable the training should not change, so changes in the other variables could be attributed to the training.",
+                    "To test whether demands explained the link between time management and stress."
+                ],
+                correctAnswer: "As a stress-related variable the training should not change, so changes in the other variables could be attributed to the training.",
+                type: "multiple_choice"
+            },
+            {
+                id: 6,   // quiz_review.csv #7
+                question: "Which specific psychological concept was utilized in the daily planning portion of the training to help students schedule their tasks?",
+                options: [
+                    "Self-actualization",
+                    "Cognitive dissonance",
+                    "Implementation intentions",
+                    "Locus of control"
+                ],
+                correctAnswer: "Implementation intentions",
+                type: "multiple_choice"
+            },
+            {
+                id: 7,   // quiz_review.csv #8
+                question: "Which participants showed the largest training effects?",
+                options: [
+                    "Students in later semesters of their studies",
+                    "Students who reported the highest demands before training",
+                    "Students with no or little prior time management experience",
+                    "Students with moderate prior time management experience"
+                ],
+                correctAnswer: "Students with no or little prior time management experience",
+                type: "multiple_choice"
+            },
+            {
+                id: 8,   // quiz_review.csv #9
+                question: "In the comparison of the pre-test and the four-week post-test, what was the observed effect on the 'tension' scale?",
+                options: [
+                    "Tension decreased initially but returned to baseline levels by week four.",
+                    "Tension significantly increased as the semester progressed toward exams.",
+                    "Tension levels remained exactly the same throughout the month.",
+                    "There was a significant decrease in reported tension."
+                ],
+                correctAnswer: "There was a significant decrease in reported tension.",
+                type: "multiple_choice"
+            },
+            {
+                id: 9,   // quiz_review.csv #10
+                question: "What reason did the authors give for scheduling all measurements within the same semester?",
+                options: [
+                    "To comply with university regulations regarding study duration.",
+                    "To allow the students to apply the skills immediately to their final grades.",
+                    "To ensure students could receive academic credit for participation.",
+                    "To prevent vacations or the completion of major exams from distorting the results."
+                ],
+                correctAnswer: "To prevent vacations or the completion of major exams from distorting the results.",
+                type: "multiple_choice"
+            },
+            {
+                id: 10,   // quiz_review.csv #13
+                question: "Which of the following is a recognized limitation of the study mentioned by the authors in the Discussion?",
+                options: [
+                    "The sample size was small, requiring more studies to reach robust conclusions.",
+                    "The intervention was too long, leading to student boredom.",
+                    "The training failed to change time management behavior.",
+                    "Participants were only selected from the psychology department."
+                ],
+                correctAnswer: "The sample size was small, requiring more studies to reach robust conclusions.",
+                type: "multiple_choice"
+            },
+            {
+                id: 11,   // quiz_review.csv #15
+                question: "Regarding the theoretical framework, how is 'perceived control of time' described in relation to stress?",
+                options: [
+                    "As an outcome that is completely independent of time management behavior.",
+                    "As a potential mediator that, when increased, leads to reduced stress levels.",
+                    "As an external stressor that increases workload.",
+                    "As a fixed personality trait that cannot be changed by behavior."
+                ],
+                correctAnswer: "As a potential mediator that, when increased, leads to reduced stress levels.",
+                type: "multiple_choice"
+            },
+            {
+                id: 12,   // quiz_review.csv #16
+                question: "Which specific activity was emphasized in the first phase of the training intervention?",
+                options: [
+                    "Self-reflection on the importance of various activities.",
+                    "Learning how to use a specific software for task monitoring.",
+                    "Practicing meditation to reduce immediate physiological stress.",
+                    "Creating a digital calendar."
+                ],
+                correctAnswer: "Self-reflection on the importance of various activities.",
+                type: "multiple_choice"
+            },
+            {
+                id: 13,   // quiz_review.csv #17
+                question: "What change was observed in the participants' reported 'time management behavior' four weeks after the training compared to before it?",
+                options: [
+                    "A significant decrease occurred because students felt overwhelmed by new rules.",
+                    "A significant increase was reported.",
+                    "There was no change, suggesting the training was not transferred to daily life.",
+                    "Behavior returned to pre-training levels after an initial spike."
+                ],
+                correctAnswer: "A significant increase was reported.",
+                type: "multiple_choice"
+            },
+            {
+                id: 14,   // quiz_review.csv #22
+                question: "What gap in previous research did this study aim to address?",
+                options: [
+                    "No study had examined time management among employees.",
+                    "No intervention study had shown a decrease in students' perceived stress after time management training.",
+                    "No study had measured perceived control of time among students.",
+                    "Previous studies had found that time management training increased stress."
+                ],
+                correctAnswer: "No intervention study had shown a decrease in students' perceived stress after time management training.",
+                type: "multiple_choice"
+            },
+            {
+                id: 15,   // quiz_review.csv #23
+                question: "The authors suggest that orientation reduces stress. How does the training provide this orientation?",
+                options: [
+                    "By assigning each student a faculty mentor for guidance.",
+                    "By clarifying goals and developing step-by-step strategies to achieve them.",
+                    "By providing a map of the university campus to new students.",
+                    "By reducing the total number of subjects a student must study."
+                ],
+                correctAnswer: "By clarifying goals and developing step-by-step strategies to achieve them.",
+                type: "multiple_choice"
+            }
+        ];
 
-        // Counts down from `seconds` while active. Display only -- the graded answers
-        // are whatever is on screen when the participant submits.
-        function Timer({ seconds, isActive, onComplete }) {
-            const [left, setLeft] = useState(seconds);
-            const firedRef = useRef(false);
-
-            useEffect(() => {
-                if (!isActive) return;
-                const id = setInterval(() => {
-                    setLeft(prev => {
-                        if (prev <= 1) {
-                            if (!firedRef.current) {
-                                firedRef.current = true;
-                                if (onComplete) onComplete();
-                            }
-                            return 0;
-                        }
-                        return prev - 1;
-                    });
-                }, 1000);
-                return () => clearInterval(id);
-            }, [isActive]);
-
+        // Pure display. The countdown lives in Quiz, because reaching zero has to
+        // submit, and a callback passed down here would close over a stale submit.
+        function Timer({ left }) {
             const mm = String(Math.floor(left / 60)).padStart(2, '0');
             const ss = String(left % 60).padStart(2, '0');
             return (
@@ -196,7 +249,14 @@
             const [confidence, setConfidence] = useState('');
             const [showFinishPopup, setShowFinishPopup] = useState(false);
             const [isSubmitting, setIsSubmitting] = useState(false);
+            const [timeLeft, setTimeLeft] = useState(QUIZ_SECONDS);
             const startedAtRef = useRef(null);
+            const deadlineRef = useRef(null);
+            // State guards re-render too late to stop a second submit fired in the
+            // same tick (the deadline and a click can land together), so the real
+            // lock is a ref.
+            const submittedRef = useRef(false);
+            const submitRef = useRef(null);
 
             useEffect(() => {
                 const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -214,8 +274,36 @@
                 setAnswers(prev => ({ ...prev, [questionId]: answer }));
             };
 
-            const submitQuiz = async () => {
-                if (isSubmitting) return;
+            // Each tick recomputes the remaining time from a fixed deadline instead of
+            // counting ticks. Browsers slow timers down in a tab nobody is looking at,
+            // and a counter would simply lose those seconds; reading the clock makes
+            // the display correct itself the moment the tab comes back.
+            useEffect(() => {
+                if (phase !== 'quiz') return;
+                const tick = () => {
+                    const ms = deadlineRef.current - Date.now();
+                    setTimeLeft(Math.max(0, Math.ceil(ms / 1000)));
+                };
+                tick();
+                const id = setInterval(tick, 250);
+                document.addEventListener('visibilitychange', tick);
+                return () => {
+                    clearInterval(id);
+                    document.removeEventListener('visibilitychange', tick);
+                };
+            }, [phase]);
+
+            // Time is up: hand in whatever is on screen. Unanswered items are graded
+            // as incorrect, which is what a timed closed-book test should do.
+            useEffect(() => {
+                if (phase !== 'quiz' || timeLeft > 0 || submittedRef.current) return;
+                setShowFinishPopup(false);
+                if (submitRef.current) submitRef.current(true);
+            }, [phase, timeLeft]);
+
+            const submitQuiz = async (autoSubmitted = false) => {
+                if (submittedRef.current) return;
+                submittedRef.current = true;
                 setIsSubmitting(true);
 
                 const duration = startedAtRef.current ? Date.now() - startedAtRef.current : null;
@@ -249,21 +337,27 @@
                             notSureCount,
                             totalQuestions,
                             accuracy,
+                            autoSubmitted,
                             submittedAt: new Date().toISOString()
                         },
-                        currentPhase: 'post_task'
+                        currentPhase: 'survey2'
                     }, { merge: true });
 
                     console.log('✅ Quiz saved:', { correctCount, totalQuestions, accuracy });
 
                     const params = new URLSearchParams({ sessionId, mode, condition, paper });
-                    window.location.replace(`post-task.html?${params.toString()}`);
+                    window.location.replace(`survey2.html?${params.toString()}`);
                 } catch (error) {
                     console.error('Error saving quiz:', error);
                     alert('Failed to save. Please try again.');
+                    submittedRef.current = false;
                     setIsSubmitting(false);
                 }
             };
+
+            // Keep the deadline pointed at the current closure, so it submits the
+            // answers on screen rather than the ones from the render it was set up in.
+            submitRef.current = submitQuiz;
 
             if (checkingAuth) {
                 return (
@@ -300,13 +394,15 @@
 
                                 <div className="bg-gray-50 rounded-lg p-6">
                                     <h3 className="font-bold text-lg text-gray-800 mb-2">Time Limit</h3>
-                                    <p className="text-3xl font-bold text-purple-600">5 min</p>
+                                    <p className="text-3xl font-bold text-purple-600">{Math.round(QUIZ_SECONDS / 60)} min</p>
+                                    <p className="text-sm text-gray-600 mt-2">When the time is up, your answers are submitted automatically.</p>
                                 </div>
                             </div>
 
                             <button
                                 onClick={() => {
                                     startedAtRef.current = Date.now();
+                                    deadlineRef.current = startedAtRef.current + QUIZ_SECONDS * 1000;
                                     setPhase('quiz');
                                 }}
                                 className="w-full px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-lg font-medium"
@@ -328,13 +424,16 @@
                             <p className="text-sm text-gray-600">Closed-book</p>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <Timer
-                                seconds={QUIZ_SECONDS}
-                                isActive={true}
-                                onComplete={() => alert('Quiz time is up! Please submit your answers.')}
-                            />
+                            <Timer left={timeLeft} />
                             <button
                                 onClick={() => {
+                                    // Once the clock has run out the answers are already
+                                    // being handed in; the only reason to click is a retry
+                                    // after a failed save, so the checks are skipped.
+                                    if (timeLeft === 0) {
+                                        submitQuiz(true);
+                                        return;
+                                    }
                                     if (answeredCount < QUIZ_QUESTIONS.length) {
                                         alert(`Please answer all questions before submitting. (${answeredCount}/${QUIZ_QUESTIONS.length} answered)`);
                                         return;
@@ -345,9 +444,10 @@
                                     }
                                     setShowFinishPopup(true);
                                 }}
-                                className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                                disabled={isSubmitting}
+                                className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium disabled:bg-green-300"
                             >
-                                Submit Quiz
+                                {isSubmitting ? 'Submitting…' : 'Submit Quiz'}
                             </button>
                         </div>
                     </div>
@@ -430,6 +530,20 @@
                             </p>
                         </div>
                     </div>
+
+                    {timeLeft === 0 && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4 text-center">
+                                <div className="text-4xl mb-3">⏱</div>
+                                <h3 className="text-2xl font-bold text-gray-800 mb-2">Time is up</h3>
+                                <p className="text-gray-600">
+                                    {isSubmitting
+                                        ? 'Submitting your answers…'
+                                        : 'Your answers are being submitted. If nothing happens, press Submit Quiz.'}
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     {showFinishPopup && (
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
