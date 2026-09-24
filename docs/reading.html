@@ -1522,14 +1522,14 @@
                 }
             };
 
-            const cancelCustom = async (modality) => {
+            const cancelCustom = async (modality, reason = 'participant') => {
                 try {
                     await window.firebaseSetDoc(
                         window.firebaseDoc(window.firebaseDb, 'users', currentUser.uid, 'sessions', sessionId, 'customJobs', modality),
                         { aborted: true },
                         { merge: true }
                     );
-                    logEvent('custom_generation_cancelled', { modality });
+                    logEvent('custom_generation_cancelled', { modality, reason });
                 } catch (err) {
                     console.error('cancel failed:', err);
                 }
@@ -4052,6 +4052,11 @@ Provide constructive feedback to help the reader think more critically about thi
                                         }
                                         if (chatSkipped || window.confirm('Are you sure you want to finish reading?')) {
                                             logEvent('finish_reading_confirmed', { llmQueryCount, chatSkipped });
+                                            // Anything still generating would run on after the reader has
+                                            // gone, costing money for something nobody will ever see.
+                                            Object.entries(customJobs).forEach(([modality, job]) => {
+                                                if (job?.status === 'running') cancelCustom(modality, 'finished_reading');
+                                            });
                                             completeReading();
                                         } else {
                                             logEvent('finish_reading_cancelled');
@@ -4496,6 +4501,10 @@ Provide constructive feedback to help the reader think more critically about thi
                                                     <div className="flex flex-wrap gap-2 px-4 py-3 bg-white border-b">
                                                         {tabOrder.map(tabKey => {
                                                             const tab = tabConfig[tabKey];
+                                                            // A generation started in one tab finishes while the reader
+                                                            // is somewhere else, so the tab itself has to say so.
+                                                            const jobKey = tabKey === 'infographics' ? 'infographic' : tabKey;
+                                                            const jobStatus = customJobs[jobKey]?.status;
                                                             return (
                                                                 <button
                                                                     key={tabKey}
@@ -4507,6 +4516,12 @@ Provide constructive feedback to help the reader think more critically about thi
                                                                     }`}
                                                                 >
                                                                     <span className={tab.iconClass}>{tab.icon}</span> {tab.label}
+                                                                    {jobStatus === 'running' && (
+                                                                        <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" title="Still being made"></span>
+                                                                    )}
+                                                                    {jobStatus === 'done' && (
+                                                                        <span className="w-2 h-2 rounded-full bg-green-500" title="Your version is ready"></span>
+                                                                    )}
                                                                 </button>
                                                             );
                                                         })}
