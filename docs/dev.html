@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <title>Study UG — Trial</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="conditions.js"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
 <div class="bg-white rounded-xl shadow p-8 max-w-md w-full">
@@ -21,6 +22,11 @@
 </div>
 <script>
 (function () {
+  if (!window.STUDY_CONDITION_IDS) {
+    document.getElementById('error').textContent = 'conditions.js did not load — serve this page over http, not file://';
+    document.getElementById('error').classList.remove('hidden');
+    return;
+  }
   var DEV_TOKEN = 'ANzSqCQ_8-xjt_zRIUfkzlFQ';
 
   // Testing an arm means being able to ask for it. login.html honours this only
