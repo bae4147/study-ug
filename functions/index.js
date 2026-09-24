@@ -321,19 +321,9 @@ exports.sendCompletionEmail = onRequest(
         return;
       }
 
-      const userData = userDoc.data();
-      const sessionData = sessionDoc.data();
-
-      const recipientEmail = userData.email;
-      const recipientName = userData.fullName || "Student";
-      const paperTitle = sessionData.paperMetadata?.title || "Your Reading Assignment";
-
-      // Extract post-task responses
-      const postTask = sessionData.postTask || {};
-      const contextTranslation = postTask.contextTranslation || [];
-      const strategies = postTask.strategies || [];
-      const newStrategyConfidence = postTask.newStrategyConfidence;
-      const implementationLikelihood = postTask.implementationLikelihood;
+      // The mail is a bare confirmation of participation: it carries none of the
+      // answers, so nothing is read out of the session beyond the address.
+      const recipientEmail = userDoc.data().email;
 
       // Create email transporter
       const transporter = nodemailer.createTransport({
@@ -350,11 +340,9 @@ exports.sendCompletionEmail = onRequest(
 <html>
 <head><meta charset="utf-8"></head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <h1 style="font-size: 22px;">You have completed the reading study</h1>
-  <p>Hello,</p>
-  <p>This email confirms that you completed all parts of the reading study
-     &mdash; the reading session, the task and the survey. Thank you for taking part.</p>
-  <p>Nothing further is needed from you.</p>
+  <h1 style="font-size: 22px;">Reading study completed</h1>
+  <p>This email confirms that you completed the reading study. Nothing further is
+     needed from you. Thank you for taking part.</p>
   <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
     <p>Questions about the study? Reply to this email or contact <a href="mailto:bae.332@osu.edu" style="color:#6b7280;">bae.332@osu.edu</a>.</p>
   </div>

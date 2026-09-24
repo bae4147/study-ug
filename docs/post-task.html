@@ -103,9 +103,9 @@
                 e.preventDefault();
                 if (isSubmitting) return;
 
-                const tooShort = REFLECTION_ITEMS.find(i => (responses[i.key] || '').trim().length < MIN_CHARS);
-                if (tooShort) {
-                    alert(`Please write a little more for "${tooShort.label}" (at least ${MIN_CHARS} characters).`);
+                const tooShortIdx = REFLECTION_ITEMS.findIndex(i => (responses[i.key] || '').trim().length < MIN_CHARS);
+                if (tooShortIdx !== -1) {
+                    alert(`Please write a little more for question ${tooShortIdx + 1} (at least ${MIN_CHARS} characters).`);
                     return;
                 }
 
@@ -186,7 +186,6 @@
                                                     {idx + 1}
                                                 </span>
                                                 <div className="flex-1">
-                                                    <p className="text-xs font-semibold text-teal-700 uppercase tracking-wide mb-1">{item.label}</p>
                                                     <label className="block text-base font-bold text-gray-800">
                                                         {item.question} *
                                                     </label>

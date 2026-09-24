@@ -114,6 +114,14 @@
             // Study feedback (optional)
             const [studyFeedback, setStudyFeedback] = useState('');
 
+            // Course credit is granted through an OSU account. Whoever signed in with
+            // another address has to tell us their name.# themselves, and it is asked
+            // here rather than on the completion page: that page says "You're all set",
+            // so anything left on it is easy to walk away from.
+            const isOsuEmail = (email) => /@(buckeyemail\.)?osu\.edu$/i.test((email || '').trim());
+            const needsNameNumber = !!currentUser && !isOsuEmail(currentUser.email);
+            const [nameNumber, setNameNumber] = useState('');
+
             const [isSubmitting, setIsSubmitting] = useState(false);
 
             // Page navigation (1 = self-efficacy, 2 = final questions)
@@ -143,6 +151,10 @@
                 }
                 if (!usedExternalAi || !usedExternalPdfViewer) {
                     alert('Please answer the external tool usage questions.');
+                    return;
+                }
+                if (needsNameNumber && !nameNumber.trim()) {
+                    alert('Please enter your OSU name.# so that your course credit can be assigned.');
                     return;
                 }
 
@@ -182,6 +194,7 @@
                         externalPdfDetails: usedExternalPdfViewer === 'yes' ? externalPdfDetails.trim() : null
                     },
                     studyFeedback: studyFeedback.trim() || null,
+                    osuNameNumber: needsNameNumber ? nameNumber.trim() : null,
                     completedAt: new Date().toISOString()
                 };
 
@@ -191,6 +204,13 @@
                     }
 
                     console.log('💾 Final survey data:', surveyData);
+
+                    if (needsNameNumber) {
+                        await db.collection('users').doc(currentUser.uid).set({
+                            osuNameNumber: nameNumber.trim(),
+                            osuNameNumberAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }, { merge: true });
+                    }
 
                     const sessionRef = db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId);
                     await sessionRef.set({
@@ -674,9 +694,6 @@
                                         <div className="space-y-8">
                                             {APP_ITEMS.map(item => (
                                                 <div key={item.key}>
-                                                    {item.group && (
-                                                        <h4 className="text-sm font-semibold text-blue-700 uppercase tracking-wide mb-3">{item.group}</h4>
-                                                    )}
                                                     <label className="block text-sm font-bold text-gray-800 mb-2">
                                                         {item.text} *
                                                     </label>
@@ -905,6 +922,27 @@
                                         />
                                     </div>
                                 </div>
+
+                                {/* OSU name.# -- only for participants who used another address */}
+                                {needsNameNumber && (
+                                    <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5">
+                                        <label className="block text-sm font-bold text-gray-800 mb-2">
+                                            What is your OSU name.#? *
+                                        </label>
+                                        <p className="text-sm text-gray-700 mb-3">
+                                            You signed in as <strong>{currentUser.email}</strong>, which is not an OSU
+                                            address. Course credit is assigned through your OSU account, so please
+                                            enter your OSU name.# (for example, <em>brutus.1</em>).
+                                        </p>
+                                        <input
+                                            type="text"
+                                            value={nameNumber}
+                                            onChange={(e) => setNameNumber(e.target.value)}
+                                            placeholder="name.#"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        />
+                                    </div>
+                                )}
 
                                 {/* Submit */}
                                 <div className="flex justify-between pt-6">
