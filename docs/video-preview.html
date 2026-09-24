@@ -31,11 +31,11 @@
         </div>
 
         <div class="mt-3">
-            <div class="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+            <div id="track" class="h-1.5 bg-gray-700 rounded-full overflow-hidden cursor-pointer">
                 <div id="bar" class="h-full bg-orange-500 transition-[width] duration-200" style="width:0%"></div>
             </div>
             <div class="flex justify-between text-xs text-gray-400 mt-1">
-                <span id="clock">0:00</span>
+                <span id="clock">0:00 / 0:00</span>
                 <span id="counter"></span>
             </div>
         </div>
@@ -58,11 +58,12 @@
 <script>
 (function () {
     var params = new URLSearchParams(location.search);
-    var src = params.get('src') || 'papers/hafner2014/video.generated.json';
+    var src = params.get('src') || 'papers/hafner2014/video.json';
 
     var el = function (id) { return document.getElementById(id); };
     var audio = el('audio');
-    var scenes = [], idx = 0, playing = false, starts = [], total = 0;
+    var scenes = [], idx = 0, playing = false, starts = [], total = 0, seekWithin = 0;
+    var base = src.replace(/[^/]*$/, "");
 
     var fmt = function (s) {
         s = Math.max(0, Math.round(s));
@@ -75,11 +76,11 @@
             scenes = d.scenes || [];
             if (!scenes.length) throw new Error('no scenes in ' + src);
 
-            // Scene durations come from the outline, but the narration audio is what
-            // actually advances the slide, so these are only used for the progress bar.
+            // Durations are measured off the narration files, so the bar tracks the
+            // audio rather than the outline's nominal nine seconds a scene.
             var t = 0;
-            scenes.forEach(function (s) { starts.push(t); t += s.duration || 9; });
-            total = t;
+            scenes.forEach(function (s) { starts.push(t); t += s.duration || 0; });
+            total = d.totalSeconds || t;
 
             el('title').textContent = d.title || 'Video overview';
             el('meta').textContent = scenes.length + ' scenes · ~' + fmt(total);
@@ -102,14 +103,40 @@
     function show(i) {
         idx = Math.max(0, Math.min(i, scenes.length - 1));
         var s = scenes[idx];
-        el('slide').src = 'data:image/png;base64,' + s.imageBase64;
+        el('slide').src = s.image ? (base + s.image) : ('data:image/png;base64,' + s.imageBase64);
         el('caption').textContent = s.narration || '';
         el('counter').textContent = 'Scene ' + (idx + 1) + ' / ' + scenes.length;
-        el('clock').textContent = fmt(starts[idx]);
-        el('bar').style.width = (total ? (starts[idx] / total) * 100 : 0) + '%';
-        audio.src = 'data:audio/mpeg;base64,' + s.audioBase64;
+        audio.src = s.audio ? (base + s.audio) : ('data:audio/mpeg;base64,' + s.audioBase64);
+        paint();
         if (playing) audio.play();
     }
+
+    function paint() {
+        var at = starts[idx] + (audio.currentTime || 0);
+        el('clock').textContent = fmt(at) + ' / ' + fmt(total);
+        el('bar').style.width = (total ? Math.min(100, (at / total) * 100) : 0) + '%';
+    }
+
+    audio.addEventListener('timeupdate', paint);
+
+    // A currentTime set straight after changing src is dropped: the new file has
+    // no duration yet. Hold the offset until the browser has the metadata.
+    audio.addEventListener('loadedmetadata', function () {
+        if (seekWithin) { audio.currentTime = Math.min(seekWithin, audio.duration || seekWithin); seekWithin = 0; }
+        paint();
+    });
+
+    // Clicking the bar seeks: find the scene that covers that moment, then move
+    // to the offset inside it.
+    el('track').addEventListener('click', function (e) {
+        if (!total) return;
+        var r = this.getBoundingClientRect();
+        var want = ((e.clientX - r.left) / r.width) * total;
+        var i = 0;
+        while (i < scenes.length - 1 && starts[i + 1] <= want) i++;
+        seekWithin = Math.max(0, want - starts[i]);
+        show(i);
+    });
 
     audio.addEventListener('ended', function () {
         if (!playing) return;

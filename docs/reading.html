@@ -196,6 +196,7 @@
                 return () => clearInterval(id);
             }, [readingActive]);
             const clock = `${String(Math.floor(activeSeconds / 60)).padStart(2, '0')}:${String(activeSeconds % 60).padStart(2, '0')}`;
+            const fmtClock = (sec) => `${Math.floor((sec || 0) / 60)}:${String(Math.round((sec || 0) % 60)).padStart(2, '0')}`;
 
             const [paperContent, setPaperContent] = useState('');
 
@@ -1424,38 +1425,15 @@
                 }
             };
 
-            // Progress tracking interval
-            useEffect(() => {
-                if (slideshowPlaying) {
-                    videoProgressIntervalRef.current = setInterval(() => {
-                        setVideoCurrentTime(prev => {
-                            const newTime = prev + 0.1;
-                            // Check if we need to advance to next scene based on time
-                            if (videoSlideshow) {
-                                const sceneEndTime = getSceneStartTime(currentSceneIndex) + (videoSlideshow.scenes[currentSceneIndex]?.duration || 10);
-                                if (newTime >= sceneEndTime && currentSceneIndex < videoSlideshow.scenes.length - 1) {
-                                    // Scene will advance via audio ended event
-                                }
-                            }
-                            return Math.min(newTime, videoDuration);
-                        });
-                    }, 100);
-                } else {
-                    if (videoProgressIntervalRef.current) {
-                        clearInterval(videoProgressIntervalRef.current);
-                    }
-                }
-                return () => {
-                    if (videoProgressIntervalRef.current) {
-                        clearInterval(videoProgressIntervalRef.current);
-                    }
-                };
-            }, [slideshowPlaying, currentSceneIndex, videoDuration, videoSlideshow]);
+            // The narration element is the clock: its timeupdate drives the bar, so
+            // there is no separate ticker to drift out of step with the audio.
+            const [sceneElapsed, setSceneElapsed] = useState(0);
+            const pendingSeekRef = useRef(0);
 
-            // Auto-play next scene when audio ends
+            // Starting playback is all this does; the element's src is rendered from
+            // the current scene, so setting it here too would reload the file twice.
             useEffect(() => {
                 if (slideshowPlaying && slideshowAudioRef.current && videoSlideshow) {
-                    slideshowAudioRef.current.src = videoSlideshow.scenes[currentSceneIndex]?.audioUrl;
                     slideshowAudioRef.current.play().catch(e => console.log('Audio play failed:', e));
                 }
             }, [currentSceneIndex, slideshowPlaying, videoSlideshow]);
@@ -3582,14 +3560,31 @@ Provide constructive feedback to help the reader think more critically about thi
                                 </div>
 
                                 <div className="mt-3">
-                                    <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                    <div
+                                        className="h-2 bg-gray-200 rounded-full overflow-hidden cursor-pointer"
+                                        onClick={(e) => {
+                                            if (!videoDuration) return;
+                                            const r = e.currentTarget.getBoundingClientRect();
+                                            const want = ((e.clientX - r.left) / r.width) * videoDuration;
+                                            let i = 0;
+                                            while (i < videoSlideshow.scenes.length - 1 && getSceneStartTime(i + 1) <= want) i++;
+                                            pendingSeekRef.current = Math.max(0, want - getSceneStartTime(i));
+                                            if (i === currentSceneIndex && slideshowAudioRef.current) {
+                                                slideshowAudioRef.current.currentTime = pendingSeekRef.current;
+                                                pendingSeekRef.current = 0;
+                                            } else {
+                                                setCurrentSceneIndex(i);
+                                            }
+                                            logEvent('video_seeked', { toSecond: Math.round(want) });
+                                        }}
+                                    >
                                         <div
                                             className="h-full bg-purple-500"
-                                            style={{ width: `${videoDuration ? (getSceneStartTime(currentSceneIndex) / videoDuration) * 100 : 0}%` }}
+                                            style={{ width: `${videoDuration ? Math.min(100, ((getSceneStartTime(currentSceneIndex) + sceneElapsed) / videoDuration) * 100) : 0}%` }}
                                         ></div>
                                     </div>
                                     <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                        <span>{Math.floor(getSceneStartTime(currentSceneIndex) / 60)}:{String(Math.round(getSceneStartTime(currentSceneIndex) % 60)).padStart(2, '0')}</span>
+                                        <span>{fmtClock(getSceneStartTime(currentSceneIndex) + sceneElapsed)} / {fmtClock(videoDuration)}</span>
                                         <span>Scene {currentSceneIndex + 1} / {videoSlideshow.scenes.length}</span>
                                     </div>
                                 </div>
@@ -3622,6 +3617,15 @@ Provide constructive feedback to help the reader think more critically about thi
 
                                 <audio
                                     ref={slideshowAudioRef}
+                                    src={scene.audioUrl}
+                                    onTimeUpdate={(e) => setSceneElapsed(e.target.currentTime)}
+                                    onLoadedMetadata={(e) => {
+                                        if (pendingSeekRef.current) {
+                                            e.target.currentTime = Math.min(pendingSeekRef.current, e.target.duration || pendingSeekRef.current);
+                                            pendingSeekRef.current = 0;
+                                        }
+                                        setSceneElapsed(e.target.currentTime);
+                                    }}
                                     onEnded={() => {
                                         if (currentSceneIndex < videoSlideshow.scenes.length - 1) {
                                             setCurrentSceneIndex(currentSceneIndex + 1);
