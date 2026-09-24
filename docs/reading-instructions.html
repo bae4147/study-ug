@@ -71,9 +71,8 @@
     // promising an AI chatbot to a no_ai participant would be its own confound.
     var hasTools = (condition === 'mm' || condition === 'mm_cimo');
     if (hasTools) {
-        document.getElementById('tools-text').innerHTML =
-            'Beside the article you will find an AI chatbot, a video overview, an audio overview (podcast) and an infographic, all about this article. Use as many or as few of them as you like. ' +
-            '<strong>Please ask the AI chatbot at least one question about the article before you finish.</strong>';
+        document.getElementById('tools-text').textContent =
+            'Beside the article you will find an AI chatbot, a video overview, an audio overview (podcast) and an infographic, all about this article. Use as many or as few of them as you like.';
     } else {
         document.getElementById('tools-block').classList.add('hidden');
     }
