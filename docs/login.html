@@ -53,6 +53,16 @@
 
         const getNextCondition = async (email) => {
             if (STUDY_FLOW.isTestAccount(email)) {
+                // dev.html may name the arm it wants to walk through. Test accounts
+                // never touch the block counter either way, so neither the forced
+                // choice nor the random one disturbs participant assignment.
+                let forced = null;
+                try { forced = localStorage.getItem('devForceCondition'); } catch (e) {}
+                if (forced && CONDITIONS.includes(forced)) {
+                    try { localStorage.removeItem('devForceCondition'); } catch (e) {}
+                    console.log('Test account - forced condition:', forced);
+                    return forced;
+                }
                 const c = CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)];
                 console.log('Test account - assigned random condition:', c);
                 return c;
