@@ -15,12 +15,13 @@ const openaiApiKey = defineSecret("OPENAI_API_KEY");
 const gmailUser = defineSecret("GMAIL_USER");
 const gmailAppPassword = defineSecret("GMAIL_APP_PASSWORD");
 const devAccessToken = defineSecret("DEV_ACCESS_TOKEN");
+const geminiApiKey = defineSecret("GEMINI_API_KEY");
 
 // CORS headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
 // Admin email for error notifications
@@ -434,3 +435,187 @@ exports.devLogin = onRequest({ cors: true, secrets: [devAccessToken] }, async (r
     res.status(500).json({ error: error.message });
   }
 });
+
+
+// ---------------------------------------------------------------------------
+// generateCustom — the one regeneration a customisation arm is allowed
+// ---------------------------------------------------------------------------
+// The work outlives an HTTP response: a video is minutes of image and speech
+// calls, and a request held open that long is at the mercy of every proxy
+// between here and the reader. So the browser fires this and then watches a job
+// document instead — which is also what makes cancelling and reloading work.
+//
+//   users/{uid}/sessions/{sid}/customJobs/{modality}
+//     status    queued | running | done | error | aborted
+//     step/done/total   what to draw in the progress line
+//     url/urls  where the finished media landed
+//     aborted   set by the browser; this function checks it between steps
+//
+// Cancelling has to be a flag the function reads, not a closed connection:
+// dropping the request would leave the work running and still billable.
+
+const MODALITIES = ["video", "audio", "infographic"];
+
+// Which arms may regenerate. Kept here as well as in docs/conditions.js because
+// a browser check is advice; this is the one that decides.
+const CUSTOMISING_CONDITIONS = ["mm_cimo_custom", "mm_chat_custom"];
+
+async function publicUpload(buffer, destination, contentType) {
+  const file = admin.storage().bucket().file(destination);
+  await file.save(buffer, { contentType, metadata: { cacheControl: "public, max-age=31536000" } });
+  await file.makePublic();
+  return `https://storage.googleapis.com/${admin.storage().bucket().name}/${destination}`;
+}
+
+exports.generateCustom = onRequest(
+  {
+    cors: true,
+    secrets: [openaiApiKey, geminiApiKey],
+    timeoutSeconds: 540,
+    memory: "1GiB"
+  },
+  async (req, res) => {
+    if (req.method === "OPTIONS") { res.set(corsHeaders); res.status(204).send(""); return; }
+    if (req.method !== "POST") { res.status(405).json({ error: "Method not allowed" }); return; }
+    res.set(corsHeaders);
+
+    const gen = require("./generation");
+    let jobRef = null;
+
+    try {
+      const { sessionId, modality, focus = "", length = "default" } = req.body || {};
+
+      // This endpoint spends money, so unlike the others it insists on knowing
+      // who is calling rather than taking a uid on trust.
+      const authHeader = req.get("Authorization") || "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+      if (!token) { res.status(401).json({ error: "Sign-in required" }); return; }
+      const uid = (await admin.auth().verifyIdToken(token)).uid;
+
+      if (!sessionId || !MODALITIES.includes(modality)) {
+        res.status(400).json({ error: "sessionId and a known modality are required" });
+        return;
+      }
+
+      const db = admin.firestore();
+      const sessionRef = db.collection("users").doc(uid).collection("sessions").doc(sessionId);
+      const sessionSnap = await sessionRef.get();
+      if (!sessionSnap.exists) { res.status(404).json({ error: "No such session" }); return; }
+
+      const condition = sessionSnap.data().condition;
+      if (!CUSTOMISING_CONDITIONS.includes(condition)) {
+        res.status(403).json({ error: "This condition does not include customisation" });
+        return;
+      }
+
+      jobRef = sessionRef.collection("customJobs").doc(modality);
+
+      // One chance per modality. A run that failed or was cancelled does not
+      // count -- the reader should not lose their turn to our outage -- so only
+      // a finished one closes the door.
+      const existing = await jobRef.get();
+      if (existing.exists && existing.data().status === "done") {
+        res.status(409).json({ error: "Already used for this modality" });
+        return;
+      }
+      if (existing.exists && existing.data().status === "running") {
+        res.status(409).json({ error: "Already running" });
+        return;
+      }
+
+      const startedAt = Date.now();
+      await jobRef.set({
+        status: "running",
+        modality,
+        focus: String(focus || "").slice(0, gen.MAX_FOCUS_CHARS),
+        length: modality === "video" ? length : null,
+        condition,
+        aborted: false,
+        step: "starting",
+        message: "Starting",
+        done: 0,
+        total: 0,
+        startedAt: admin.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Answer now. The work carries on; the browser follows the job document.
+      res.json({ ok: true, modality });
+
+      const keys = { openai: openaiApiKey.value(), gemini: geminiApiKey.value() };
+
+      // Progress is worth showing but not worth a write per scene per second.
+      let lastWrite = 0;
+      const onProgress = (p) => {
+        const now = Date.now();
+        if (now - lastWrite < 1500 && p.done !== p.total) return;
+        lastWrite = now;
+        jobRef.set({
+          step: p.step || null,
+          message: p.message || null,
+          done: p.done || 0,
+          total: p.total || 0
+        }, { merge: true }).catch(() => {});
+      };
+
+      let cancelled = false;
+      let lastCheck = 0;
+      const isAborted = () => {
+        const now = Date.now();
+        if (now - lastCheck > 3000) {
+          lastCheck = now;
+          jobRef.get().then(s => { if (s.exists && s.data().aborted) cancelled = true; }).catch(() => {});
+        }
+        return cancelled;
+      };
+
+      const stamp = `${uid}/${sessionId}/${modality}-${startedAt}`;
+      const opts = { keys, focus, onProgress, isAborted };
+
+      if (modality === "infographic") {
+        const r = await gen.generateInfographic(opts);
+        const ext = r.contentType.includes("jpeg") ? "jpg" : "png";
+        const url = await publicUpload(r.image, `custom/${stamp}.${ext}`, r.contentType);
+        await jobRef.set({ status: "done", url, finishedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+
+      } else if (modality === "audio") {
+        const r = await gen.generateAudio(opts);
+        const url = await publicUpload(r.audio, `custom/${stamp}.mp3`, "audio/mpeg");
+        await jobRef.set({ status: "done", url, script: r.script, finishedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+
+      } else {
+        const r = await gen.generateVideo({ ...opts, length });
+        // A slideshow is far past the 1 MB a Firestore document holds, so the
+        // scenes go to storage as files and the job keeps only their addresses.
+        const scenes = [];
+        for (const sc of r.scenes) {
+          const n = String(sc.sceneNumber).padStart(2, "0");
+          const [image, audio] = await Promise.all([
+            publicUpload(Buffer.from(sc.imageBase64, "base64"), `custom/${stamp}/scene${n}.png`, "image/png"),
+            publicUpload(Buffer.from(sc.audioBase64, "base64"), `custom/${stamp}/scene${n}.mp3`, "audio/mpeg")
+          ]);
+          scenes.push({ sceneNumber: sc.sceneNumber, image, audio, duration: sc.duration, narration: sc.narration });
+        }
+        await jobRef.set({
+          status: "done",
+          title: r.title,
+          scenes,
+          finishedAt: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      }
+
+      console.log(`✅ custom ${modality} for ${uid} in ${Math.round((Date.now() - startedAt) / 1000)}s`);
+
+    } catch (error) {
+      const aborted = error && error.aborted;
+      console.error(aborted ? "custom generation cancelled" : "custom generation failed:", error.message);
+      if (jobRef) {
+        await jobRef.set({
+          status: aborted ? "aborted" : "error",
+          error: aborted ? null : String(error.message).slice(0, 500),
+          finishedAt: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(() => {});
+      }
+      if (!res.headersSent) res.status(500).json({ error: "Generation failed" });
+    }
+  }
+);

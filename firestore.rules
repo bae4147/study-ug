@@ -17,6 +17,20 @@ service cloud.firestore {
         allow read, create, update: if isOwner(uid);
         allow delete: if false;
 
+        // Customisation jobs. The browser may watch its own job and ask for it to
+        // stop, but everything else -- whether a turn has been used, what came
+        // back -- is written by the Cloud Function with admin rights, which these
+        // rules do not apply to. Letting the page write `status` would let it
+        // hand itself another turn.
+        match /customJobs/{modality} {
+          allow read: if isOwner(uid);
+          allow create: if false;
+          allow update: if isOwner(uid)
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['aborted'])
+                        && request.resource.data.aborted == true;
+          allow delete: if false;
+        }
+
         // The single most important rule: observational data, once written,
         // cannot be rewritten or removed from the browser.
         match /eventBatches/{batchId} {

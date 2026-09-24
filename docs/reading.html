@@ -31,7 +31,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getStorage, ref, getDownloadURL, getBytes } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
         // Your web app's Firebase configuration
@@ -68,6 +68,7 @@
         window.firebaseGetDoc = getDoc;
         window.firebaseSetDoc = setDoc;
         window.firebaseUpdateDoc = updateDoc;
+        window.firebaseOnSnapshot = onSnapshot;
         window.firebaseServerTimestamp = serverTimestamp;
         window.firebaseStorageRef = ref;
         window.firebaseGetDownloadURL = getDownloadURL;
@@ -82,6 +83,34 @@
 
         // Firebase Functions endpoint
         const CHAT_COMPLETION_URL = 'https://us-central1-study-ug-osu.cloudfunctions.net/chatCompletion';
+        const GENERATE_CUSTOM_URL = 'https://us-central1-study-ug-osu.cloudfunctions.net/generateCustom';
+
+        // What each tab offers to remake, and roughly how long the wait is. The
+        // estimates are the measured ones, not the outline's.
+        const CUSTOM_COPY = {
+            video: {
+                noun: 'video overview',
+                blurb: 'Summarises the article so you can see its main ideas.',
+                placeholder: 'Anything the video should focus on? (optional)'
+            },
+            audio: {
+                noun: 'audio overview',
+                blurb: 'Two hosts talk through the main ideas of the article.',
+                placeholder: 'Anything the discussion should focus on? (optional)'
+            },
+            infographic: {
+                noun: 'infographic',
+                blurb: 'One image laying out the shape of the article.',
+                placeholder: 'A style, colours, or something to emphasise? (optional)'
+            }
+        };
+        const VIDEO_LENGTH_CHOICES = [
+            { id: 'short', label: 'Short', hint: 'about 1 min' },
+            { id: 'default', label: 'Standard', hint: '2 – 3 min' },
+            { id: 'long', label: 'Long', hint: '4 – 5 min' }
+        ];
+        const CUSTOM_WAIT = { video: '3 – 4 minutes', audio: 'about a minute', infographic: 'under a minute' };
+        const MAX_FOCUS_CHARS = 300;
 
         // Icons
         const SendIcon = () => (
@@ -1393,21 +1422,21 @@
 
             // Calculate total video duration and scene start times
             const getSceneStartTime = (sceneIndex) => {
-                if (!videoSlideshow) return 0;
+                const list = activeSlideshowRef.current?.scenes;
+                if (!list) return 0;
                 let time = 0;
-                for (let i = 0; i < sceneIndex; i++) {
-                    time += videoSlideshow.scenes[i]?.duration || 10;
-                }
+                for (let i = 0; i < sceneIndex; i++) time += list[i]?.duration || 0;
                 return time;
             };
 
             // Calculate total duration when videoSlideshow changes
+            // Kept in a ref as well, because getSceneStartTime is called from the
+            // render body above where the active slideshow is worked out.
+            const activeSlideshowRef = useRef(null);
             useEffect(() => {
-                if (videoSlideshow?.scenes) {
-                    const total = videoSlideshow.scenes.reduce((sum, scene) => sum + (scene.duration || 10), 0);
-                    setVideoDuration(total);
-                }
-            }, [videoSlideshow]);
+                const list = activeSlideshowRef.current?.scenes;
+                if (list) setVideoDuration(list.reduce((sum, sc) => sum + (sc.duration || 0), 0));
+            }, [videoSlideshow, customJobs, showingCustom]);
 
             const playCurrentScene = (index) => {
                 if (!videoSlideshow || index >= videoSlideshow.scenes.length) {
@@ -1438,6 +1467,73 @@
             // Whether the narration is also shown as text under the slide. Some
             // readers want to read along, others find it crowds the drawing out.
             const [showNarration, setShowNarration] = useState(true);
+
+            // The one regeneration the customising arms are allowed, per tab. The
+            // job lives in Firestore rather than in this page, so leaving the tab
+            // or reloading does not lose it, and cancelling is a flag the function
+            // reads rather than a dropped request.
+            const [customJobs, setCustomJobs] = useState({});      // modality -> job doc
+            const [customFocus, setCustomFocus] = useState({});    // modality -> textarea
+            const [customLength, setCustomLength] = useState('default');
+            const [showingCustom, setShowingCustom] = useState({}); // modality -> bool
+            const [customBusy, setCustomBusy] = useState({});      // modality -> request in flight
+
+            useEffect(() => {
+                if (!caps.customize || !currentUser?.uid || !sessionId) return;
+                const col = window.firebaseCollection(
+                    window.firebaseDb, 'users', currentUser.uid, 'sessions', sessionId, 'customJobs');
+                const unsub = window.firebaseOnSnapshot(col, snap => {
+                    const next = {};
+                    snap.forEach(doc => { next[doc.id] = doc.data(); });
+                    setCustomJobs(next);
+                }, err => console.error('custom job watch failed:', err));
+                return () => unsub();
+            }, [caps.customize, currentUser, sessionId]);
+
+            const startCustom = async (modality) => {
+                if (customBusy[modality]) return;
+                setCustomBusy(prev => ({ ...prev, [modality]: true }));
+                try {
+                    const token = await currentUser.getIdToken();
+                    const res = await fetch(GENERATE_CUSTOM_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({
+                            sessionId,
+                            modality,
+                            focus: (customFocus[modality] || '').slice(0, MAX_FOCUS_CHARS),
+                            length: customLength
+                        })
+                    });
+                    if (!res.ok) {
+                        const e = await res.json().catch(() => ({}));
+                        throw new Error(e.error || 'Could not start');
+                    }
+                    logEvent('custom_generation_started', {
+                        modality,
+                        focusLength: (customFocus[modality] || '').trim().length,
+                        length: modality === 'video' ? customLength : null
+                    });
+                } catch (err) {
+                    console.error('custom start failed:', err);
+                    window.alert(`Could not start: ${err.message}`);
+                } finally {
+                    setCustomBusy(prev => ({ ...prev, [modality]: false }));
+                }
+            };
+
+            const cancelCustom = async (modality) => {
+                try {
+                    await window.firebaseSetDoc(
+                        window.firebaseDoc(window.firebaseDb, 'users', currentUser.uid, 'sessions', sessionId, 'customJobs', modality),
+                        { aborted: true },
+                        { merge: true }
+                    );
+                    logEvent('custom_generation_cancelled', { modality });
+                } catch (err) {
+                    console.error('cancel failed:', err);
+                }
+            };
 
             // Starting playback is all this does; the element's src is rendered from
             // the current scene, so setting it here too would reload the file twice.
@@ -3493,14 +3589,181 @@ Provide constructive feedback to help the reader think more critically about thi
                 );
 
                 // Infographics Tab - inline JSX
+                // The regeneration panel each customisable tab carries. It is a short
+                // transcript: what was asked for, then what came back, so the reader
+                // can see their own words next to the result.
+                const customPanel = (modality) => {
+                    if (!caps.customize) return null;
+                    const copy = CUSTOM_COPY[modality];
+                    const job = customJobs[modality];
+                    const status = job?.status;
+                    const running = status === 'running';
+                    const done = status === 'done';
+                    const focus = customFocus[modality] || '';
+
+                    return (
+                        <div className="mt-6 border-t pt-5">
+                            <div className="flex items-baseline justify-between mb-1">
+                                <h4 className="font-bold text-gray-800">Make your own {copy.noun}</h4>
+                                <span className="text-xs text-gray-500">{done ? 'used' : 'one chance'}</span>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-3">
+                                {copy.blurb} Takes {CUSTOM_WAIT[modality]} — you can keep reading meanwhile.
+                            </p>
+
+                            {!done && !running && (
+                                <div className="space-y-3">
+                                    <div>
+                                        <textarea
+                                            value={focus}
+                                            maxLength={MAX_FOCUS_CHARS}
+                                            onChange={(e) => setCustomFocus(prev => ({ ...prev, [modality]: e.target.value }))}
+                                            rows={2}
+                                            placeholder={copy.placeholder}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                        />
+                                        <p className="text-xs text-gray-400 text-right">{focus.length} / {MAX_FOCUS_CHARS}</p>
+                                    </div>
+
+                                    {modality === 'video' && (
+                                        <div className="flex space-x-2">
+                                            {VIDEO_LENGTH_CHOICES.map(c => (
+                                                <button
+                                                    key={c.id}
+                                                    type="button"
+                                                    onClick={() => setCustomLength(c.id)}
+                                                    className={`flex-1 px-3 py-2 rounded-lg border text-sm ${
+                                                        customLength === c.id
+                                                            ? 'border-purple-500 bg-purple-50 text-purple-700 font-medium'
+                                                            : 'border-gray-300 text-gray-600 hover:bg-gray-50'
+                                                    }`}
+                                                >
+                                                    {c.label}<span className="block text-xs font-normal opacity-70">{c.hint}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    <p className="text-xs text-gray-500">
+                                        You can do this once, and it cannot be undone.
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={() => startCustom(modality)}
+                                        disabled={!!customBusy[modality]}
+                                        className="w-full px-4 py-2 rounded-lg bg-purple-600 text-white font-medium hover:bg-purple-700 disabled:bg-purple-300"
+                                    >
+                                        {customBusy[modality] ? 'Starting…' : 'Generate'}
+                                    </button>
+                                </div>
+                            )}
+
+                            {(running || done || status === 'error' || status === 'aborted') && (
+                                <div className="space-y-2">
+                                    {job?.focus ? (
+                                        <div className="bg-gray-100 rounded-lg px-3 py-2 text-sm text-gray-700">
+                                            <span className="text-xs text-gray-500 block">You asked for</span>
+                                            {job.focus}
+                                        </div>
+                                    ) : (
+                                        <div className="bg-gray-100 rounded-lg px-3 py-2 text-sm text-gray-500">
+                                            You asked for a fresh version, with no particular focus.
+                                        </div>
+                                    )}
+
+                                    {running && (
+                                        <div className="bg-purple-50 border border-purple-200 rounded-lg px-3 py-3">
+                                            <div className="flex items-center space-x-2 text-purple-800 text-sm">
+                                                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                                </svg>
+                                                <span>{job.message || 'Working'}{job.total ? ` — ${job.done || 0} of ${job.total}` : ''}</span>
+                                            </div>
+                                            {job.total > 0 && (
+                                                <div className="h-1.5 bg-purple-100 rounded-full overflow-hidden mt-2">
+                                                    <div className="h-full bg-purple-500" style={{ width: `${Math.round(((job.done || 0) / job.total) * 100)}%` }}></div>
+                                                </div>
+                                            )}
+                                            <button
+                                                type="button"
+                                                onClick={() => cancelCustom(modality)}
+                                                className="mt-3 text-xs text-purple-700 underline"
+                                            >
+                                                Stop — this cannot be resumed
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {done && (
+                                        <div className="bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-sm text-green-800">
+                                            ✓ Ready — use the switch above to compare it with the original.
+                                        </div>
+                                    )}
+
+                                    {status === 'error' && (
+                                        <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm text-red-700">
+                                            Something went wrong, so this did not use up your turn. You can try again.
+                                        </div>
+                                    )}
+
+                                    {status === 'aborted' && (
+                                        <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm text-amber-800">
+                                            Stopped. This did not use up your turn, so you can start again.
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    );
+                };
+
+                // Flips a tab between the version everyone gets and the reader's own.
+                const customSwitch = (modality) => {
+                    if (!caps.customize || customJobs[modality]?.status !== 'done') return null;
+                    const mine = !!showingCustom[modality];
+                    return (
+                        <div className="flex justify-center mb-3">
+                            <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden text-sm">
+                                {[['Original', false], ['Yours', true]].map(([label, want]) => (
+                                    <button
+                                        key={label}
+                                        type="button"
+                                        onClick={() => {
+                                            setShowingCustom(prev => ({ ...prev, [modality]: want }));
+                                            if (modality === 'video') {
+                                                // The two versions have different scenes, so the
+                                                // playhead cannot carry across.
+                                                setSlideshowPlaying(false);
+                                                setCurrentSceneIndex(0);
+                                                setSceneElapsed(0);
+                                            }
+                                            logEvent('custom_version_viewed', { modality, version: want ? 'custom' : 'original' });
+                                        }}
+                                        className={`px-4 py-1.5 ${mine === want ? 'bg-purple-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+                                    >
+                                        {label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                };
+
                 const infographicsTab = (
                     <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
                         {resourceContent.infographics ? (
-                            <img
-                                src={resourceContent.infographics}
-                                alt="Infographic"
-                                className="max-w-full h-auto mx-auto"
-                            />
+                            <div className="max-w-2xl mx-auto">
+                                {customSwitch('infographic')}
+                                <img
+                                    src={showingCustom.infographic && customJobs.infographic?.status === 'done'
+                                        ? customJobs.infographic.url
+                                        : resourceContent.infographics}
+                                    alt="Infographic"
+                                    className="max-w-full h-auto mx-auto"
+                                />
+                                {customPanel('infographic')}
+                            </div>
                         ) : (
                             <div className="text-center text-gray-500 mt-12">
                                 <div className="text-4xl mb-4">📊</div>
@@ -3545,11 +3808,19 @@ Provide constructive feedback to help the reader think more critically about thi
                 // still while its narration plays, and the narration ending is what
                 // turns the page. The play/pause handlers are the ones the recorder
                 // already listens to, so the tab is logged like the old <video> was.
-                const scene = videoSlideshow?.scenes?.[currentSceneIndex];
+                // Which slideshow the video tab is showing: the one everybody gets,
+                // or the reader's own once they have made it.
+                const customVideoJob = customJobs.video;
+                const activeSlideshow = (showingCustom.video && customVideoJob?.status === 'done')
+                    ? { title: customVideoJob.title, scenes: customVideoJob.scenes.map(sc => ({ ...sc, imageUrl: sc.image, audioUrl: sc.audio })) }
+                    : videoSlideshow;
+                activeSlideshowRef.current = activeSlideshow;
+                const scene = activeSlideshow?.scenes?.[currentSceneIndex];
                 const videoTab = (
                     <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-                        {videoSlideshow && scene ? (
+                        {activeSlideshow && scene ? (
                             <div className="max-w-2xl mx-auto">
+                                {customSwitch('video')}
                                 <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
                                     <img
                                         src={scene.imageUrl}
@@ -3572,7 +3843,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                             const r = e.currentTarget.getBoundingClientRect();
                                             const want = ((e.clientX - r.left) / r.width) * videoDuration;
                                             let i = 0;
-                                            while (i < videoSlideshow.scenes.length - 1 && getSceneStartTime(i + 1) <= want) i++;
+                                            while (i < activeSlideshow.scenes.length - 1 && getSceneStartTime(i + 1) <= want) i++;
                                             pendingSeekRef.current = Math.max(0, want - getSceneStartTime(i));
                                             if (i === currentSceneIndex && slideshowAudioRef.current) {
                                                 slideshowAudioRef.current.currentTime = pendingSeekRef.current;
@@ -3601,7 +3872,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                             >
                                                 {showNarration ? 'Script on' : 'Script off'}
                                             </button>
-                                            <span>Scene {currentSceneIndex + 1} / {videoSlideshow.scenes.length}</span>
+                                            <span>Scene {currentSceneIndex + 1} / {activeSlideshow.scenes.length}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -3624,8 +3895,8 @@ Provide constructive feedback to help the reader think more critically about thi
                                         {slideshowPlaying ? '⏸ Pause' : '▶ Play'}
                                     </button>
                                     <button
-                                        onClick={() => { if (currentSceneIndex < videoSlideshow.scenes.length - 1) setCurrentSceneIndex(currentSceneIndex + 1); }}
-                                        disabled={currentSceneIndex >= videoSlideshow.scenes.length - 1}
+                                        onClick={() => { if (currentSceneIndex < activeSlideshow.scenes.length - 1) setCurrentSceneIndex(currentSceneIndex + 1); }}
+                                        disabled={currentSceneIndex >= activeSlideshow.scenes.length - 1}
                                         className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-40"
                                     >
                                         Next →
@@ -3644,7 +3915,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                         setSceneElapsed(e.target.currentTime);
                                     }}
                                     onEnded={() => {
-                                        if (currentSceneIndex < videoSlideshow.scenes.length - 1) {
+                                        if (currentSceneIndex < activeSlideshow.scenes.length - 1) {
                                             setCurrentSceneIndex(currentSceneIndex + 1);
                                         } else {
                                             setSlideshowPlaying(false);
@@ -3652,6 +3923,8 @@ Provide constructive feedback to help the reader think more critically about thi
                                         }
                                     }}
                                 />
+
+                                {customPanel('video')}
                             </div>
                         ) : (
                             <div className="text-center text-gray-500 mt-12">
@@ -3666,21 +3939,30 @@ Provide constructive feedback to help the reader think more critically about thi
                 const audioTab = (
                     <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
                         {resourceContent.audio ? (
-                            <div className="flex flex-col items-center justify-center h-full">
-                                <div className="text-6xl mb-6">🎧</div>
-                                <audio
-                                    ref={audioRef}
-                                    controls
-                                    className="w-full max-w-md"
-                                    onPlay={handleAudioPlay}
-                                    onPause={handleAudioPause}
-                                    onEnded={handleAudioEnded}
-                                    onSeeking={handleAudioSeeking}
-                                    onSeeked={handleAudioSeeked}
-                                >
-                                    <source src={resourceContent.audio} type={resourceContent.audioType || 'audio/mpeg'} />
-                                    Your browser does not support the audio element.
-                                </audio>
+                            <div className="max-w-md mx-auto">
+                                {customSwitch('audio')}
+                                <div className="flex flex-col items-center justify-center py-6">
+                                    <div className="text-6xl mb-6">🎧</div>
+                                    <audio
+                                        key={showingCustom.audio && customJobs.audio?.status === 'done' ? 'custom' : 'default'}
+                                        ref={audioRef}
+                                        controls
+                                        className="w-full"
+                                        onPlay={handleAudioPlay}
+                                        onPause={handleAudioPause}
+                                        onEnded={handleAudioEnded}
+                                        onSeeking={handleAudioSeeking}
+                                        onSeeked={handleAudioSeeked}
+                                    >
+                                        <source
+                                            src={showingCustom.audio && customJobs.audio?.status === 'done' ? customJobs.audio.url : resourceContent.audio}
+                                            type="audio/mpeg"
+                                        />
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+
+                                {customPanel('audio')}
                             </div>
                         ) : (
                             <div className="text-center text-gray-500 mt-12">

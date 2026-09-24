@@ -1,0 +1,14 @@
+rules_version = '2';
+
+// Generated media only. Everything is written by the Cloud Function with admin
+// rights, which these rules do not constrain; what they do is stop browsers
+// writing here at all, so nothing can be uploaded on a participant's behalf.
+// The files themselves are made public individually as they are written, since
+// the reading page loads them as plain URLs.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
