@@ -20,7 +20,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
 
         // Initialize Firebase
         const firebaseConfig = {
@@ -113,10 +113,17 @@
             // Profile state (for new users or profile update)
             const [currentUser, setCurrentUser] = useState(null);
 
+            // Arriving on an emailed link while somebody is still signed in means
+            // onAuthStateChanged fires for the OLD account first, and would route
+            // that account onward before the link had a chance to swap users. Hold
+            // the handler until the swap has finished.
+            const linkSignInPendingRef = useRef(false);
+
             // Check for email link sign-in and auth state
             useEffect(() => {
                 // Check if this is a sign-in with email link
                 if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
+                    linkSignInPendingRef.current = true;
                     let storedEmail = window.localStorage.getItem('emailForSignIn');
 
                     if (!storedEmail) {
@@ -132,21 +139,26 @@
                                 window.localStorage.removeItem('emailForSignIn');
                                 // Clear URL parameters
                                 window.history.replaceState({}, document.title, window.location.pathname);
-                                // Don't return here - let onAuthStateChanged handle the user
+                                // The swap is done; onAuthStateChanged may act now, and
+                                // fires again for the new user of its own accord.
+                                linkSignInPendingRef.current = false;
                             })
                             .catch((error) => {
                                 console.error('Error signing in with email link:', error);
+                                linkSignInPendingRef.current = false;
                                 setError(getErrorMessage(error.code));
                                 setLoading(false);
                                 setCheckingAuth(false);
                             });
                     } else {
+                        linkSignInPendingRef.current = false;
                         setCheckingAuth(false);
                     }
                     // Don't return - still need to set up onAuthStateChanged listener
                 }
 
                 const unsubscribe = auth.onAuthStateChanged(async (user) => {
+                    if (linkSignInPendingRef.current) return;
                     if (user) {
                         setCurrentUser(user);
                         // Check if user has profile in Firestore
