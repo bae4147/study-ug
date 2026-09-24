@@ -8,6 +8,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="flow.js"></script>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -39,9 +40,6 @@
         // every condition once and the sequence cannot be predicted from outside.
         const CONDITIONS = ['no_ai', 'mm', 'mm_cimo'];
 
-        // Test accounts - excluded from randomization counter
-        const TEST_ACCOUNTS = ['sh.bae@snu.ac.kr', 'shyun.bae@gmail.com', 'bae.332@osu.edu'];
-
         const shuffled = () => {
             const a = CONDITIONS.slice();
             for (let i = a.length - 1; i > 0; i--) {
@@ -52,7 +50,7 @@
         };
 
         const getNextCondition = async (email) => {
-            if (TEST_ACCOUNTS.includes(email.toLowerCase())) {
+            if (STUDY_FLOW.isTestAccount(email)) {
                 const c = CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)];
                 console.log('Test account - assigned random condition:', c);
                 return c;
@@ -98,6 +96,7 @@
             const [loading, setLoading] = useState(false);
             const [checkingAuth, setCheckingAuth] = useState(true);
             const [emailSent, setEmailSent] = useState(false);
+            const [alreadyDone, setAlreadyDone] = useState(false);
 
             // Profile state (for new users or profile update)
             const [currentUser, setCurrentUser] = useState(null);
@@ -142,6 +141,28 @@
                         // Nothing to collect at sign-in: the verified email is the
                         // identity. Register on first visit, then go straight to the study.
                         try {
+                            // One run per person. Whoever already finished is shown the
+                            // door here rather than at the study pages, because this is
+                            // the only place a new session is ever created. Whoever is
+                            // part-way through is returned to their own session instead
+                            // of being handed a second, empty one.
+                            const state = await STUDY_FLOW.readSessions(db, user.uid);
+                            const isTester = STUDY_FLOW.isTestAccount(user.email);
+                            if (!isTester && state.finished) {
+                                setAlreadyDone(true);
+                                setLoading(false);
+                                setCheckingAuth(false);
+                                return;
+                            }
+                            if (state.open) {
+                                const url = STUDY_FLOW.urlFor(user.uid, state.open);
+                                if (url) {
+                                    STUDY_FLOW.remember(state.open.id);
+                                    window.location.replace(url);
+                                    return;
+                                }
+                            }
+
                             const userRef = db.collection('users').doc(user.uid);
                             const userDoc = await userRef.get();
                             let condition;
@@ -237,6 +258,7 @@
                 setCurrentUser(null);
                 setEmail('');
                 setEmailSent(false);
+                setAlreadyDone(false);
             };
 
             const handleResendLink = () => {
@@ -268,6 +290,33 @@
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                             <p className="text-gray-600">Signing you in...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (alreadyDone) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                        <div className="max-w-md mx-auto">
+                            <div className="bg-white rounded-xl shadow-2xl p-8 text-center">
+                                <div className="text-5xl mb-4">✅</div>
+                                <h1 className="text-2xl font-bold text-gray-800 mb-3">You have already completed this study</h1>
+                                <p className="text-gray-600 text-sm mb-6">
+                                    Our records show that you finished the assignment on this account.
+                                    It can only be taken once, so there is nothing further to do.
+                                </p>
+                                <p className="text-gray-500 text-xs mb-6">
+                                    If you believe this is a mistake, contact{' '}
+                                    <a className="text-blue-600 underline" href="mailto:bae.332@osu.edu">bae.332@osu.edu</a>.
+                                </p>
+                                <button
+                                    onClick={handleLogout}
+                                    className="w-full px-6 py-2 text-gray-500 hover:text-gray-700 text-sm"
+                                >
+                                    Sign Out
+                                </button>
+                            </div>
                         </div>
                     </div>
                 );

@@ -23,6 +23,14 @@ sign-in state: whoever is not signed in goes to `login.html`, and whoever is
 signed in with an unfinished session is sent back to the page that session's
 `currentPhase` names, so that reopening the link does not mint a second session.
 
+**One run per person.** `login.html` is the only place a session is ever created,
+so that is where the rule lives: an account that already holds a session with
+`currentPhase: 'complete'` is shown "you have already completed this study" and
+no session is made. The completion page has no "start a new assignment" button
+any more. The accounts in `flow.js`'s `TEST_ACCOUNTS`, and any `tester-*@example.com`
+made by `dev.html`, are exempt so the study can still be walked through once live.
+The routing and the exemption list live in `docs/flow.js`, shared by both pages.
+
 Sign-in comes first so that consent is recorded against a known participant.
 The two instruction pages are static: `instructions.html` describes the whole
 assignment, `reading-instructions.html` only the reading session (and names the

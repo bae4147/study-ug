@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="flow.js"></script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
     <p class="text-gray-600">Loading…</p>
@@ -26,17 +27,6 @@
     });
     var db = firebase.firestore();
 
-    // Where each recorded phase left off. A session carries the phase it is *about
-    // to* do, so this is simply "open that page again".
-    var PHASE_PAGE = {
-        consent: 'consent.html',
-        instructions: 'instructions.html',
-        survey: 'survey.html',
-        post_task: 'post-task.html',
-        quiz: 'quiz.html',
-        survey2: 'survey2.html'
-    };
-
     var toLogin = function () {
         window.location.replace('login.html' + window.location.search);
     };
@@ -44,29 +34,18 @@
     firebase.auth().onAuthStateChanged(function (user) {
         if (!user) { toLogin(); return; }
 
-        // Signed in already. Going through login.html would mint a second session
-        // for someone who is part-way through one, so pick up the open session
-        // instead and only fall back to login when there is nothing to resume.
-        db.collection('users').doc(user.uid).collection('sessions')
-            .orderBy('startedAt', 'desc').limit(1).get()
-            .then(function (snap) {
-                if (snap.empty) { toLogin(); return; }
+        // Signed in already. login.html mints a session for whoever arrives, so
+        // send a part-way participant back to their own session instead; everything
+        // else (a first visit, or a run that is already finished) is login's call.
+        STUDY_FLOW.readSessions(db, user.uid)
+            .then(function (state) {
+                var fresh = STUDY_FLOW.isTestAccount(user.email);
+                if (!fresh && state.finished) { toLogin(); return; }
+                if (!state.open) { toLogin(); return; }
 
-                var doc = snap.docs[0];
-                var s = doc.data();
-                var page = PHASE_PAGE[s.currentPhase];
-                if (!page) { toLogin(); return; }   // finished, or a phase we do not route
-
-                try { sessionStorage.setItem('currentSessionId', doc.id); } catch (e) {}
-                var params = new URLSearchParams({
-                    participantId: user.uid,
-                    experimentId: doc.id,
-                    sessionId: doc.id,
-                    condition: s.condition || '',
-                    paper: s.paper || 'hafner2014',
-                    mode: 'experiment'
-                });
-                window.location.replace(page + '?' + params.toString());
+                STUDY_FLOW.remember(state.open.id);
+                var url = STUDY_FLOW.urlFor(user.uid, state.open);
+                if (url) { window.location.replace(url); } else { toLogin(); }
             })
             .catch(function (e) {
                 console.error('Could not look up an open session:', e);
