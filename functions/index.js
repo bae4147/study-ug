@@ -568,6 +568,24 @@ exports.generateCustom = onRequest(
         return cancelled;
       };
 
+      // Some steps cannot be interrupted part-way: an infographic is a single
+      // call that either returns an image or does not. Asking again once the
+      // work is done means a reader who pressed Stop gets their turn back
+      // rather than a result they asked us not to make.
+      const abortedSinceStart = async () => {
+        const snap = await jobRef.get();
+        return snap.exists && snap.data().aborted === true;
+      };
+      const finish = async (fields) => {
+        if (await abortedSinceStart()) {
+          await jobRef.set({ status: "aborted", finishedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+          console.log(`custom ${modality} discarded: stopped before it was saved`);
+          return false;
+        }
+        await jobRef.set({ ...fields, status: "done", finishedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        return true;
+      };
+
       const stamp = `${uid}/${sessionId}/${modality}-${startedAt}`;
       const opts = { keys, focus, onProgress, isAborted };
 
@@ -575,12 +593,12 @@ exports.generateCustom = onRequest(
         const r = await gen.generateInfographic(opts);
         const ext = r.contentType.includes("jpeg") ? "jpg" : "png";
         const url = await publicUpload(r.image, `custom/${stamp}.${ext}`, r.contentType);
-        await jobRef.set({ status: "done", url, finishedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        await finish({ url });
 
       } else if (modality === "audio") {
         const r = await gen.generateAudio(opts);
         const url = await publicUpload(r.audio, `custom/${stamp}.mp3`, "audio/mpeg");
-        await jobRef.set({ status: "done", url, script: r.script, finishedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        await finish({ url, script: r.script });
 
       } else {
         const r = await gen.generateVideo({ ...opts, length });
@@ -595,12 +613,7 @@ exports.generateCustom = onRequest(
           ]);
           scenes.push({ sceneNumber: sc.sceneNumber, image, audio, duration: sc.duration, narration: sc.narration });
         }
-        await jobRef.set({
-          status: "done",
-          title: r.title,
-          scenes,
-          finishedAt: admin.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
+        await finish({ title: r.title, scenes });
       }
 
       console.log(`✅ custom ${modality} for ${uid} in ${Math.round((Date.now() - startedAt) / 1000)}s`);
