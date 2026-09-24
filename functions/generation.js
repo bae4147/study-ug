@@ -26,6 +26,11 @@ function paperText() {
 // in length, stripped of newlines, and quoted as data the model may act on but
 // must not take orders from.
 const MAX_FOCUS_CHARS = 300;
+
+// Playback rate for both the podcast and the video narration. 1.0 is OpenAI's
+// default pace; the knob is here because it is the one thing most likely to be
+// retuned, and it has to stay the same across the two so they sound alike.
+const SPEECH_SPEED = 1.0;
 function cleanFocus(focus) {
     const t = String(focus || "").replace(/\s+/g, " ").trim().slice(0, MAX_FOCUS_CHARS);
     return t || null;
@@ -123,6 +128,7 @@ Generate the script now:`;
                 model: "tts-1",
                 input: segments[i].text.substring(0, 4000),
                 voice: segments[i].voice,
+                speed: SPEECH_SPEED,
                 response_format: "mp3"
             })
         });
@@ -201,6 +207,67 @@ const VISUAL_STYLE = `- Background: solid cream/off-white (#F9F7F2), clean, no p
 - Text: hand-written style typography embedded in the illustration
 - Composition: minimalist, plenty of white space. No 3D, no gradients, no photorealism.`;
 
+// A long outline can be cut off mid-object when the model runs out of room.
+// Rather than lose the whole run, keep the scenes that did come through whole.
+function parseOutline(raw) {
+    const text = raw.replace(/^```json\s*/i, "").replace(/```\s*$/, "").trim();
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        const title = (text.match(/"title"\s*:\s*"((?:[^"\\]|\\.)*)"/) || [])[1] || "Video overview";
+        const start = text.indexOf("[", text.indexOf('"scenes"'));
+        if (start === -1) throw e;
+        const scenes = [];
+        let depth = 0, objStart = -1;
+        for (let i = start; i < text.length; i++) {
+            const c = text[i];
+            if (c === "{") { if (depth === 0) objStart = i; depth++; }
+            else if (c === "}") {
+                depth--;
+                if (depth === 0 && objStart !== -1) {
+                    try { scenes.push(JSON.parse(text.slice(objStart, i + 1))); } catch (ignored) { /* partial */ }
+                    objStart = -1;
+                }
+            }
+        }
+        if (scenes.length === 0) throw e;
+        console.warn(`outline was truncated; salvaged ${scenes.length} whole scenes`);
+        return { title, scenes };
+    }
+}
+
+// One slide. Kept separate so a slide that came back with mangled text can be
+// redrawn on its own: these models garble words they embed in the picture often
+// enough that a 24-slide run usually has two or three to fix.
+async function drawSlide({ keys, scene }) {
+    const imagePrompt = `Educational whiteboard illustration for an explainer video. 16:9 aspect ratio.
+
+${VISUAL_STYLE}
+
+Embedded text, spelled EXACTLY as written here and nowhere altered: ${(scene.key_text_elements || scene.keyTextElements || []).join(", ")}
+Do not add any other words, labels or lettering to the image.
+Layout: ${scene.layout_description || scene.layoutDescription || "centred composition, balanced elements"}
+
+${scene.visual_prompt || scene.visualPrompt || ""}`;
+
+    const res = await fetchWithRetry(
+        `${GEMINI}/gemini-3.1-flash-image:generateContent?key=${keys.gemini}`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: imagePrompt }] }],
+                generationConfig: { responseModalities: ["image", "text"] }
+            })
+        },
+        3, 5000
+    );
+    if (!res.ok) return null;
+    const parts = (await res.json()).candidates?.[0]?.content?.parts || [];
+    const img = parts.find(p => p.inlineData?.mimeType?.startsWith("image/"));
+    return img ? img.inlineData.data : null;
+}
+
 async function generateVideo({ keys, focus = null, length = "default", onProgress = () => {}, isAborted = null }) {
     const f = cleanFocus(focus);
     const plan = VIDEO_LENGTHS[length] || VIDEO_LENGTHS.default;
@@ -231,14 +298,14 @@ ${paperText().substring(0, 25000)}`;
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: brainPrompt }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 16000, response_mime_type: "application/json" }
+                generationConfig: { temperature: 0.7, maxOutputTokens: 65536, response_mime_type: "application/json" }
             })
         }
     );
     if (!brainRes.ok) throw new Error(`outline: ${await brainRes.text()}`);
 
     const raw = (await brainRes.json()).candidates?.[0]?.content?.parts?.[0]?.text || "";
-    const outline = JSON.parse(raw.replace(/^```json\s*/i, "").replace(/```\s*$/, ""));
+    const outline = parseOutline(raw);
     let scenes = (outline.scenes || []).slice(0, plan.scenes);
     if (scenes.length === 0) throw new Error("the outline had no scenes");
 
@@ -280,7 +347,10 @@ ${scene.visual_prompt}`;
                 sceneNumber: scene.scene_number,
                 imageBase64: img.inlineData.data,
                 duration: scene.duration_sec || 9,
-                narration: scene.narration
+                narration: scene.narration,
+                keyTextElements: scene.key_text_elements || [],
+                layoutDescription: scene.layout_description || "",
+                visualPrompt: scene.visual_prompt || ""
             };
         }));
         drawn.push(...results.filter(Boolean));
@@ -300,6 +370,7 @@ ${scene.visual_prompt}`;
                 model: "tts-1-hd",
                 input: scene.narration,
                 voice: "shimmer",
+                speed: SPEECH_SPEED,
                 response_format: "mp3"
             })
         });
@@ -318,6 +389,8 @@ ${scene.visual_prompt}`;
 }
 
 module.exports = {
+    drawSlide,
+    VISUAL_STYLE,
     generateAudio,
     generateInfographic,
     generateVideo,

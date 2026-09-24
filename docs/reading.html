@@ -599,12 +599,32 @@
             useEffect(() => {
                 setResourceContent(prev => ({
                     ...prev,
-                    infographics: 'papers/hafner2014/infographic.png',
-                    audio: 'papers/hafner2014/audio.m4a',
-                    audioType: 'audio/mp4',
-                    video: 'papers/hafner2014/video.mp4'
+                    infographics: 'papers/hafner2014/infographic.jpg',
+                    audio: 'papers/hafner2014/audio.mp3',
+                    audioType: 'audio/mpeg'
                 }));
                 setInfographicReady(true);
+
+                // The video overview is a narrated slideshow, not a single file: one
+                // image and one narration per scene, served beside a manifest. The
+                // player below is study2's, so the scenes are handed to it in the
+                // shape it already expects.
+                fetch('papers/hafner2014/video.json')
+                    .then(r => r.ok ? r.json() : Promise.reject(new Error('video.json ' + r.status)))
+                    .then(d => {
+                        const base = 'papers/hafner2014/';
+                        setVideoSlideshow({
+                            title: d.title,
+                            scenes: (d.scenes || []).map(sc => ({
+                                sceneNumber: sc.sceneNumber,
+                                imageUrl: base + sc.image,
+                                audioUrl: base + sc.audio,
+                                duration: sc.duration,
+                                narration: sc.narration
+                            }))
+                        });
+                    })
+                    .catch(e => console.error('Could not load the video overview:', e));
             }, []);
 
             // Track current page based on scroll position
@@ -3540,29 +3560,82 @@ Provide constructive feedback to help the reader think more critically about thi
                     }
                 };
 
-                // Video Tab - Slideshow Player with video-like controls
+                // Video Tab — the overview is a narrated slideshow: each scene holds
+                // still while its narration plays, and the narration ending is what
+                // turns the page. The play/pause handlers are the ones the recorder
+                // already listens to, so the tab is logged like the old <video> was.
+                const scene = videoSlideshow?.scenes?.[currentSceneIndex];
                 const videoTab = (
                     <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-                        {resourceContent.video ? (
-                            <div className="flex flex-col items-center justify-center h-full">
-                                <video
-                                    ref={videoRef}
-                                    controls
-                                    className="w-full max-w-2xl rounded-lg shadow-lg"
-                                    onPlay={handleVideoPlay}
-                                    onPause={handleVideoPause}
-                                    onEnded={handleVideoEnded}
-                                    onSeeking={handleVideoSeeking}
-                                    onSeeked={handleVideoSeeked}
-                                >
-                                    <source src={resourceContent.video} type="video/mp4" />
-                                    Your browser does not support the video element.
-                                </video>
+                        {videoSlideshow && scene ? (
+                            <div className="max-w-2xl mx-auto">
+                                <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
+                                    <img
+                                        src={scene.imageUrl}
+                                        alt={`Scene ${currentSceneIndex + 1}`}
+                                        className="w-full block"
+                                        draggable={false}
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-sm p-3 leading-snug">
+                                        {scene.narration}
+                                    </div>
+                                </div>
+
+                                <div className="mt-3">
+                                    <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-purple-500"
+                                            style={{ width: `${videoDuration ? (getSceneStartTime(currentSceneIndex) / videoDuration) * 100 : 0}%` }}
+                                        ></div>
+                                    </div>
+                                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                        <span>{Math.floor(getSceneStartTime(currentSceneIndex) / 60)}:{String(Math.round(getSceneStartTime(currentSceneIndex) % 60)).padStart(2, '0')}</span>
+                                        <span>Scene {currentSceneIndex + 1} / {videoSlideshow.scenes.length}</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-center space-x-3 mt-4">
+                                    <button
+                                        onClick={() => { if (currentSceneIndex > 0) setCurrentSceneIndex(currentSceneIndex - 1); }}
+                                        disabled={currentSceneIndex === 0}
+                                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-40"
+                                    >
+                                        ← Prev
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            if (slideshowPlaying) { pauseSlideshow(); handleVideoPause(); }
+                                            else { setSlideshowPlaying(true); handleVideoPlay(); }
+                                        }}
+                                        className="px-8 py-2 rounded-lg bg-purple-600 text-white font-medium hover:bg-purple-700"
+                                    >
+                                        {slideshowPlaying ? '⏸ Pause' : '▶ Play'}
+                                    </button>
+                                    <button
+                                        onClick={() => { if (currentSceneIndex < videoSlideshow.scenes.length - 1) setCurrentSceneIndex(currentSceneIndex + 1); }}
+                                        disabled={currentSceneIndex >= videoSlideshow.scenes.length - 1}
+                                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-40"
+                                    >
+                                        Next →
+                                    </button>
+                                </div>
+
+                                <audio
+                                    ref={slideshowAudioRef}
+                                    onEnded={() => {
+                                        if (currentSceneIndex < videoSlideshow.scenes.length - 1) {
+                                            setCurrentSceneIndex(currentSceneIndex + 1);
+                                        } else {
+                                            setSlideshowPlaying(false);
+                                            handleVideoEnded();
+                                        }
+                                    }}
+                                />
                             </div>
                         ) : (
                             <div className="text-center text-gray-500 mt-12">
                                 <div className="text-4xl mb-4">🎬</div>
-                                <p>No video available</p>
+                                <p>Loading the video overview…</p>
                             </div>
                         )}
                     </div>
