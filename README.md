@@ -9,7 +9,7 @@ listed under *What changed* is study2's code, byte for byte.
 - **Firebase project:** `study-ug-osu` (Firestore + Cloud Functions; no Hosting)
 - **Paper:** Häfner, Stock & Oberst (2014), *Decreasing students' stress through
   time management training* — `docs/papers/hafner2014/paper.pdf`
-- **Media (temporary, from study1's mroz2018):** `audio.m4a`, `video.mp4`, `infographic.png` in the same folder
+- **Media:** `audio.m4a` (1:32), `video.mp4` (7:12), `infographic.png` (1536×2752) in the same folder, all on this paper
 
 ## Flow
 
@@ -150,7 +150,6 @@ handles this URL shape — it is what the redirect produced anyway.
 
 ## Before recruiting
 
-- [ ] Replace the temporary media in `docs/papers/hafner2014/`
 - [ ] Edit participant-facing copy (post-task / surveys still read as the MBA study)
 - [ ] Delete `docs/dev.html`, remove `devLogin` from `functions/index.js`, rotate `DEV_ACCESS_TOKEN`
 - [ ] Delete test users (`tester-*@example.com`) under `users/` and `firebase firestore:delete randomization/counter`
