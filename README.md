@@ -14,9 +14,14 @@ listed under *What changed* is study2's code, byte for byte.
 ## Flow
 
 ```
-landing → login (email link) → consent → instructions → reading-instructions
+index → login (email link) → consent → instructions → reading-instructions
        → reading → survey → post-task (CIMO reflection) → quiz → survey2 → complete
 ```
+
+`index.html` is the entry point (it is what the root URL serves). It checks the
+sign-in state: whoever is not signed in goes to `login.html`, and whoever is
+signed in with an unfinished session is sent back to the page that session's
+`currentPhase` names, so that reopening the link does not mint a second session.
 
 Sign-in comes first so that consent is recorded against a known participant.
 The two instruction pages are static: `instructions.html` describes the whole

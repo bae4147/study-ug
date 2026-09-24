@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Assignment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
+    <p class="text-gray-600">Loading…</p>
+
+<script>
+(function () {
+    firebase.initializeApp({
+        apiKey: "AIzaSyBd4MI5xzSE4QYIjxe_DlBKnuuv-aiS3nk",
+        authDomain: "study-ug-osu.firebaseapp.com",
+        projectId: "study-ug-osu",
+        storageBucket: "study-ug-osu.firebasestorage.app",
+        messagingSenderId: "115284332881",
+        appId: "1:115284332881:web:351ebb762bad162fccc370"
+    });
+    var db = firebase.firestore();
+
+    // Where each recorded phase left off. A session carries the phase it is *about
+    // to* do, so this is simply "open that page again".
+    var PHASE_PAGE = {
+        consent: 'consent.html',
+        instructions: 'instructions.html',
+        survey: 'survey.html',
+        post_task: 'post-task.html',
+        quiz: 'quiz.html',
+        survey2: 'survey2.html'
+    };
+
+    var toLogin = function () {
+        window.location.replace('login.html' + window.location.search);
+    };
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) { toLogin(); return; }
+
+        // Signed in already. Going through login.html would mint a second session
+        // for someone who is part-way through one, so pick up the open session
+        // instead and only fall back to login when there is nothing to resume.
+        db.collection('users').doc(user.uid).collection('sessions')
+            .orderBy('startedAt', 'desc').limit(1).get()
+            .then(function (snap) {
+                if (snap.empty) { toLogin(); return; }
+
+                var doc = snap.docs[0];
+                var s = doc.data();
+                var page = PHASE_PAGE[s.currentPhase];
+                if (!page) { toLogin(); return; }   // finished, or a phase we do not route
+
+                try { sessionStorage.setItem('currentSessionId', doc.id); } catch (e) {}
+                var params = new URLSearchParams({
+                    participantId: user.uid,
+                    experimentId: doc.id,
+                    sessionId: doc.id,
+                    condition: s.condition || '',
+                    paper: s.paper || 'hafner2014',
+                    mode: 'experiment'
+                });
+                window.location.replace(page + '?' + params.toString());
+            })
+            .catch(function (e) {
+                console.error('Could not look up an open session:', e);
+                toLogin();
+            });
+    });
+})();
+</script>
+</body>
+</html>
