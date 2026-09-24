@@ -165,6 +165,27 @@ Microsoft 365 quarantines mail that links to domains it has never seen, and a
 new Firebase project's auth domain is exactly that. `login.html` already
 handles this URL shape — it is what the redirect produced anyway.
 
+## Where the customisation work left off
+
+The pipeline is in place and makes the default media; what remains is the arm
+design the professor asked for (his point 8) and the customisation UI on top:
+
+- **Five arms at 20% each**, replacing the current three. `no_ai` is not one of
+  them: his fifth arm is *no multimodal contents + the default chat*, so it still
+  has a chatbot, which `no_ai` does not. Deciding this is with the researcher.
+- **One customised run per modality** (failures and cancellations not counted),
+  driven from inside the existing tabs, with the request and result shown as a
+  short exchange. `generation.js` already takes a `focus` string and a video
+  `length`, so the UI is what is missing, not the generation.
+- **Cost has to be capped server-side.** A browser check is not enough, and a
+  cancelled request does not stop a Cloud Function that is already running: the
+  function has to look for an abort flag before each expensive step.
+- **NotebookLM Enterprise cannot replace this pipeline.** Its API creates
+  notebooks and audio overviews (with an `episodeFocus` string), but there is no
+  documented video-overview method and no documented way to download the audio it
+  makes — the docs point at the Studio UI. It also needs Gemini Enterprise
+  licences and is `v1alpha`.
+
 ## Before recruiting
 
 - [ ] Edit participant-facing copy (post-task / surveys still read as the MBA study)
