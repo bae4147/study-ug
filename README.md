@@ -46,17 +46,29 @@ profile is saved.
 
 ## Conditions
 
-Assigned in `login.html` by **permuted blocks of 3**: every 3 consecutive
-participants cover each arm once, in a fresh random order.
+Assigned in `login.html` by **permuted blocks of 5**: every 5 consecutive
+participants cover each arm once, in a fresh random order, so the five arms sit
+at 20% each.
 
-| condition | right panel | chatbot |
-|---|---|---|
-| `no_ai` | none | — |
-| `mm` | 4 tabs | study2 `controlSystemPrompt` (general assistant) |
-| `mm_cimo` | 4 tabs | study2 `ebmCimoSystemPrompt` + parallel context-extraction call |
+| condition | multimodal tabs | chatbot | may customise |
+|---|---|---|---|
+| `mm_cimo_custom` | yes | CIMO coach | yes |
+| `mm_cimo` | yes | CIMO coach | — |
+| `mm_chat_custom` | yes | plain assistant | yes |
+| `mm_chat` | yes | plain assistant | — |
+| `chat_only` | — | plain assistant | — |
 
-Tabs are study2's: 💬 AI Chatbot first, then 🎬 Video Overview / 👥 Podcast /
-🗺️ Infographic shuffled per participant. The summary-text tab is removed.
+**Every arm has a chatbot.** The arms differ in whether the multimodal tabs sit
+beside it, which prompt it runs, and whether the content can be regenerated once.
+
+`docs/conditions.js` is the single definition, as capabilities rather than names:
+pages ask whether this participant *has* multimodal tabs or a CIMO chat, and
+never match on the condition id. The arms used to be listed by name in half a
+dozen files, which is how the old `no_ai` arm ended up with no chatbot at all
+when every arm was meant to have one.
+
+Tabs: 💬 AI Chatbot first, then 🎬 Video Overview / 👥 Podcast / 🗺️ Infographic
+shuffled per participant. `chat_only` gets the chatbot tab alone.
 
 ## What changed from study2
 
@@ -167,12 +179,9 @@ handles this URL shape — it is what the redirect produced anyway.
 
 ## Where the customisation work left off
 
-The pipeline is in place and makes the default media; what remains is the arm
-design the professor asked for (his point 8) and the customisation UI on top:
+The five arms and the pipeline are in place. What remains is the customisation
+UI on top of them:
 
-- **Five arms at 20% each**, replacing the current three. `no_ai` is not one of
-  them: his fifth arm is *no multimodal contents + the default chat*, so it still
-  has a chatbot, which `no_ai` does not. Deciding this is with the researcher.
 - **One customised run per modality** (failures and cancellations not counted),
   driven from inside the existing tabs, with the request and result shown as a
   short exchange. `generation.js` already takes a `focus` string and a video

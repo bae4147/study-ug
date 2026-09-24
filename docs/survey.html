@@ -8,6 +8,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="conditions.js"></script>
     <script src="no-back.js"></script>
 
     <!-- Firebase -->
@@ -85,7 +86,8 @@
 
             // What "GenAI" means depends on the arm: the multimodal arms had the chatbot
             // plus video, podcast and infographic; anything else had the chatbot only.
-            const genAiDefinition = (condition === 'mm' || condition === 'mm_cimo')
+            const hadMultimodal = conditionCaps(condition).multimodal;
+            const genAiDefinition = hadMultimodal
                 ? 'the AI Chatbot, Video Overview, Audio Overview (podcast), and Infographic provided during the reading session'
                 : 'the AI Chatbot provided during the reading session';
 
@@ -109,7 +111,9 @@
                     alert('Please complete all GenAI-related questions.');
                     return;
                 }
-                if (chatbotHelpfulness === '' || infographicHelpfulness === '' || videoHelpfulness === '' || podcastHelpfulness === '') {
+                const helpfulnessMissing = chatbotHelpfulness === '' ||
+                    (hadMultimodal && (infographicHelpfulness === '' || videoHelpfulness === '' || podcastHelpfulness === ''));
+                if (helpfulnessMissing) {
                     alert('Please rate how helpful each GenAI resource was for your learning.');
                     return;
                 }
@@ -130,9 +134,9 @@
                     llmTrust: Object.fromEntries(TRUST_ITEMS.map(i => [i.key, parseInt(trustAnswers[i.key])])),
                     resourceHelpfulness: {
                         chatbot: parseInt(chatbotHelpfulness),
-                        infographic: parseInt(infographicHelpfulness),
-                        video: parseInt(videoHelpfulness),
-                        podcast: parseInt(podcastHelpfulness)
+                        infographic: hadMultimodal ? parseInt(infographicHelpfulness) : null,
+                        video: hadMultimodal ? parseInt(videoHelpfulness) : null,
+                        podcast: hadMultimodal ? parseInt(podcastHelpfulness) : null
                     },
                     completedAt: new Date().toISOString()
                 };
@@ -406,7 +410,7 @@
 {/* GenAI Resource Helpfulness Section */}
                                 <div className="border-b pb-6">
                                     <h2 className="text-xl font-bold text-gray-800 mb-2">Section 4. GenAI Resource Helpfulness</h2>
-                                    <p className="text-sm text-gray-600 mb-4">Please rate how helpful each resource was for your learning.</p>
+                                    <p className="text-sm text-gray-600 mb-4">Please rate how helpful {hadMultimodal ? 'each resource was' : 'the AI chatbot was'} for your learning.</p>
                                     <p className="text-xs text-gray-500 mb-4">0 = I did not use this resource, 1 = Not at all helpful, 7 = Extremely helpful</p>
 
                                     <div className="space-y-6">
@@ -437,6 +441,7 @@
                                             </div>
                                         </div>
 
+                                        {hadMultimodal && (<>
                                         {/* Infographics */}
                                         <div>
                                             <label className="block text-sm font-bold text-gray-800 mb-2">
@@ -517,6 +522,7 @@
                                                 <span className="text-xs text-gray-500">Extremely helpful</span>
                                             </div>
                                         </div>
+                                        </>)}
                                     </div>
                                 </div>
 

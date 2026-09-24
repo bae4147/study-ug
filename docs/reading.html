@@ -16,6 +16,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="conditions.js"></script>
 
     <!-- PDF.js library for PDF text extraction -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -303,7 +304,12 @@
             });
 
             // Random tab order (shuffle content tabs, chat always first)
+            // Every arm has the chatbot; only the multimodal arms get the other three.
+            const caps = conditionCaps(condition);
             const [tabOrder] = useState(() => {
+                if (!conditionCaps(new URLSearchParams(window.location.search).get('condition')).multimodal) {
+                    return ['chat'];
+                }
                 const shuffleTabs = ['video', 'audio', 'infographics'];
                 // Fisher-Yates shuffle
                 for (let i = shuffleTabs.length - 1; i > 0; i--) {
@@ -1144,7 +1150,7 @@
                 focusStartTimeRef.current = Date.now();
 
                 // For extended condition: sync activeTab with activeFocus when entering right panel
-                if ((condition === 'mm' || condition === 'ebm' || condition === 'ebm_coach' || condition === 'ebm_action' || condition === 'mm_cimo') && goingToRightPanel && !wasOnRightPanel) {
+                if (goingToRightPanel && !wasOnRightPanel) {
                     if (activeTab === null) {
                         setActiveTab(newFocus);
                     }
@@ -1232,7 +1238,7 @@
                 });
 
                 // Update focusTimes for the previous focus
-                if (condition === 'mm' || condition === 'ebm' || condition === 'ebm_coach' || condition === 'ebm_action' || condition === 'mm_cimo') {
+                {
                     const elapsed = now - focusStartTimeRef.current;
                     setFocusTimes(prev => ({
                         ...prev,
@@ -2448,13 +2454,7 @@ The user is reading the following paper:
 ${paperContent.replace(/<[^>]*>/g, '')}
 ---`;
 
-                    const systemPrompt = condition === 'mm_cimo'
-                        ? ebmCimoSystemPrompt
-                        : (condition === 'ebm_action'
-                        ? ebmActionSystemPrompt
-                        : (condition === 'ebm_coach'
-                            ? ebmCoachSystemPrompt
-                            : (condition === 'ebm' ? ebmSystemPrompt : controlSystemPrompt)));
+                    const systemPrompt = caps.chat === 'cimo' ? ebmCimoSystemPrompt : controlSystemPrompt;
 
                     // Context Extraction prompt for EBM CIMO
                     const contextExtractionPrompt = `# SYSTEM PROMPT - Context Extraction LLM
@@ -2522,7 +2522,7 @@ Respond in JSON only:
 
                     // Context Extraction LLM call (only for ebm_cimo condition)
                     let contextExtractionPromise = null;
-                    if (condition === 'mm_cimo') {
+                    if (caps.chat === 'cimo') {
                         contextExtractionPromise = fetch(CHAT_COMPLETION_URL, {
                             method: 'POST',
                             headers: {
@@ -2563,7 +2563,7 @@ Respond in JSON only:
                     let extractedContext = null;
                     let newCumulativeContext = cumulativeContext;
 
-                    if (condition === 'mm_cimo' && contextResponse && contextResponse.ok) {
+                    if (caps.chat === 'cimo' && contextResponse && contextResponse.ok) {
                         try {
                             const contextData = await contextResponse.json();
                             let contextContent = contextData.choices[0].message.content;
@@ -2602,7 +2602,7 @@ Respond in JSON only:
                         responseTime: answerTime - questionTime
                     };
 
-                    if (condition === 'mm_cimo') {
+                    if (caps.chat === 'cimo') {
                         chatHistoryEntry.contextDetected = contextDetected;
                         chatHistoryEntry.extractedContext = extractedContext;
                         chatHistoryEntry.cumulativeContext = newCumulativeContext;
@@ -2615,7 +2615,7 @@ Respond in JSON only:
                         answer: assistantResponse,
                         responseTime: answerTime - questionTime,
                         timestamp: answerTime,
-                        ...(condition === 'mm_cimo' && {
+                        ...(caps.chat === 'cimo' && {
                             contextDetected,
                             extractedContext,
                             cumulativeContext: newCumulativeContext
@@ -3359,7 +3359,7 @@ Provide constructive feedback to help the reader think more critically about thi
 
             // READING PHASE
             if (phase === 'reading') {
-                const showRightPanel = condition === 'mm' || condition === 'ebm' || condition === 'ebm_coach' || condition === 'ebm_action' || condition === 'mm_cimo';
+                const showRightPanel = true;   // every arm has at least the chatbot
                 const showSocraticPanel = false; // Socratic condition removed
 
                 // Socratic Question Icon component

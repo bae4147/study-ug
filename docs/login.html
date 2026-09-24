@@ -8,6 +8,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="conditions.js"></script>
     <script src="flow.js"></script>
 
     <!-- Firebase -->
@@ -35,10 +36,11 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Permuted block randomization over the three arms. Each block is a fresh
-        // random ordering of all three, so every 3 consecutive participants cover
-        // every condition once and the sequence cannot be predicted from outside.
-        const CONDITIONS = ['no_ai', 'mm', 'mm_cimo'];
+        // Permuted block randomization over the five arms. Each block is a fresh
+        // random ordering of all five, so every 5 consecutive participants cover
+        // every condition once -- 20% each, as the design calls for -- and the
+        // sequence cannot be predicted from outside.
+        const CONDITIONS = window.STUDY_CONDITION_IDS;
 
         const shuffled = () => {
             const a = CONDITIONS.slice();

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reading Assignment - Reading Session</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="conditions.js"></script>
     <script src="no-back.js"></script>
 
     <!-- Firebase -->
@@ -69,13 +70,9 @@
 
     // What sits beside the article depends on the arm, so the instruction must too:
     // promising an AI chatbot to a no_ai participant would be its own confound.
-    var hasTools = (condition === 'mm' || condition === 'mm_cimo');
-    if (hasTools) {
-        document.getElementById('tools-text').textContent =
-            'Beside the article you will find an AI chatbot, a video overview, an audio overview (podcast) and an infographic, all about this article. Use as many or as few of them as you like.';
-    } else {
-        document.getElementById('tools-block').classList.add('hidden');
-    }
+    document.getElementById('tools-text').textContent = conditionCaps(condition).multimodal
+        ? 'Beside the article you will find an AI chatbot, a video overview, an audio overview (podcast) and an infographic, all about this article. Use as many or as few of them as you like.'
+        : 'Beside the article you will find an AI chatbot you can ask about this article. Use it as much or as little as you like.';
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (!user) { window.location.href = 'login.html'; return; }
