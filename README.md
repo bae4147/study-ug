@@ -18,8 +18,8 @@ listed under *What changed* is study2's code, byte for byte.
 ## Flow
 
 ```
-index → login (email link) → consent → instructions → reading-instructions
-       → reading → survey → post-task (CIMO reflection) → quiz → survey2 → complete
+index → login (email link) → consent → instructions → pre-survey
+       → reading-instructions → reading → survey → post-task (CIMO reflection) → quiz → survey2 → complete
 ```
 
 `index.html` is the entry point (it is what the root URL serves). It checks the
@@ -77,6 +77,7 @@ shuffled per participant. `chat_only` gets the chatbot tab alone.
 | `login.html` | class dropdown removed (not collected); creates the session; 3-arm permuted blocks; redirects to `consent.html` |
 | `consent.html` | new; the OSU consent form, gated on sign-in, with an agreement checkbox; writes `consentGivenAt` to the user doc and the session |
 | `instructions.html`, `reading-instructions.html` | new; static, auth-guarded, pass the query string through |
+| `pre-survey.html` | new; everyday GenAI use and demographics, taken before reading. Items from study-aom's final survey, reworded for undergraduates ("for your studies" instead of "at work"; year in school and major instead of the job items). Saved as `preSurvey` |
 | `post-task.html` | rebuilt as four open CIMO reflection questions, one text box each (Context / Intervention / Mechanism / Outcome); saved under `postTask.reflection` |
 | `quiz.html` | new; study-aom's closed-book quiz mechanics (single-choice + "Not Sure", timer, confidence rating, auto-grading) with 8 items on Häfner (2014), cut from the 15 marked `final_15` in `quiz_review.csv` by dropping detail-recall items first |
 | `survey.html` / `survey2.html` | `post-study-survey.html` split in two: reading experience before the quiz, comprehension and application after the post-task |

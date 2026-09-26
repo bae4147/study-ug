@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Assignment - Background Survey</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="no-back.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBd4MI5xzSE4QYIjxe_DlBKnuuv-aiS3nk",
+            authDomain: "study-ug-osu.firebaseapp.com",
+            projectId: "study-ug-osu",
+            storageBucket: "study-ug-osu.firebasestorage.app",
+            messagingSenderId: "115284332881",
+            appId: "1:115284332881:web:351ebb762bad162fccc370"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Background taken before reading, so nothing the reading does can colour
+        // it. The GenAI-use and demographic items come from study-aom's final
+        // survey, reworded for undergraduates: "at work" became "for your studies",
+        // and the job items (hours, tenure, title, industry, highest degree) gave
+        // way to year in school and major, which vary where those would not.
+
+        const AI_FREQUENCY = [
+            'Never',
+            'Rarely (a few times a month)',
+            'Sometimes (a few times a week)',
+            'Often (daily)',
+            'Very often (multiple times a day)'
+        ];
+        const AI_PURPOSES = [
+            'Writing assistance',
+            'Research/Information gathering',
+            'Coding assistance',
+            'Brainstorming/Ideation',
+            'Summarization',
+            'Translation',
+            'Other'
+        ];
+        const GENDERS = ['Male', 'Female', 'Non-binary', 'Other', 'Prefer not to say'];
+        const YEARS = ['First-year', 'Second-year', 'Third-year', 'Fourth-year', 'Fifth-year or beyond', 'Other'];
+        const WORKING = [
+            'I work full-time in an organization.',
+            'I work part-time in an organization.',
+            'I do not work for any organization.'
+        ];
+        const ETHNICITIES = [
+            'American Indian or Native American',
+            'Asian or Asian-American',
+            'White (non-Hispanic)',
+            'Black or African-American',
+            'Hispanic or Latino',
+            'Native Hawaiian or Pacific Islander',
+            'Middle Eastern, Southwest Asian, or North African',
+            'Other',
+            'Prefer not to answer'
+        ];
+        const ENGLISH = ['Not fluent', 'Quite fluent', 'Very fluent', 'Native'];
+
+        function Radio({ name, options, value, onChange }) {
+            return (
+                <div className="space-y-2">
+                    {options.map(opt => (
+                        <label key={opt} className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                                type="radio"
+                                name={name}
+                                checked={value === opt}
+                                onChange={() => onChange(opt)}
+                                className="w-4 h-4"
+                            />
+                            <span className="text-sm text-gray-700">{opt}</span>
+                        </label>
+                    ))}
+                </div>
+            );
+        }
+
+        function Checks({ options, values, onToggle }) {
+            return (
+                <div className="space-y-2">
+                    {options.map(opt => (
+                        <label key={opt} className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={values.includes(opt)}
+                                onChange={() => onToggle(opt)}
+                                className="w-4 h-4"
+                            />
+                            <span className="text-sm text-gray-700">{opt}</span>
+                        </label>
+                    ))}
+                </div>
+            );
+        }
+
+        const Q = ({ children }) => (
+            <label className="block text-sm font-bold text-gray-800 mb-3">{children}</label>
+        );
+
+        function PreSurvey() {
+            const [currentUser, setCurrentUser] = useState(null);
+            const [checkingAuth, setCheckingAuth] = useState(true);
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('experimentId') || urlParams.get('sessionId') || sessionStorage.getItem('currentSessionId');
+
+            // GenAI use
+            const [aiFrequency, setAiFrequency] = useState('');
+            const [aiPurposes, setAiPurposes] = useState([]);
+            const [aiPurposeOther, setAiPurposeOther] = useState('');
+            const [aiTools, setAiTools] = useState('');
+
+            // Demographics
+            const [age, setAge] = useState('');
+            const [gender, setGender] = useState('');
+            const [yearInSchool, setYearInSchool] = useState('');
+            const [yearOther, setYearOther] = useState('');
+            const [major, setMajor] = useState('');
+            const [working, setWorking] = useState('');
+            const [ethnicity, setEthnicity] = useState([]);
+            const [english, setEnglish] = useState('');
+
+            const [isSubmitting, setIsSubmitting] = useState(false);
+
+            useEffect(() => {
+                const unsubscribe = auth.onAuthStateChanged((user) => {
+                    if (!user) { window.location.href = 'login.html'; return; }
+                    setCurrentUser(user);
+                    setCheckingAuth(false);
+                });
+                return () => unsubscribe();
+            }, []);
+
+            const usesAi = aiFrequency && aiFrequency !== 'Never';
+            const toggle = (setter) => (opt) =>
+                setter(prev => prev.includes(opt) ? prev.filter(x => x !== opt) : [...prev, opt]);
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (isSubmitting) return;
+
+                const missing = [];
+                if (!aiFrequency) missing.push('how often you use AI tools');
+                if (usesAi && aiPurposes.length === 0) missing.push('what you use AI tools for');
+                const ageNum = parseInt(age, 10);
+                if (!ageNum || ageNum < 16 || ageNum > 99) missing.push('your age');
+                if (!gender) missing.push('your gender');
+                if (!yearInSchool) missing.push('your year in school');
+                if (!major.trim()) missing.push('your major');
+                if (!working) missing.push('your working situation');
+                if (ethnicity.length === 0) missing.push('your race/ethnicity');
+                if (!english) missing.push('your English proficiency');
+                if (missing.length) {
+                    alert('Please answer: ' + missing.join(', ') + '.');
+                    return;
+                }
+
+                setIsSubmitting(true);
+                const preSurvey = {
+                    genAiUse: {
+                        frequency: aiFrequency,
+                        // Asked only of those who use AI at all; kept empty otherwise
+                        // rather than left to whatever was ticked before changing to Never.
+                        purposes: usesAi ? aiPurposes : [],
+                        purposeOther: usesAi && aiPurposes.includes('Other') ? (aiPurposeOther.trim() || null) : null,
+                        tools: aiTools.trim() || null
+                    },
+                    demographics: {
+                        age: ageNum,
+                        gender,
+                        yearInSchool: yearInSchool === 'Other' ? (yearOther.trim() || 'Other') : yearInSchool,
+                        major: major.trim(),
+                        workingSituation: working,
+                        ethnicity,
+                        englishProficiency: english
+                    },
+                    completedAt: new Date().toISOString()
+                };
+
+                try {
+                    if (!sessionId) throw new Error('Missing sessionId');
+                    await db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId)
+                        .set({ preSurvey, currentPhase: 'reading_instructions' }, { merge: true });
+                    window.location.replace('reading-instructions.html' + window.location.search);
+                } catch (error) {
+                    console.error('Error saving background survey:', error);
+                    alert('Failed to save. Please try again.');
+                    setIsSubmitting(false);
+                }
+            };
+
+            if (checkingAuth) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                        <p className="text-gray-600">Loading…</p>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="bg-white rounded-xl shadow-2xl p-8">
+                            <div className="text-center mb-8">
+                                <div className="text-5xl mb-4">🗒️</div>
+                                <h1 className="text-3xl font-bold text-gray-800 mb-2">About you</h1>
+                                <p className="text-gray-600">A few questions before you start reading.</p>
+                            </div>
+
+                            <form onSubmit={handleSubmit} className="space-y-8">
+                                <div className="border-b pb-6 space-y-6">
+                                    <h2 className="text-xl font-bold text-gray-800">Section 1. Everyday GenAI Use</h2>
+
+                                    <div>
+                                        <Q>How often do you use AI tools (e.g., ChatGPT, Claude, Gemini) for your coursework or studies? *</Q>
+                                        <Radio name="freq" options={AI_FREQUENCY} value={aiFrequency} onChange={setAiFrequency} />
+                                    </div>
+
+                                    {usesAi && (
+                                        <div>
+                                            <Q>For what purposes do you use AI tools in your studies? (Select all that apply.) *</Q>
+                                            <Checks options={AI_PURPOSES} values={aiPurposes} onToggle={toggle(setAiPurposes)} />
+                                            {aiPurposes.includes('Other') && (
+                                                <input
+                                                    type="text"
+                                                    value={aiPurposeOther}
+                                                    onChange={(e) => setAiPurposeOther(e.target.value)}
+                                                    placeholder="Please specify"
+                                                    className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                                />
+                                            )}
+                                        </div>
+                                    )}
+
+                                    <div>
+                                        <Q>What GenAI tools do you use, if any? (Optional)</Q>
+                                        <input
+                                            type="text"
+                                            value={aiTools}
+                                            onChange={(e) => setAiTools(e.target.value)}
+                                            placeholder="e.g., ChatGPT, Claude, Copilot, Gemini..."
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="border-b pb-6 space-y-6">
+                                    <h2 className="text-xl font-bold text-gray-800">Section 2. Demographics</h2>
+
+                                    <div>
+                                        <Q>1. What is your age? *</Q>
+                                        <input
+                                            type="number"
+                                            min="16" max="99"
+                                            value={age}
+                                            onChange={(e) => setAge(e.target.value)}
+                                            placeholder="e.g., 20"
+                                            className="w-32 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <Q>2. What is your gender? *</Q>
+                                        <Radio name="gender" options={GENDERS} value={gender} onChange={setGender} />
+                                    </div>
+
+                                    <div>
+                                        <Q>3. What is your year in school? *</Q>
+                                        <Radio name="year" options={YEARS} value={yearInSchool} onChange={setYearInSchool} />
+                                        {yearInSchool === 'Other' && (
+                                            <input
+                                                type="text"
+                                                value={yearOther}
+                                                onChange={(e) => setYearOther(e.target.value)}
+                                                placeholder="Please specify"
+                                                className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                            />
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <Q>4. What is your major? *</Q>
+                                        <input
+                                            type="text"
+                                            value={major}
+                                            onChange={(e) => setMajor(e.target.value)}
+                                            placeholder="e.g., Business Administration"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <Q>5. What is your working situation? *</Q>
+                                        <Radio name="work" options={WORKING} value={working} onChange={setWorking} />
+                                    </div>
+
+                                    <div>
+                                        <Q>6. What is your race/ethnicity? (You may select more than one.) *</Q>
+                                        <Checks options={ETHNICITIES} values={ethnicity} onToggle={toggle(setEthnicity)} />
+                                    </div>
+
+                                    <div>
+                                        <Q>7. What is your English proficiency level? *</Q>
+                                        <Radio name="english" options={ENGLISH} value={english} onChange={setEnglish} />
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300"
+                                    >
+                                        {isSubmitting ? 'Saving…' : 'Continue →'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<PreSurvey />, document.getElementById('root'));
+    </script>
+</body>
+</html>

@@ -8,6 +8,7 @@ window.STUDY_FLOW = (function () {
     var PHASE_PAGE = {
         consent: 'consent.html',
         instructions: 'instructions.html',
+        reading_instructions: 'reading-instructions.html',
         survey: 'survey.html',
         post_task: 'post-task.html',
         quiz: 'quiz.html',
