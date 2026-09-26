@@ -1,0 +1,14 @@
+{
+ "config": "nano-banana-pro",
+ "task": "request",
+ "run": 1,
+ "imageModel": {
+  "provider": "gemini",
+  "model": "gemini-3-pro-image"
+ },
+ "focus": "Focus on the results at 2 and 4 weeks.",
+ "file": "request-r1.jpg",
+ "bytes": 816628,
+ "modelNote": null,
+ "seconds": 23.7
+}

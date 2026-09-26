@@ -1,0 +1,18 @@
+{"config": "nano-banana-pro", "task": "default", "run": 1, "flags": [{"code": "WRONG", "fact": "E2", "quote": "stress bar chart falls again from Time 2 to Time 3", "note": "means 3.30 -> 2.96 -> 3.03; lowest at 2 weeks"}]}
+{"config": "nano-banana-pro", "task": "default", "run": 2, "flags": [{"code": "GARBLED", "fact": "-", "quote": "Practicals innacating a program to prets a wiest management or control of time.", "note": "unreadable text block"}]}
+{"config": "nano-banana-pro", "task": "default", "run": 3, "flags": []}
+{"config": "nano-banana-pro", "task": "request", "run": 1, "flags": []}
+{"config": "nano-banana-pro", "task": "request", "run": 2, "flags": []}
+{"config": "nano-banana-pro", "task": "request", "run": 3, "flags": []}
+{"config": "nano-banana-2", "task": "default", "run": 1, "flags": [{"code": "WRONG", "fact": "E1", "quote": "time management behaviour chart labelled 3.30 / 2.89 / 3.03", "note": "paper: 3.01 / 3.19 / 3.31 (stress and control means reused)"}, {"code": "GARBLED", "fact": "-", "quote": "(T TRANSFER); especially for oure groups, especially for PERCEIVED STRESS", "note": "typos and repeated phrase"}]}
+{"config": "nano-banana-2", "task": "default", "run": 2, "flags": [{"code": "WRONG", "fact": "E2", "quote": "stress line keeps falling to Time 3", "note": "means 3.30 -> 2.96 -> 3.03"}, {"code": "ADDED", "fact": "D2", "quote": "stress and control plotted on a 0-100 scale", "note": "scales run 1-5; plotted values invented"}]}
+{"config": "nano-banana-2", "task": "default", "run": 3, "flags": [{"code": "OVERSTATED", "fact": "F3", "quote": "Monitoring: monitor goal progress, see completed tasks, reinforcing information", "note": "authors' 'might' explanation listed as training content"}]}
+{"config": "nano-banana-2", "task": "request", "run": 1, "flags": [{"code": "GARBLED", "fact": "-", "quote": "F(1, 22)=S.75*; 'Planning ateps'", "note": "5.75 and 'steps' misrendered"}]}
+{"config": "nano-banana-2", "task": "request", "run": 2, "flags": [{"code": "OVERSTATED", "fact": "F3", "quote": "Possible explanations: ... provided more orientation, initiated goal-oriented behavior, and generated reinforcing information", "note": "drops 'might'"}, {"code": "GARBLED", "fact": "-", "quote": "INCREASED INCREASED CONTROL OF TIME", "note": "doubled word"}]}
+{"config": "nano-banana-2", "task": "request", "run": 3, "flags": [{"code": "GARBLED", "fact": "-", "quote": "p(1, 0107 (two-tailed); p(1, 0251; 'os', 'od'", "note": "misrendered statistics"}, {"code": "WRONG", "fact": "E6", "quote": "side labels 'BEFORE TRAINING (T1)' / '2 WEEKS AFTER (T2)' on the 2- and 4-week panels; effect sizes paired as 0.78/0.78 and 0.64/0.13", "note": "time labels and effect-size pairs wrong"}]}
+{"config": "gpt-image-2", "task": "default", "run": 1, "flags": []}
+{"config": "gpt-image-2", "task": "request", "run": 1, "flags": []}
+{"config": "gpt-image-2", "task": "default", "run": 2, "flags": []}
+{"config": "gpt-image-2", "task": "request", "run": 2, "flags": []}
+{"config": "gpt-image-2", "task": "default", "run": 3, "flags": []}
+{"config": "gpt-image-2", "task": "request", "run": 3, "flags": []}

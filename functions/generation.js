@@ -320,7 +320,9 @@ Write the script now.`;
 // infographic — one vertical image
 // ---------------------------------------------------------------------------
 
-async function generateInfographic({ keys, focus = null, detail = "standard", onProgress = () => {}, isAborted = null }) {
+const DEFAULT_IMAGE_MODEL = { provider: "gemini", model: MODELS.infographic.image };
+
+async function generateInfographic({ keys, focus = null, detail = "standard", imageModel = DEFAULT_IMAGE_MODEL, onProgress = () => {}, isAborted = null }) {
     const f = cleanFocus(focus);
     const level = INFOGRAPHIC_DETAIL[detail] ? detail : "standard";
     onProgress({ step: "image", message: "Drawing the infographic" });
@@ -347,8 +349,15 @@ ${paperText()}
 ${requestBlock(f, "infographic", { canSayMissing: false })}
 Generate the infographic now.`;
 
+    const out = imageModel.provider === "openai"
+        ? await drawOpenAI({ keys, model: imageModel.model, prompt })
+        : await drawGemini({ keys, model: imageModel.model, prompt });
+    return { ...out, detail: level };
+}
+
+async function drawGemini({ keys, model, prompt }) {
     const res = await fetchWithRetry(
-        `${GEMINI}/gemini-3-pro-image-preview:generateContent?key=${keys.gemini}`,
+        `${GEMINI}/${model}:generateContent?key=${keys.gemini}`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -365,12 +374,28 @@ Generate the infographic now.`;
     if (!image) throw new Error("the model returned no image");
 
     const note = parts.filter(p => typeof p.text === "string").map(p => p.text).join("\n").trim();
-    return {
-        image: Buffer.from(image.inlineData.data, "base64"),
-        contentType: image.inlineData.mimeType,
-        modelNote: note || null,
-        detail: level
-    };
+    return { image: Buffer.from(image.inlineData.data, "base64"), contentType: image.inlineData.mimeType, modelNote: note || null };
+}
+
+// OpenAI's image endpoint caps the prompt well below the paper's length, so the
+// paper goes through the Responses API, where a text model reads it and calls
+// the image tool with the chosen image model.
+async function drawOpenAI({ keys, model, prompt }) {
+    const res = await fetchWithRetry("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
+        body: JSON.stringify({
+            model: "gpt-5.5",
+            input: prompt,
+            tools: [{ type: "image_generation", model, size: "1024x1536", quality: "high" }],
+            tool_choice: { type: "image_generation" }
+        })
+    });
+    if (!res.ok) throw new Error(`infographic: ${await res.text()}`);
+    const items = (await res.json()).output || [];
+    const call = items.find(i => i.type === "image_generation_call" && i.result);
+    if (!call) throw new Error("the model returned no image");
+    return { image: Buffer.from(call.result, "base64"), contentType: "image/png", modelNote: call.revised_prompt || null };
 }
 
 // ---------------------------------------------------------------------------
@@ -566,6 +591,7 @@ module.exports = {
     AUDIO_LENGTHS,
     VIDEO_LENGTHS,
     INFOGRAPHIC_DETAIL,
+    DEFAULT_IMAGE_MODEL,
     audioWords,
     videoScenes,
     drawSlide,

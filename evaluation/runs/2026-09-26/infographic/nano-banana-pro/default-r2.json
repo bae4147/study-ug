@@ -1,0 +1,14 @@
+{
+ "config": "nano-banana-pro",
+ "task": "default",
+ "run": 2,
+ "imageModel": {
+  "provider": "gemini",
+  "model": "gemini-3-pro-image"
+ },
+ "focus": null,
+ "file": "default-r2.jpg",
+ "bytes": 795977,
+ "modelNote": null,
+ "seconds": 19.7
+}

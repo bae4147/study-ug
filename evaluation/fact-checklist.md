@@ -16,6 +16,7 @@ List the factual claims the piece makes, then mark each one:
 | **OVERSTATED** | Drops a hedge or strengthens a claim ("proves" for "at least to some extent") |
 | **MISATTRIBUTED** | Right fact, wrong owner (a cited study's figure given as this study's; the authors' interpretation given as a finding or as "theorists") |
 | **COMPUTED** | A figure the paper does not state, derived from its figures (e.g. 61% from 30.4 + 30.4) |
+| **GARBLED** | Images only: misrendered or unreadable text (misspelt words, broken statistics). Counted apart from the two totals |
 
 Leaving a fact out is **not** an error: no required-content list is imposed on
 outputs (decision of 2026-09-26). Request uptake and length are scored
