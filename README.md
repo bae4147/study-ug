@@ -200,7 +200,7 @@ UI on top of them:
 
 ## How the media are generated
 
-See `GENERATION.md`: how this study's pipeline differs from Study 1 and Study 2,
+See `GENERATION.md` (in Korean): how this study's pipeline differs from Study 2,
 a dated change log, what was found wrong, and the decisions taken.
 
 ## Keeping what was generated
