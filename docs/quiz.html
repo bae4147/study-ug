@@ -38,8 +38,8 @@
 
         // 8 comprehension items on Häfner, Stock & Oberst (2014), cut down from the
         // 15 marked final_15 in quiz_review.csv: the detail-recall items went first
-        // (a number, a term, a one-sentence design note), leaving the study's logic
-        // and its main results. The ids carry the review file's numbering.
+        // (a number, a term, a one-sentence design note), leaving the study's logic,
+        // its main results, and one item on what kind of training it was. The ids carry the review file's numbering.
         const QUIZ_QUESTIONS = [
             {
                 id: 1,   // quiz_review.csv #5
@@ -114,15 +114,15 @@
                 type: "multiple_choice"
             },
             {
-                id: 7,   // quiz_review.csv #17
-                question: "What change was observed in the participants' reported 'time management behavior' four weeks after the training compared to before it?",
+                id: 7,   // quiz_review.csv #16
+                question: "Which specific activity was emphasized in the first phase of the training intervention?",
                 options: [
-                    "A significant decrease occurred because students felt overwhelmed by new rules.",
-                    "A significant increase was reported.",
-                    "There was no change, suggesting the training was not transferred to daily life.",
-                    "Behavior returned to pre-training levels after an initial spike."
+                    "Self-reflection on the importance of various activities.",
+                    "Learning how to use a specific software for task monitoring.",
+                    "Practicing meditation to reduce immediate physiological stress.",
+                    "Creating a digital calendar."
                 ],
-                correctAnswer: "A significant increase was reported.",
+                correctAnswer: "Self-reflection on the importance of various activities.",
                 type: "multiple_choice"
             },
             {
