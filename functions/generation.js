@@ -159,6 +159,57 @@ async function mapPool(items, limit, fn) {
     return out;
 }
 
+// One text-generation call, to either provider, so the model behind the audio
+// script and the video plan can be swapped for the comparison without touching
+// the prompts. `textModel` = { provider: "openai" | "gemini", model, temperature }.
+// A temperature of null sends none, which is what models that accept only their
+// default (gpt-5.5) need.
+const DEFAULT_TEXT_MODELS = {
+    audio: { provider: "openai", model: "gpt-4o", temperature: TEMPERATURE },
+    video: { provider: "gemini", model: "gemini-3.6-flash", temperature: TEMPERATURE }
+};
+
+async function completeText({ keys, textModel, system, turns, json = false, maxTokens = 16000 }) {
+    // turns: [{ role: "user" | "assistant", content }]
+    const t = textModel;
+    if (t.provider === "openai") {
+        const body = {
+            model: t.model,
+            messages: [{ role: "system", content: system }, ...turns],
+            max_completion_tokens: maxTokens
+        };
+        if (t.temperature !== null && t.temperature !== undefined) body.temperature = t.temperature;
+        if (json) body.response_format = { type: "json_object" };
+        const res = await fetchWithRetry(`${OPENAI}/chat/completions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
+            body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error(`${t.model}: ${await res.text()}`);
+        const data = await res.json();
+        return { text: data.choices?.[0]?.message?.content || "", usage: data.usage || null };
+    }
+    if (t.provider === "gemini") {
+        const generationConfig = { maxOutputTokens: maxTokens };
+        if (t.temperature !== null && t.temperature !== undefined) generationConfig.temperature = t.temperature;
+        if (json) generationConfig.response_mime_type = "application/json";
+        const res = await fetchWithRetry(`${GEMINI}/${t.model}:generateContent?key=${keys.gemini}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                systemInstruction: { parts: [{ text: system }] },
+                contents: turns.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
+                generationConfig
+            })
+        });
+        if (!res.ok) throw new Error(`${t.model}: ${await res.text()}`);
+        const data = await res.json();
+        const parts = data.candidates?.[0]?.content?.parts || [];
+        return { text: parts.filter(p => typeof p.text === "string" && !p.thought).map(p => p.text).join(""), usage: data.usageMetadata || null };
+    }
+    throw new Error(`unknown provider ${t.provider}`);
+}
+
 function checkAborted(isAborted) {
     if (isAborted && isAborted()) {
         const e = new Error("aborted");
@@ -171,7 +222,7 @@ function checkAborted(isAborted) {
 // audio — two-host dialogue, study2's shape
 // ---------------------------------------------------------------------------
 
-async function generateAudio({ keys, focus = null, length = "default", onProgress = () => {}, isAborted = null }) {
+async function generateAudio({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.audio, speech = true, onProgress = () => {}, isAborted = null }) {
     const f = cleanFocus(focus);
     const words = audioWords(length);
     const minutes = (AUDIO_LENGTHS[length] || AUDIO_LENGTHS.default).minutes;
@@ -198,21 +249,8 @@ ${paperText()}
 ${requestBlock(f, "podcast")}
 Write the script now.`;
 
-    const scriptRes = await fetchWithRetry(`${OPENAI}/chat/completions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
-        body: JSON.stringify({
-            model: "gpt-4o",
-            messages: [
-                { role: "system", content: "You write accurate podcast scripts that stay strictly within the research paper you are given." },
-                { role: "user", content: scriptPrompt }
-            ],
-            max_tokens: 4000,
-            temperature: TEMPERATURE
-        })
-    });
-    if (!scriptRes.ok) throw new Error(`script: ${await scriptRes.text()}`);
-    let script = (await scriptRes.json()).choices[0].message.content;
+    const SYSTEM = "You write accurate podcast scripts that stay strictly within the research paper you are given.";
+    let script = (await completeText({ keys, textModel, system: SYSTEM, turns: [{ role: "user", content: scriptPrompt }] })).text;
 
     // Language models write short of a word count far more often than long. One
     // follow-up turn, only when the draft is under the range, brings it up to
@@ -226,28 +264,20 @@ Write the script now.`;
     if (draftWords < low) {
         checkAborted(isAborted);
         onProgress({ step: "script", message: "Bringing the script up to length" });
-        const moreRes = await fetchWithRetry(`${OPENAI}/chat/completions`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
-            body: JSON.stringify({
-                model: "gpt-4o",
-                messages: [
-                    { role: "system", content: "You write accurate podcast scripts that stay strictly within the research paper you are given." },
+        try {
+            const longer = (await completeText({
+                keys, textModel, system: SYSTEM,
+                turns: [
                     { role: "user", content: scriptPrompt },
                     { role: "assistant", content: script },
                     { role: "user", content: `That script is ${draftWords} words; it needs to be ${low} to ${high}. Rewrite it at that length. Add substance from the paper -- more of what it did, found and says about its findings -- rather than filler or longer greetings, and keep to every rule above, including the reader's request if there is one. Return only the full script.` }
-                ],
-                max_tokens: 4000,
-                temperature: TEMPERATURE
-            })
-        });
-        if (moreRes.ok) {
-            const longer = (await moreRes.json()).choices[0].message.content;
+                ]
+            })).text;
             if (spokenWords(longer) > draftWords) script = longer;   // keep the draft if the retry got no longer
-        }
+        } catch (e) { /* the draft stands */ }
     }
 
-    checkAborted(isAborted);
+    if (!speech) return { script, length, targetWords: words, draftWords, finalWords: spokenWords(script) };
 
     // Alex reads in one voice, Jordan in the other; anything the model wrapped in
     // bold or brackets is unwrapped before matching.
@@ -417,7 +447,7 @@ ${scene.visual_prompt || scene.visualPrompt || ""}`;
 // The scene plan alone: title, and per scene the narration, the slide lettering
 // and what to draw. Separate from the drawing and the speech so it can be
 // checked against the paper -- it is text, and cheap -- before anything is drawn.
-async function planVideo({ keys, focus = null, length = "default" }) {
+async function planVideo({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.video }) {
     const f = cleanFocus(focus);
     const n = videoScenes(length);
     const minutes = (VIDEO_LENGTHS[length] || VIDEO_LENGTHS.default).minutes;
@@ -446,29 +476,20 @@ ${paperText()}
 ${requestBlock(f, "video")}
 Return the JSON now.`;
 
-    const brainRes = await fetchWithRetry(
-        `${GEMINI}/gemini-3.6-flash:generateContent?key=${keys.gemini}`,
-        {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: brainPrompt }] }],
-                generationConfig: { temperature: TEMPERATURE, maxOutputTokens: 65536, response_mime_type: "application/json" }
-            })
-        }
-    );
-    if (!brainRes.ok) throw new Error(`outline: ${await brainRes.text()}`);
-
-    const raw = (await brainRes.json()).candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const raw = (await completeText({
+        keys, textModel, json: true, maxTokens: 65536,
+        system: "You plan accurate explainer videos that stay strictly within the research paper you are given.",
+        turns: [{ role: "user", content: brainPrompt }]
+    })).text;
     const outline = parseOutline(raw);
     const scenes = (outline.scenes || []).slice(0, n);
     if (scenes.length === 0) throw new Error("the outline had no scenes");
     return { title: outline.title || "Video overview", scenes, length, targetScenes: n };
 }
 
-async function generateVideo({ keys, focus = null, length = "default", onProgress = () => {}, isAborted = null }) {
+async function generateVideo({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.video, onProgress = () => {}, isAborted = null }) {
     onProgress({ step: "outline", message: "Planning the scenes" });
-    const plan = await planVideo({ keys, focus, length });
+    const plan = await planVideo({ keys, focus, length, textModel });
     const scenes = plan.scenes;
 
     checkAborted(isAborted);
@@ -537,6 +558,8 @@ async function generateVideo({ keys, focus = null, length = "default", onProgres
 
 module.exports = {
     MODELS,
+    DEFAULT_TEXT_MODELS,
+    completeText,
     SOURCE_RULES,
     TEMPERATURE,
     WPM,

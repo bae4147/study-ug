@@ -21,6 +21,19 @@ Leaving a fact out is **not** an error: no required-content list is imposed on
 outputs (decision of 2026-09-26). Request uptake and length are scored
 separately.
 
+**Two totals are reported per piece**, because the codes are not equally serious:
+
+- **Factual errors** = WRONG + MISATTRIBUTED. The primary measure in the model
+  comparison: the piece tells the reader something false about the study.
+- **Fidelity lapses** = ADDED + OVERSTATED + COMPUTED. Reported beside it: the
+  piece goes beyond the paper, even when what it says may be true (a correctly
+  computed percentage, a plausible added detail).
+
+**Rater.** Scored by Claude (Anthropic). The candidates are OpenAI and Google
+models only, so the rater is from neither vendor, which avoids a model favouring
+output from its own family. For reporting, a random sample should be re-scored
+by a person to give an agreement figure.
+
 Use the checklist below for the claims it covers; check anything else against
 the paper text directly.
 

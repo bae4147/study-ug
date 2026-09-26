@@ -172,6 +172,19 @@
    - 채점 기준: 논문의 핵심 사실 체크리스트를 먼저 만들어, 모든 후보를 같은 기준으로 채점
      (논문과 다른 주장 수, 논문에 없는 내용 수, 요청 반영도, 길이 정확도, 생성 시간, 비용)
    - 출력이 매번 달라지므로 조건마다 여러 번 생성해 비교
+   - **실행 구성 (2026-09-26):** `scripts/compare-models.js`. 텍스트만(오디오 대본, 영상 장면 계획), 조건마다 3회.
+     - 모델 비교 5조건 × 과제 4개(오디오 기본/요청, 영상 기본/요청) × 3회 = 60회. 조건: 현재 운영(오디오 gpt-4o,
+       영상 gemini-3.6-flash), `gpt-5.5`, `gpt-5.4-mini`, `gemini-3.8-flash`, `gemini-3.1-pro-preview`. temperature 0.4.
+     - temperature 비교: `gpt-5.4-mini`, `gemini-3.8-flash`를 0.2 / 0.7로 (0.4는 위에서) × 과제 2개 × 3회 = 24회.
+     - **`gpt-5.5`는 temperature를 기본값(1) 외에 받지 않음** (API가 거부). 그래서 모델 비교에는 기본값으로
+       참여하고 temperature 비교에서는 빠짐. 나머지 후보는 모두 설정을 받음.
+     - 요청 예시: 오디오 "Focus on the study's limitations and what it cannot tell us.", 영상 "Explain step by
+       step what the training actually taught students to do."
+     - 모델 교체를 위해 텍스트 호출을 `completeText`로 통일 (OpenAI·Gemini 어느 쪽이든 같은 프롬프트로 호출).
+       운영 기본값은 그대로 (오디오 gpt-4o, 영상 gemini-3.6-flash)이며 모델 결정 후 바꿈.
+   - **채점:** 사실 오류(WRONG + MISATTRIBUTED)를 주 지표로, 충실도 위반(ADDED + OVERSTATED + COMPUTED)을 따로
+     보고. 채점자는 Claude(Anthropic): 후보가 OpenAI·Google뿐이라 어느 쪽에도 속하지 않는 채점자. 보고용으로는
+     무작위 표본을 사람이 다시 채점해 일치도를 낼 것.
    - 채점 기준표: `evaluation/fact-checklist.md` (2026-09-26 작성). 논문 핵심 사실 35개(A–H: 연구·표본·훈련·
      측정·결과·해석·한계·인용 연구)와 판정 코드(OK / WRONG / ADDED / OVERSTATED / MISATTRIBUTED / COMPUTED),
      지금까지 발견된 오류 13건. 기준표의 숫자 53개가 모두 논문에 있는지 기계적으로 확인함.
