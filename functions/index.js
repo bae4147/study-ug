@@ -483,7 +483,7 @@ exports.generateCustom = onRequest(
     let jobRef = null;
 
     try {
-      const { sessionId, modality, focus = "", length = "default" } = req.body || {};
+      const { sessionId, modality, focus = "", length = "default", detail = "standard" } = req.body || {};
 
       // This endpoint spends money, so unlike the others it insists on knowing
       // who is calling rather than taking a uid on trust.
@@ -528,7 +528,8 @@ exports.generateCustom = onRequest(
         status: "running",
         modality,
         focus: String(focus || "").slice(0, gen.MAX_FOCUS_CHARS),
-        length: modality === "video" ? length : null,
+        // the one button setting: length for video and audio, detail for the infographic
+        setting: modality === "infographic" ? detail : length,
         condition,
         aborted: false,
         step: "starting",
@@ -596,7 +597,7 @@ exports.generateCustom = onRequest(
       const record = (extra) => ({
         uid, sessionId, condition, modality,
         focus: String(focus || "").slice(0, gen.MAX_FOCUS_CHARS) || null,
-        length: modality === "video" ? length : null,
+        setting: modality === "infographic" ? detail : length,
         models: gen.MODELS[modality],
         startedAt: new Date(startedAt).toISOString(),
         finishedAt: new Date().toISOString(),
@@ -606,7 +607,7 @@ exports.generateCustom = onRequest(
         publicUpload(Buffer.from(JSON.stringify(data, null, 2)), `custom/${dir}/record.json`, "application/json");
 
       if (modality === "infographic") {
-        const r = await gen.generateInfographic(opts);
+        const r = await gen.generateInfographic({ ...opts, detail });
         const ext = r.contentType.includes("jpeg") ? "jpg" : "png";
         const url = await publicUpload(r.image, `custom/${stamp}/infographic.${ext}`, r.contentType);
         const rec = record({ url, modelNote: r.modelNote });
@@ -614,7 +615,7 @@ exports.generateCustom = onRequest(
         await finish({ url, modelNote: r.modelNote, models: rec.models });
 
       } else if (modality === "audio") {
-        const r = await gen.generateAudio(opts);
+        const r = await gen.generateAudio({ ...opts, length });
         const url = await publicUpload(r.audio, `custom/${stamp}/audio.mp3`, "audio/mpeg");
         await publicUpload(Buffer.from(r.script), `custom/${stamp}/script.txt`, "text/plain; charset=utf-8");
         const rec = record({ url, script: r.script, lines: r.segments });

@@ -111,22 +111,23 @@
 
         // One three-way setting per modality, sent as a value rather than read out
         // of the text, because a setting is the only way it is kept reliably.
-        // Labels follow NotebookLM's. Durations are shown only where measured.
+        // Labels follow NotebookLM's. The minutes must match AUDIO_LENGTHS / VIDEO_LENGTHS
+        // in functions/generation.js, which is where they are turned into words and scenes.
         const CUSTOM_SETTING = {
             video: {
                 param: 'length', label: 'Length', initial: 'default',
                 choices: [
-                    { id: 'short', label: 'Shorter', hint: 'about 2 min' },
+                    { id: 'short', label: 'Shorter', hint: 'about 2.5 min' },
                     { id: 'default', label: 'Default', hint: 'about 5 min' },
-                    { id: 'long', label: 'Longer', hint: 'about 8 min' }
+                    { id: 'long', label: 'Longer', hint: 'about 7.5 min' }
                 ]
             },
             audio: {
                 param: 'length', label: 'Length', initial: 'default',
                 choices: [
-                    { id: 'short', label: 'Shorter' },
-                    { id: 'default', label: 'Default' },
-                    { id: 'long', label: 'Longer' }
+                    { id: 'short', label: 'Shorter', hint: 'about 1 min' },
+                    { id: 'default', label: 'Default', hint: 'about 2 min' },
+                    { id: 'long', label: 'Longer', hint: 'about 3.5 min' }
                 ]
             },
             infographic: {

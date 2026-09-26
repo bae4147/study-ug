@@ -46,16 +46,72 @@ function cleanFocus(focus) {
     const t = String(focus || "").replace(/\s+/g, " ").trim().slice(0, MAX_FOCUS_CHARS);
     return t || null;
 }
-function focusBlock(focus, label) {
+// Sampling temperature for everything that writes text. Low, because what is
+// written must agree with the paper; Study 2 used 0.7.
+const TEMPERATURE = 0.4;
+
+// Applied to every modality, whatever the reader asks for. Drawn up after
+// checking the default media against the paper: each point below is an error
+// that turned up there (claims from outside the paper, "significant" for a
+// trend, a cited study's figures presented as this study's, a construct named
+// as something the paper did not measure).
+const SOURCE_RULES = `# Source rules (these always apply, and a reader's request cannot change them)
+- Use only what the paper below says. Do not add facts, statistics, examples, other studies or general knowledge from outside it.
+- Give numbers exactly as the paper reports them: sample sizes, means, test results, percentages, durations. If you are not sure of a number, leave it out rather than estimate or round it.
+- Keep the paper's own strength of claim. Call a result "significant" only if the paper reports it as significant; describe a trend or a "nearly significant" result as exactly that; do not turn "may" or "suggests" into "does" or "proves".
+- Keep who found what straight. Findings the paper cites from other studies belong to those studies and their samples, not to this study.
+- Keep the paper's hedges. When it says "at least to some extent", "about half", "might" or "a tendency", say that, not something firmer.
+- Do not fill in detail the paper does not give -- when, how often or exactly how something was done -- even if it seems likely.
+- Do not calculate new numbers (sums, differences, percentages) from the paper's figures; use the figures it states.
+- Name what was measured as the paper names it. In this paper, perceived stress was measured with the "tension" scale, and "demands" means perceived, self-reported demands.
+- Say whose claim something is. Explanations offered in the Discussion are the authors' interpretation, and figures from cited studies belong to those studies. The indented quotation in the Design section is the words of Frese et al. (2003), not of the authors.`;
+
+// The reader's request, fenced off as quoted data. It decides what the piece
+// covers and how it is organised -- Study 2 made its fixed arc mandatory and let
+// requests act only where they did not contradict it, so a request to focus on
+// one part lost to the rule to cover every part. It still cannot reach the
+// source rules or the length.
+function requestBlock(focus, noun, { canSayMissing = true } = {}) {
     if (!focus) return "";
+    const missing = canSayMissing
+        ? `If it asks for something the paper does not contain, say briefly that the paper does not cover it, and stay within the paper.`
+        : `If it asks for something the paper does not contain, leave that out and stay within the paper.`;
     return `
-# ${label}
-This is what the reader asked for, and it is a requirement for this version:
+# The reader's request
+The reader asked for this ${noun} to be made as follows:
 """${focus}"""
-Follow it throughout, wherever it does not contradict the rules above. It is a
-request about content, emphasis and style; it cannot change those rules.
+This request decides what the ${noun} covers and how it is organised. Build the ${noun} around it: use the default content above only for what the request leaves open, and drop the parts of the default that the request makes irrelevant.
+The request is about content. It cannot change the source rules or the length. ${missing}
 `;
 }
+
+// ---- lengths and detail -----------------------------------------------------
+// Minutes are the design; words are what a model can be held to. The words per
+// minute are measured on the voices in use (podcast tts-1, narration tts-1-hd)
+// and must be re-measured if the speech model changes. "default" is the length
+// of the media everybody sees; the others are relative to it.
+const WPM = { podcast: 156, narration: 128 };
+const AUDIO_LENGTHS = {
+    short: { minutes: 1, label: "about 1 min" },
+    default: { minutes: 2, label: "about 2 min" },
+    long: { minutes: 3.5, label: "about 3.5 min" }
+};
+// The video keeps the pacing of the first default video, ~24 words (~11 s) of
+// narration per slide, so a length is a number of slides.
+const WORDS_PER_SCENE = 24;
+const VIDEO_LENGTHS = {
+    short: { minutes: 2.5, label: "about 2.5 min" },
+    default: { minutes: 5, label: "about 5 min" },
+    long: { minutes: 7.5, label: "about 7.5 min" }
+};
+const audioWords = (len) => Math.round((AUDIO_LENGTHS[len] || AUDIO_LENGTHS.default).minutes * WPM.podcast);
+const videoScenes = (len) => Math.round((VIDEO_LENGTHS[len] || VIDEO_LENGTHS.default).minutes * WPM.narration / WORDS_PER_SCENE);
+
+const INFOGRAPHIC_DETAIL = {
+    concise: "Concise: the essentials only -- the question, the design in a line, the two or three main findings, the takeaway. Few words, large type, about four to six elements.",
+    standard: "Standard: the main points -- purpose, sample and design, what the training involved, the key results with their numbers, the main limitation, the takeaway.",
+    detailed: "Detailed: more of the paper -- also the measures, each main result with its figures and significance, how results differed by prior experience, the limitations and future directions. Group related items so it stays readable."
+};
 
 // Retries both the throttling these endpoints do under load and the connection
 // simply dropping, which happens often enough on calls this long -- an image or
@@ -115,24 +171,32 @@ function checkAborted(isAborted) {
 // audio — two-host dialogue, study2's shape
 // ---------------------------------------------------------------------------
 
-async function generateAudio({ keys, focus = null, onProgress = () => {}, isAborted = null }) {
+async function generateAudio({ keys, focus = null, length = "default", onProgress = () => {}, isAborted = null }) {
     const f = cleanFocus(focus);
+    const words = audioWords(length);
+    const minutes = (AUDIO_LENGTHS[length] || AUDIO_LENGTHS.default).minutes;
 
     onProgress({ step: "script", message: "Writing the script" });
-    const scriptPrompt = `Create an engaging two-person podcast dialogue that explains this research paper to a university student who has just read it.
+    const scriptPrompt = `You are writing a two-person podcast script about a research paper, for a university student who has just read it.
 
-Requirements:
-- Two hosts: Alex (curious, asks the questions a reader would ask) and Jordan (explains clearly)
-- 12 to 18 exchanges, natural spoken language, no jargon left unexplained
-- Cover what the study did, what it found, and what it means in practice
-- End with the key takeaways
-- Mark every line with the speaker name, exactly like "Alex:" or "Jordan:"
-- Do not include stage directions, sound effects or headings
+${SOURCE_RULES}
+
+# Format
+- Two hosts: Alex, who asks the questions a reader would ask, and Jordan, who explains clearly.
+- Mark every line with the speaker's name, exactly "Alex:" or "Jordan:". No stage directions, sound effects or headings.
+- Natural spoken English; explain any technical term the first time it comes up.
+- At most one short line of greeting at the start. Spend the time on the paper.
+
+# Length
+${Math.round(words * 0.9)} to ${Math.round(words * 1.1)} words in total (about ${minutes} minutes spoken) -- roughly ${Math.round(words / 25)} lines of one or two sentences each. Do not stop short of this: a script that ends early leaves the listener with less than was promised.
+
+# Default content (use this when there is no request, and for whatever a request leaves open)
+What the study set out to do, how it was done, what it found and what that means, ending with the key takeaways.
 
 # Paper
 ${paperText()}
-${focusBlock(f, "What the reader asked you to emphasise")}
-Generate the script now:`;
+${requestBlock(f, "podcast")}
+Write the script now.`;
 
     const scriptRes = await fetchWithRetry(`${OPENAI}/chat/completions`, {
         method: "POST",
@@ -140,15 +204,48 @@ Generate the script now:`;
         body: JSON.stringify({
             model: "gpt-4o",
             messages: [
-                { role: "system", content: "You are a professional podcast script writer." },
+                { role: "system", content: "You write accurate podcast scripts that stay strictly within the research paper you are given." },
                 { role: "user", content: scriptPrompt }
             ],
             max_tokens: 4000,
-            temperature: 0.7
+            temperature: TEMPERATURE
         })
     });
     if (!scriptRes.ok) throw new Error(`script: ${await scriptRes.text()}`);
-    const script = (await scriptRes.json()).choices[0].message.content;
+    let script = (await scriptRes.json()).choices[0].message.content;
+
+    // Language models write short of a word count far more often than long. One
+    // follow-up turn, only when the draft is under the range, brings it up to
+    // length; it adds substance from the same paper under the same rules, so it
+    // does not depend on which model wrote the draft.
+    const spokenWords = (txt) => txt.split("\n")
+        .filter(l => /^\s*\**\s*(Alex|Jordan)/i.test(l))
+        .join(" ").replace(/\b(Alex|Jordan)\s*:/gi, "").split(/\s+/).filter(Boolean).length;
+    const low = Math.round(words * 0.9), high = Math.round(words * 1.1);
+    const draftWords = spokenWords(script);
+    if (draftWords < low) {
+        checkAborted(isAborted);
+        onProgress({ step: "script", message: "Bringing the script up to length" });
+        const moreRes = await fetchWithRetry(`${OPENAI}/chat/completions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
+            body: JSON.stringify({
+                model: "gpt-4o",
+                messages: [
+                    { role: "system", content: "You write accurate podcast scripts that stay strictly within the research paper you are given." },
+                    { role: "user", content: scriptPrompt },
+                    { role: "assistant", content: script },
+                    { role: "user", content: `That script is ${draftWords} words; it needs to be ${low} to ${high}. Rewrite it at that length. Add substance from the paper -- more of what it did, found and says about its findings -- rather than filler or longer greetings, and keep to every rule above, including the reader's request if there is one. Return only the full script.` }
+                ],
+                max_tokens: 4000,
+                temperature: TEMPERATURE
+            })
+        });
+        if (moreRes.ok) {
+            const longer = (await moreRes.json()).choices[0].message.content;
+            if (spokenWords(longer) > draftWords) script = longer;   // keep the draft if the retry got no longer
+        }
+    }
 
     checkAborted(isAborted);
 
@@ -186,32 +283,38 @@ Generate the script now:`;
     const chunks = parts.filter(Boolean);
     if (chunks.length === 0) throw new Error("every TTS segment failed");
 
-    return { audio: Buffer.concat(chunks), contentType: "audio/mpeg", script, segments: segments.length };
+    return { audio: Buffer.concat(chunks), contentType: "audio/mpeg", script, segments: segments.length, length, targetWords: words, draftWords };
 }
 
 // ---------------------------------------------------------------------------
 // infographic — one vertical image
 // ---------------------------------------------------------------------------
 
-async function generateInfographic({ keys, focus = null, onProgress = () => {}, isAborted = null }) {
+async function generateInfographic({ keys, focus = null, detail = "standard", onProgress = () => {}, isAborted = null }) {
     const f = cleanFocus(focus);
+    const level = INFOGRAPHIC_DETAIL[detail] ? detail : "standard";
     onProgress({ step: "image", message: "Drawing the infographic" });
     checkAborted(isAborted);
 
-    const prompt = `Create a professional infographic that visually summarises this research paper.
+    const prompt = `Create an infographic that summarises a research paper for a university student who has just read it.
 
-Design requirements:
-- Portrait / vertical orientation, tall rather than wide
-- Clean, modern layout with a clear visual hierarchy
-- Title prominently displayed at the top
-- Summarise the key points: what was studied, what was done, what was found
-- Use icons, simple charts and diagrams to carry the numbers
-- Professional colour scheme, all text readable
-- Academic and clean, suitable for a conference poster
+${SOURCE_RULES}
+
+# Design
+- Portrait (tall) layout with a clear visual hierarchy and the title at the top.
+- Use icons, simple charts and diagrams to carry the findings; every number shown must match the paper exactly.
+- Spell every word correctly. Prefer fewer, larger pieces of text to many small ones.
+- Clean, professional, readable.
+
+# Level of detail
+${INFOGRAPHIC_DETAIL[level]}
+
+# Default content (use this when there is no request, and for whatever a request leaves open)
+What was studied, how, what was found, and what it means.
 
 # Paper
 ${paperText()}
-${focusBlock(f, "Style, colour or emphasis the reader asked for")}
+${requestBlock(f, "infographic", { canSayMissing: false })}
 Generate the infographic now.`;
 
     const res = await fetchWithRetry(
@@ -235,23 +338,14 @@ Generate the infographic now.`;
     return {
         image: Buffer.from(image.inlineData.data, "base64"),
         contentType: image.inlineData.mimeType,
-        modelNote: note || null
+        modelNote: note || null,
+        detail: level
     };
 }
 
 // ---------------------------------------------------------------------------
 // video — narrated slideshow, the shape study2 settled on
 // ---------------------------------------------------------------------------
-
-// The scene count is what the length option really controls. Measured on the
-// default video: ~11.3 s of narration per scene (an earlier figure of 5.7 s came
-// from an MP3 reader that halved every duration). Replaced in the prompt rework.
-const SECONDS_PER_SCENE = 11.3;
-const VIDEO_LENGTHS = {
-    short: { scenes: 11, label: "about 2 min" },
-    default: { scenes: 26, label: "about 5 min" },
-    long: { scenes: 45, label: "about 8 min" }
-};
 
 const VISUAL_STYLE = `- Background: solid cream/off-white (#F9F7F2), clean, no patterns
 - Art: hand-drawn black ink line art (#1A1A1A), sketch-like, slightly imperfect lines
@@ -320,29 +414,36 @@ ${scene.visual_prompt || scene.visualPrompt || ""}`;
     return img ? img.inlineData.data : null;
 }
 
-async function generateVideo({ keys, focus = null, length = "default", onProgress = () => {}, isAborted = null }) {
+// The scene plan alone: title, and per scene the narration, the slide lettering
+// and what to draw. Separate from the drawing and the speech so it can be
+// checked against the paper -- it is text, and cheap -- before anything is drawn.
+async function planVideo({ keys, focus = null, length = "default" }) {
     const f = cleanFocus(focus);
-    const plan = VIDEO_LENGTHS[length] || VIDEO_LENGTHS.default;
+    const n = videoScenes(length);
+    const minutes = (VIDEO_LENGTHS[length] || VIDEO_LENGTHS.default).minutes;
 
-    onProgress({ step: "outline", message: "Planning the scenes" });
-    const brainPrompt = `You are turning a research paper into a narrated explainer video of ${plan.scenes} scenes.
+    const brainPrompt = `You are turning a research paper into a narrated explainer video for a university student who has just read it. The video is a slideshow: one illustration per scene, with spoken narration.
 
+${SOURCE_RULES}
+
+# Format
 Return ONLY JSON, no markdown fences, in this shape:
-{"title": "...", "scenes": [{"scene_number": 1, "narration": "...", "duration_sec": 9, "key_text_elements": ["..."], "layout_description": "...", "visual_prompt": "..."}]}
-
-Rules:
-- Exactly ${plan.scenes} scenes, each about 9 seconds, 25–30 words of narration per scene
-- Narration is spoken aloud: plain sentences, no bullet points, no markdown
-- Arc: hook, background, what the study did, what it found, what it means, closing takeaway
-- key_text_elements are the few words drawn on the slide, not whole sentences
-- visual_prompt describes one clear illustration for the scene
+{"title": "...", "scenes": [{"scene_number": 1, "narration": "...", "key_text_elements": ["..."], "layout_description": "...", "visual_prompt": "..."}]}
+- Exactly ${n} scenes.
+- Narration: ${WORDS_PER_SCENE - 2} to ${WORDS_PER_SCENE + 2} words in every scene, about ${n * WORDS_PER_SCENE} words in total (about ${minutes} minutes spoken). Do not write shorter scenes: the video's length depends on it. Plain spoken sentences, no bullet points or markdown.
+- key_text_elements: at most three short items per slide, at most four words each, in common words. They are hand-lettered into the picture, and long or unusual words come out misspelt. Use a number only if it is exactly the paper's.
+- visual_prompt: one clear illustration for the scene; carry the meaning in the drawing rather than in text.
+- layout_description: one sentence.
 
 # Visual style every scene shares
 ${VISUAL_STYLE}
 
+# Default content (use this when there is no request, and for whatever a request leaves open)
+A brief hook, the background, what the study did, what it found, what it means, and a closing takeaway.
+
 # Paper
 ${paperText()}
-${focusBlock(f, "What the reader asked you to focus on")}
+${requestBlock(f, "video")}
 Return the JSON now.`;
 
     const brainRes = await fetchWithRetry(
@@ -352,7 +453,7 @@ Return the JSON now.`;
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: brainPrompt }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 65536, response_mime_type: "application/json" }
+                generationConfig: { temperature: TEMPERATURE, maxOutputTokens: 65536, response_mime_type: "application/json" }
             })
         }
     );
@@ -360,12 +461,21 @@ Return the JSON now.`;
 
     const raw = (await brainRes.json()).candidates?.[0]?.content?.parts?.[0]?.text || "";
     const outline = parseOutline(raw);
-    let scenes = (outline.scenes || []).slice(0, plan.scenes);
+    const scenes = (outline.scenes || []).slice(0, n);
     if (scenes.length === 0) throw new Error("the outline had no scenes");
+    return { title: outline.title || "Video overview", scenes, length, targetScenes: n };
+}
+
+async function generateVideo({ keys, focus = null, length = "default", onProgress = () => {}, isAborted = null }) {
+    onProgress({ step: "outline", message: "Planning the scenes" });
+    const plan = await planVideo({ keys, focus, length });
+    const scenes = plan.scenes;
 
     checkAborted(isAborted);
 
     // Images are rate limited, so they go out in batches with a pause between.
+    // Each slide goes through drawSlide, which insists the lettering be spelt
+    // exactly as planned -- the inline prompt this replaced did not.
     onProgress({ step: "slides", message: "Drawing the slides", total: scenes.length, done: 0 });
     const BATCH = 8;
     const drawn = [];
@@ -373,34 +483,11 @@ Return the JSON now.`;
         checkAborted(isAborted);
         const batch = scenes.slice(start, start + BATCH);
         const results = await Promise.all(batch.map(async (scene) => {
-            const imagePrompt = `Educational whiteboard illustration for an explainer video. 16:9 aspect ratio.
-
-${VISUAL_STYLE}
-
-Embedded text (hand-written style): ${(scene.key_text_elements || []).join(", ")}
-Layout: ${scene.layout_description || "centred composition, balanced elements"}
-
-${scene.visual_prompt}`;
-            const res = await fetchWithRetry(
-                `${GEMINI}/gemini-3.1-flash-image:generateContent?key=${keys.gemini}`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: imagePrompt }] }],
-                        generationConfig: { responseModalities: ["image", "text"] }
-                    })
-                },
-                3, 5000
-            );
-            if (!res.ok) return null;
-            const parts = (await res.json()).candidates?.[0]?.content?.parts || [];
-            const img = parts.find(p => p.inlineData?.mimeType?.startsWith("image/"));
-            if (!img) return null;
+            const image = await drawSlide({ keys, scene });
+            if (!image) return null;
             return {
                 sceneNumber: scene.scene_number,
-                imageBase64: img.inlineData.data,
-                duration: scene.duration_sec || 9,
+                imageBase64: image,
                 narration: scene.narration,
                 keyTextElements: scene.key_text_elements || [],
                 layoutDescription: scene.layout_description || "",
@@ -409,8 +496,8 @@ ${scene.visual_prompt}`;
         }));
         drawn.push(...results.filter(Boolean));
         onProgress({ step: "slides", total: scenes.length, done: drawn.length });
-        // A pause between batches still helps, but a short one now: a throttled
-        // image is retried with backoff rather than lost.
+        // A short pause between batches: a throttled image is retried with
+        // backoff rather than lost.
         if (start + BATCH < scenes.length) await new Promise(r => setTimeout(r, 6000));
     }
     if (drawn.length === 0) throw new Error("every slide failed to draw");
@@ -438,22 +525,32 @@ ${scene.visual_prompt}`;
     if (withAudio.length === 0) throw new Error("every narration failed");
 
     return {
-        title: outline.title || "Video overview",
+        title: plan.title,
         scenes: withAudio,
         totalScenes: withAudio.length,
-        approxSeconds: withAudio.reduce((n, s) => n + (s.duration || 9), 0)
+        length,
+        // durations are measured from the audio afterwards (scripts/promote-video.js,
+        // or the player); this is only an estimate from the word count
+        approxSeconds: Math.round(withAudio.reduce((n, s) => n + s.narration.split(/\s+/).length, 0) / WPM.narration * 60)
     };
 }
 
 module.exports = {
     MODELS,
+    SOURCE_RULES,
+    TEMPERATURE,
+    WPM,
+    AUDIO_LENGTHS,
+    VIDEO_LENGTHS,
+    INFOGRAPHIC_DETAIL,
+    audioWords,
+    videoScenes,
     drawSlide,
     VISUAL_STYLE,
+    planVideo,
     generateAudio,
     generateInfographic,
     generateVideo,
-    VIDEO_LENGTHS,
-    SECONDS_PER_SCENE,
     MAX_FOCUS_CHARS,
     paperText
 };
