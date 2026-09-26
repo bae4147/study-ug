@@ -198,6 +198,11 @@ UI on top of them:
   makes — the docs point at the Studio UI. It also needs Gemini Enterprise
   licences and is `v1alpha`.
 
+## How the media are generated
+
+See `GENERATION.md`: how this study's pipeline differs from Study 1 and Study 2,
+a dated change log, what was found wrong, and the decisions taken.
+
 ## Keeping what was generated
 
 Everything a participant was shown is kept, so its accuracy can be checked later.
