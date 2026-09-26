@@ -78,7 +78,7 @@ shuffled per participant. `chat_only` gets the chatbot tab alone.
 | `consent.html` | new; the OSU consent form, gated on sign-in, with an agreement checkbox; writes `consentGivenAt` to the user doc and the session |
 | `instructions.html`, `reading-instructions.html` | new; static, auth-guarded, pass the query string through |
 | `post-task.html` | rebuilt as four open CIMO reflection questions, one text box each (Context / Intervention / Mechanism / Outcome); saved under `postTask.reflection` |
-| `quiz.html` | new; study-aom's closed-book quiz mechanics (single-choice + "Not Sure", timer, confidence rating, auto-grading) with 15 items on Häfner (2014) from `quiz_review.csv` (rows marked `final_15`) |
+| `quiz.html` | new; study-aom's closed-book quiz mechanics (single-choice + "Not Sure", timer, confidence rating, auto-grading) with 8 items on Häfner (2014), cut from the 15 marked `final_15` in `quiz_review.csv` by dropping detail-recall items first |
 | `survey.html` / `survey2.html` | `post-study-survey.html` split in two: reading experience before the quiz, comprehension and application after the post-task |
 | `complete.html` | asks for an OSU `name.#` when the participant signed in with a non-OSU address |
 | `reading.html` | fixed paper fetched from `papers/…/paper.pdf` into the existing renderer; static media; **paper shown as rendered page images instead of `<embed>`** (see below); study1's mp4 video tab; Pause button + veil; recorder wired in; `simplified` tab removed |
