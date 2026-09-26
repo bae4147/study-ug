@@ -87,28 +87,57 @@
 
         // What each tab offers to remake, and roughly how long the wait is. The
         // estimates are the measured ones, not the outline's.
+        // The free-text request is for CONTENT only -- what to focus on and how to
+        // explain it. Voice, pace, colour and drawing style are not what the
+        // pipeline can steer from free text, so they are left to the buttons
+        // below or not offered, and the reader is told so up front.
         const CUSTOM_COPY = {
             video: {
                 noun: 'video overview',
                 blurb: 'Summarises the article so you can see its main ideas.',
-                placeholder: 'Anything the video should focus on? (optional)'
+                placeholder: 'What should the video focus on? e.g., how the study was designed, what it found, or a simpler explanation of the key ideas (optional)'
             },
             audio: {
                 noun: 'audio overview',
                 blurb: 'Two hosts talk through the main ideas of the article.',
-                placeholder: 'Anything the discussion should focus on? (optional)'
+                placeholder: 'What should the discussion focus on? e.g., the training itself, the limitations, or a simpler explanation of the results (optional)'
             },
             infographic: {
                 noun: 'infographic',
                 blurb: 'One image laying out the shape of the article.',
-                placeholder: 'A style, colours, or something to emphasise? (optional)'
+                placeholder: 'What should the infographic focus on? e.g., the main findings, the steps of the training, or how the study was set up (optional)'
             }
         };
-        const VIDEO_LENGTH_CHOICES = [
-            { id: 'short', label: 'Short', hint: 'about 1 min' },
-            { id: 'default', label: 'Standard', hint: '2 – 3 min' },
-            { id: 'long', label: 'Long', hint: '4 – 5 min' }
-        ];
+
+        // One three-way setting per modality, sent as a value rather than read out
+        // of the text, because a setting is the only way it is kept reliably.
+        // Labels follow NotebookLM's. Durations are shown only where measured.
+        const CUSTOM_SETTING = {
+            video: {
+                param: 'length', label: 'Length', initial: 'default',
+                choices: [
+                    { id: 'short', label: 'Shorter', hint: 'about 1 min' },
+                    { id: 'default', label: 'Default', hint: '2 – 3 min' },
+                    { id: 'long', label: 'Longer', hint: '4 – 5 min' }
+                ]
+            },
+            audio: {
+                param: 'length', label: 'Length', initial: 'default',
+                choices: [
+                    { id: 'short', label: 'Shorter' },
+                    { id: 'default', label: 'Default' },
+                    { id: 'long', label: 'Longer' }
+                ]
+            },
+            infographic: {
+                param: 'detail', label: 'Level of detail', initial: 'standard',
+                choices: [
+                    { id: 'concise', label: 'Concise' },
+                    { id: 'standard', label: 'Standard' },
+                    { id: 'detailed', label: 'Detailed' }
+                ]
+            }
+        };
         const CUSTOM_WAIT = { video: '3 – 4 minutes', audio: 'about a minute', infographic: 'under a minute' };
         const MAX_FOCUS_CHARS = 300;
 
@@ -1474,7 +1503,9 @@
             // reads rather than a dropped request.
             const [customJobs, setCustomJobs] = useState({});      // modality -> job doc
             const [customFocus, setCustomFocus] = useState({});    // modality -> textarea
-            const [customLength, setCustomLength] = useState('default');
+            // modality -> chosen setting id (length for video/audio, detail for the infographic)
+            const [customSetting, setCustomSetting] = useState({});
+            const settingFor = (modality) => customSetting[modality] || CUSTOM_SETTING[modality].initial;
             const [showingCustom, setShowingCustom] = useState({}); // modality -> bool
             const [customBusy, setCustomBusy] = useState({});      // modality -> request in flight
 
@@ -1502,7 +1533,7 @@
                             sessionId,
                             modality,
                             focus: (customFocus[modality] || '').slice(0, MAX_FOCUS_CHARS),
-                            length: customLength
+                            [CUSTOM_SETTING[modality].param]: settingFor(modality)
                         })
                     });
                     if (!res.ok) {
@@ -1512,7 +1543,7 @@
                     logEvent('custom_generation_started', {
                         modality,
                         focusLength: (customFocus[modality] || '').trim().length,
-                        length: modality === 'video' ? customLength : null
+                        [CUSTOM_SETTING[modality].param]: settingFor(modality)
                     });
                 } catch (err) {
                     console.error('custom start failed:', err);
@@ -3615,31 +3646,39 @@ Provide constructive feedback to help the reader think more critically about thi
                                             value={focus}
                                             maxLength={MAX_FOCUS_CHARS}
                                             onChange={(e) => setCustomFocus(prev => ({ ...prev, [modality]: e.target.value }))}
-                                            rows={2}
+                                            rows={3}
                                             placeholder={copy.placeholder}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                                         />
-                                        <p className="text-xs text-gray-400 text-right">{focus.length} / {MAX_FOCUS_CHARS}</p>
+                                        <div className="flex justify-between items-start mt-1">
+                                            <p className="text-xs text-amber-700 pr-3">
+                                                Ask about the content: what to focus on, or how to explain it.
+                                                Requests about voice, speed, colours or visual style may not be reflected.
+                                            </p>
+                                            <p className="text-xs text-gray-400 whitespace-nowrap">{focus.length} / {MAX_FOCUS_CHARS}</p>
+                                        </div>
                                     </div>
 
-                                    {modality === 'video' && (
+                                    <div>
+                                        <p className="text-xs font-semibold text-gray-600 mb-1">{CUSTOM_SETTING[modality].label}</p>
                                         <div className="flex space-x-2">
-                                            {VIDEO_LENGTH_CHOICES.map(c => (
+                                            {CUSTOM_SETTING[modality].choices.map(c => (
                                                 <button
                                                     key={c.id}
                                                     type="button"
-                                                    onClick={() => setCustomLength(c.id)}
+                                                    onClick={() => setCustomSetting(prev => ({ ...prev, [modality]: c.id }))}
                                                     className={`flex-1 px-3 py-2 rounded-lg border text-sm ${
-                                                        customLength === c.id
+                                                        settingFor(modality) === c.id
                                                             ? 'border-purple-500 bg-purple-50 text-purple-700 font-medium'
                                                             : 'border-gray-300 text-gray-600 hover:bg-gray-50'
                                                     }`}
                                                 >
-                                                    {c.label}<span className="block text-xs font-normal opacity-70">{c.hint}</span>
+                                                    {c.label}
+                                                    {c.hint && <span className="block text-xs font-normal opacity-70">{c.hint}</span>}
                                                 </button>
                                             ))}
                                         </div>
-                                    )}
+                                    </div>
 
                                     <p className="text-xs text-gray-500">
                                         You can do this once, and it cannot be undone.
