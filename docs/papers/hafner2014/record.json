@@ -1,0 +1,26 @@
+{
+  "what": "Default media every multimodal arm sees, for Häfner, Stock & Oberst (2014).",
+  "generatedBy": "functions/generation.js via scripts/generate-defaults.js; slides 4, 5, 9, 19 redrawn with scripts/fix-scenes.js",
+  "focus": null,
+  "models": {
+    "audio": {
+      "script": "gpt-4o",
+      "speech": "tts-1"
+    },
+    "infographic": {
+      "image": "gemini-3-pro-image-preview"
+    },
+    "video": {
+      "outline": "gemini-3.6-flash",
+      "slides": "gemini-3.1-flash-image",
+      "narration": "tts-1-hd"
+    }
+  },
+  "files": {
+    "audio": "audio.mp3",
+    "audioScript": "audio.script.txt",
+    "infographic": "infographic.jpg",
+    "video": "video.json (narration and, where kept, slide text per scene) + video/sceneNN.{png,mp3}"
+  },
+  "generatedOn": "2026-09-24"
+}

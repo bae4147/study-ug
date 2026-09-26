@@ -10,6 +10,14 @@ const fs = require("fs");
 const path = require("path");
 
 const OPENAI = "https://api.openai.com/v1";
+
+// Recorded with every generated piece. When the accuracy of what participants saw
+// is assessed later, the models behind it have to be known, and they change.
+const MODELS = {
+    audio: { script: "gpt-4o", speech: "tts-1" },
+    infographic: { image: "gemini-3-pro-image-preview" },
+    video: { outline: "gemini-3.6-flash", slides: "gemini-3.1-flash-image", narration: "tts-1-hd" }
+};
 const GEMINI = "https://generativelanguage.googleapis.com/v1beta/models";
 
 // The paper is fixed for this study, so it ships with the functions instead of
@@ -220,9 +228,11 @@ Generate the infographic now.`;
     const image = parts.find(p => p.inlineData?.mimeType?.startsWith("image/"));
     if (!image) throw new Error("the model returned no image");
 
+    const note = parts.filter(p => typeof p.text === "string").map(p => p.text).join("\n").trim();
     return {
         image: Buffer.from(image.inlineData.data, "base64"),
-        contentType: image.inlineData.mimeType
+        contentType: image.inlineData.mimeType,
+        modelNote: note || null
     };
 }
 
@@ -434,6 +444,7 @@ ${scene.visual_prompt}`;
 }
 
 module.exports = {
+    MODELS,
     drawSlide,
     VISUAL_STYLE,
     generateAudio,

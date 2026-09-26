@@ -6,3 +6,6 @@ serviceAccount*.json
 
 # Generation samples for comparison; only promoted files get committed
 docs/papers/hafner2014/*.generated.*
+
+# Local copies pulled by scripts/export-custom.sh
+exports/

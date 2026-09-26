@@ -589,16 +589,37 @@ exports.generateCustom = onRequest(
       const stamp = `${uid}/${sessionId}/${modality}-${startedAt}`;
       const opts = { keys, focus, onProgress, isAborted };
 
+      // Everything a later accuracy check needs is written into storage beside the
+      // media as record.json, so the folder stands on its own: what was asked for,
+      // which models answered, and the full text that was spoken or drawn. The
+      // Firestore job keeps the same, but the folder is what gets archived.
+      const record = (extra) => ({
+        uid, sessionId, condition, modality,
+        focus: String(focus || "").slice(0, gen.MAX_FOCUS_CHARS) || null,
+        length: modality === "video" ? length : null,
+        models: gen.MODELS[modality],
+        startedAt: new Date(startedAt).toISOString(),
+        finishedAt: new Date().toISOString(),
+        ...extra
+      });
+      const saveRecord = (dir, data) =>
+        publicUpload(Buffer.from(JSON.stringify(data, null, 2)), `custom/${dir}/record.json`, "application/json");
+
       if (modality === "infographic") {
         const r = await gen.generateInfographic(opts);
         const ext = r.contentType.includes("jpeg") ? "jpg" : "png";
-        const url = await publicUpload(r.image, `custom/${stamp}.${ext}`, r.contentType);
-        await finish({ url });
+        const url = await publicUpload(r.image, `custom/${stamp}/infographic.${ext}`, r.contentType);
+        const rec = record({ url, modelNote: r.modelNote });
+        await saveRecord(stamp, rec);
+        await finish({ url, modelNote: r.modelNote, models: rec.models });
 
       } else if (modality === "audio") {
         const r = await gen.generateAudio(opts);
-        const url = await publicUpload(r.audio, `custom/${stamp}.mp3`, "audio/mpeg");
-        await finish({ url, script: r.script });
+        const url = await publicUpload(r.audio, `custom/${stamp}/audio.mp3`, "audio/mpeg");
+        await publicUpload(Buffer.from(r.script), `custom/${stamp}/script.txt`, "text/plain; charset=utf-8");
+        const rec = record({ url, script: r.script, lines: r.segments });
+        await saveRecord(stamp, rec);
+        await finish({ url, script: r.script, models: rec.models });
 
       } else {
         const r = await gen.generateVideo({ ...opts, length });
@@ -611,9 +632,16 @@ exports.generateCustom = onRequest(
             publicUpload(Buffer.from(sc.imageBase64, "base64"), `custom/${stamp}/scene${n}.png`, "image/png"),
             publicUpload(Buffer.from(sc.audioBase64, "base64"), `custom/${stamp}/scene${n}.mp3`, "audio/mpeg")
           ]);
-          scenes.push({ sceneNumber: sc.sceneNumber, image, audio, duration: sc.duration, narration: sc.narration });
+          scenes.push({
+            sceneNumber: sc.sceneNumber, image, audio, duration: sc.duration,
+            narration: sc.narration,
+            // what the slide was asked to letter, to check against what it shows
+            slideText: sc.keyTextElements || []
+          });
         }
-        await finish({ title: r.title, scenes });
+        const rec = record({ title: r.title, scenes });
+        await saveRecord(stamp, rec);
+        await finish({ title: r.title, scenes, models: rec.models });
       }
 
       console.log(`✅ custom ${modality} for ${uid} in ${Math.round((Date.now() - startedAt) / 1000)}s`);

@@ -198,6 +198,26 @@ UI on top of them:
   makes — the docs point at the Studio UI. It also needs Gemini Enterprise
   licences and is `v1alpha`.
 
+## Keeping what was generated
+
+Everything a participant was shown is kept, so its accuracy can be checked later.
+
+- **Default media** — `docs/papers/hafner2014/`: `audio.mp3` with its full
+  `audio.script.txt`, `infographic.jpg`, `video.json` (narration per scene, and
+  the slide lettering where it was kept) with `video/`, and `record.json` naming
+  the models that made them.
+- **Customised media** — Storage, `custom/<uid>/<sessionId>/<modality>-<time>/`:
+  the media, a `record.json` with the request, condition, video length, models,
+  and the full spoken script / per-scene narration and slide text, plus
+  `script.txt` for audio. The Firestore job (`sessions/{sid}/customJobs/{modality}`)
+  holds the same. Runs that were stopped or failed are never saved, because they
+  were never shown. Nothing in the project deletes from the bucket.
+- **Pull them all locally** with `bash scripts/export-custom.sh` (needs
+  `gcloud auth login`), into `exports/` (git-ignored).
+
+Custom runs made before this was added are in storage under the older flat names
+(`<modality>-<time>.<ext>`) without a `record.json`; their text is in the job doc.
+
 ## Before recruiting
 
 - [ ] Edit participant-facing copy (post-task / surveys still read as the MBA study)

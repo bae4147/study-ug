@@ -53,7 +53,10 @@ const scenes = doc.scenes.map((s) => {
         image: `video/scene${n}.png`,
         audio: `video/scene${n}.mp3`,
         duration: Math.round(mp3Seconds(audio) * 100) / 100,
-        narration: s.narration || ""
+        narration: s.narration || "",
+        // what the slide was asked to letter; only present for slides drawn after
+        // the pipeline started keeping it (and for every redrawn one)
+        slideText: s.keyTextElements || null
     };
 });
 

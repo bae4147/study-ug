@@ -37,8 +37,8 @@
         // Background taken before reading, so nothing the reading does can colour
         // it. The GenAI-use and demographic items come from study-aom's final
         // survey, reworded for undergraduates: "at work" became "for your studies",
-        // and the job items (hours, tenure, title, industry, highest degree) gave
-        // way to year in school and major, which vary where those would not.
+        // and the job items (working situation, hours, tenure, title, industry,
+        // highest degree) gave way to year in school and major.
 
         const AI_FREQUENCY = [
             'Never',
@@ -58,11 +58,6 @@
         ];
         const GENDERS = ['Male', 'Female', 'Non-binary', 'Other', 'Prefer not to say'];
         const YEARS = ['First-year', 'Second-year', 'Third-year', 'Fourth-year', 'Fifth-year or beyond', 'Other'];
-        const WORKING = [
-            'I work full-time in an organization.',
-            'I work part-time in an organization.',
-            'I do not work for any organization.'
-        ];
         const ETHNICITIES = [
             'American Indian or Native American',
             'Asian or Asian-American',
@@ -136,7 +131,6 @@
             const [yearInSchool, setYearInSchool] = useState('');
             const [yearOther, setYearOther] = useState('');
             const [major, setMajor] = useState('');
-            const [working, setWorking] = useState('');
             const [ethnicity, setEthnicity] = useState([]);
             const [english, setEnglish] = useState('');
 
@@ -167,7 +161,6 @@
                 if (!gender) missing.push('your gender');
                 if (!yearInSchool) missing.push('your year in school');
                 if (!major.trim()) missing.push('your major');
-                if (!working) missing.push('your working situation');
                 if (ethnicity.length === 0) missing.push('your race/ethnicity');
                 if (!english) missing.push('your English proficiency');
                 if (missing.length) {
@@ -190,7 +183,6 @@
                         gender,
                         yearInSchool: yearInSchool === 'Other' ? (yearOther.trim() || 'Other') : yearInSchool,
                         major: major.trim(),
-                        workingSituation: working,
                         ethnicity,
                         englishProficiency: english
                     },
@@ -310,17 +302,12 @@
                                     </div>
 
                                     <div>
-                                        <Q>5. What is your working situation? *</Q>
-                                        <Radio name="work" options={WORKING} value={working} onChange={setWorking} />
-                                    </div>
-
-                                    <div>
-                                        <Q>6. What is your race/ethnicity? (You may select more than one.) *</Q>
+                                        <Q>5. What is your race/ethnicity? (You may select more than one.) *</Q>
                                         <Checks options={ETHNICITIES} values={ethnicity} onToggle={toggle(setEthnicity)} />
                                     </div>
 
                                     <div>
-                                        <Q>7. What is your English proficiency level? *</Q>
+                                        <Q>6. What is your English proficiency level? *</Q>
                                         <Radio name="english" options={ENGLISH} value={english} onChange={setEnglish} />
                                     </div>
                                 </div>
