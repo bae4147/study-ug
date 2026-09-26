@@ -21,7 +21,10 @@ const MODELS = {
 const GEMINI = "https://generativelanguage.googleapis.com/v1beta/models";
 
 // The paper is fixed for this study, so it ships with the functions instead of
-// being uploaded on every call.
+// being uploaded on every call. It is passed WHOLE to every step: Study 2 cut it
+// to the first 15-30k characters, which left the infographic and video without
+// the Results and Discussion. The file is the cleaned text from
+// scripts/paper/ (no running heads or references, tables rebuilt as tables).
 let paperTextCache = null;
 function paperText() {
     if (paperTextCache === null) {
@@ -127,7 +130,7 @@ Requirements:
 - Do not include stage directions, sound effects or headings
 
 # Paper
-${paperText().substring(0, 30000)}
+${paperText()}
 ${focusBlock(f, "What the reader asked you to emphasise")}
 Generate the script now:`;
 
@@ -207,7 +210,7 @@ Design requirements:
 - Academic and clean, suitable for a conference poster
 
 # Paper
-${paperText().substring(0, 15000)}
+${paperText()}
 ${focusBlock(f, "Style, colour or emphasis the reader asked for")}
 Generate the infographic now.`;
 
@@ -339,7 +342,7 @@ Rules:
 ${VISUAL_STYLE}
 
 # Paper
-${paperText().substring(0, 25000)}
+${paperText()}
 ${focusBlock(f, "What the reader asked you to focus on")}
 Return the JSON now.`;
 
