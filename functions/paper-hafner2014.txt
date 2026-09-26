@@ -48,17 +48,7 @@ We used the research design “non-equivalent dependent variable design” (Cook
 
 Frese et al. (2003) discussed the advantages of this research strategy:
 
-The design does not require a control group or a pseudotraining group because it
-
-effectively controls for testing and Hawthorne effects … Because all trainees participate
-
-in a real training program, we can effectively rule out nonspecific placebo effects if the
-
-training only leads to changes in the experimental variables but not in the control
-
-variables. Further, testing effects can be ruled out as well because both types of variables
-
-are tested. This type of evaluation design should be used much more frequently. (p. 675)
+> The design does not require a control group or a pseudotraining group because it effectively controls for testing and Hawthorne effects … Because all trainees participate in a real training program, we can effectively rule out nonspecific placebo effects if the training only leads to changes in the experimental variables but not in the control variables. Further, testing effects can be ruled out as well because both types of variables are tested. This type of evaluation design should be used much more frequently. (p. 675)
 
 Haccoun and Hamtieux (1994) also argued that such a design is not particularly vulnerable to common threats to the internal validity of intervention studies such as testing or history. They recommended the use of variables that belong to the same content domain and are measured with similar formats. We selected perceived control of time and perceived stress as dependent variables that should be affected by the training. Perceived stress was measured with the scale tension of the perceived stress questionnaire and includes aspects of mental fatigue or feelings of nervousness (Fliege et al. 2001, 2005; Levenstein et al. 1993). Perceived control of time should increase and perceived stress decrease when comparing pretest and posttest scores. Furthermore, we measured demands, a variable, that should not be changed through our time management training. In the scale demands, participants were asked, for example, to rate the amount of work that they have to do as well as the amount of external duties that they are confronted with (Fliege et al. 2001, 2005; Levenstein et al. 1993). Whereas the scale tension focused on the internal cognitive-emotional perception of external stressors in particular, the scale demands cover external demands one has to deal with (Fliege et al. 2001.). Therefore, both variables were of the same content domain of stress-related issues, but measuring different constructs (Fliege et al. 2005): On the one hand, a more internal perspective is covered and, on the other hand, a more external one. Fliege et al. (2005) presented empirical evidence for this conclusion and pointed out that the variable demands “represents a specific aspect of perceived environmental stressors” (p. 86), whereas tension can be described as “focusing on perceived stress reactions” (p. 86). Our time management training was developed to deal with such external demands through the use of time management strategies to decrease perceived stress and increase perceived control of time. It was not the focus of our training to help students change external demands. The described design should be appropriate to rule out major threats to the internal validity of intervention studies: testing, history and placebo effects. As another strategy to rule out a placebo effect, we checked whether the trainees actually used the time management strategies after training with a questionnaire covering the taught time management strategies.
 

@@ -1895,12 +1895,19 @@
 
                 try {
                     // Define system prompts based on condition
+                    // The paper text carries page markers. Readers look at the PDF viewer
+                    // and may give its page number (1-14) or the journal number printed
+                    // on the page (81-94); the model needs to know both exist.
+                    const paperForPrompt = `How to read the page markers: markers such as "[Page 3 of 14 | printed p. 83]" show where each page of the PDF begins. The reader sees the paper in a PDF viewer, so when they mention a page number they may mean the viewer's page (1-14) or the journal page number printed on the page (81-94). Numbers from 1 to 14 are almost always viewer pages; 81 to 94 are printed pages. If it is unclear which they mean, say which page you are taking it to be. When you point the reader to a place in the paper, give the viewer page, and the printed page in brackets, e.g. "page 9 (p. 89)".
+
+${paperContent.replace(/<[^>]*>/g, '')}`;
+
                     const controlSystemPrompt = `You are an academic assistant.
 Provide clear, concise explanations, summaries, and direct answers to the user's questions.
 Focus on efficiency and clarity.
 
 **Paper Content:**
-${paperContent.replace(/<[^>]*>/g, '')}
+${paperForPrompt}
 
 **FORMAT RULES (for all responses):**
 - Use Markdown formatting for clarity and readability.
@@ -1932,7 +1939,7 @@ but to enforce evidence-based thinking by guiding the user through the following
 6. Assessing – reflect on learning and decision quality
 
 **Paper Content:**
-${paperContent.replace(/<[^>]*>/g, '')}
+${paperForPrompt}
 
 You must follow these rules:
 
@@ -2069,7 +2076,7 @@ Evidence-based management is making decisions through the conscientious, explici
 ## Paper Context
 
 <paper>
-${paperContent.replace(/<[^>]*>/g, '')}
+${paperForPrompt}
 </paper>
 
 When responding:
@@ -2402,7 +2409,7 @@ Guide users step-by-step from research evidence to practical, testable action us
 
 ## Paper Context
 <paper>
-${paperContent.replace(/<[^>]*>/g, '')}
+${paperForPrompt}
 </paper>
 
 ## Core Behavior
@@ -2590,7 +2597,7 @@ ${cumulativeContext || 'No context provided yet.'}
 The user is reading the following paper:
 
 ---
-${paperContent.replace(/<[^>]*>/g, '')}
+${paperForPrompt}
 ---`;
 
                     const systemPrompt = caps.chat === 'cimo' ? ebmCimoSystemPrompt : controlSystemPrompt;
