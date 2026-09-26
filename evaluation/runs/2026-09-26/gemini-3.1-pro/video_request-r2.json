@@ -1,0 +1,291 @@
+{
+ "config": "gemini-3.1-pro",
+ "task": "video_request",
+ "run": 2,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.4
+ },
+ "focus": "Explain step by step what the training actually taught students to do.",
+ "seconds": 82.3,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 618,
+ "estMinutes": 4.83,
+ "output": {
+  "title": "Decreasing students' stress through time management training",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "University students face high levels of perceived stress. Time-related demands like self-organized learning and high workload are a serious problem for many.",
+    "key_text_elements": [
+     "High perceived stress",
+     "Time-related demands"
+    ],
+    "layout_description": "A student sits at a desk looking overwhelmed by a large stack of books and a ticking clock.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A minimalist sketch of a student holding their head in their hands at a desk. A large clock hovers above, highlighted with an orange (#FF8C00) circle. A stack of books is accented with yellow (#FFD700). The text is hand-lettered near the clock."
+   },
+   {
+    "scene_number": 2,
+    "narration": "This study tested if a four-hour time management training could help. Twenty-three undergraduate students attended the program in the middle of the semester.",
+    "key_text_elements": [
+     "23 undergraduate students",
+     "Four-hour training"
+    ],
+    "layout_description": "A group of students sits in a circle of chairs with a trainer standing at the front.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). Minimalist sketch of a few students sitting in chairs facing a trainer. An orange (#FF8C00) clock face showing four hours is drawn above the trainer. Yellow (#FFD700) arrows point from the trainer to the students. Hand-written text sits at the bottom."
+   },
+   {
+    "scene_number": 3,
+    "narration": "The training focused on five major parts: self-reflection, goal setting, strategy development, daily planning, and monitoring. Let us look at each step.",
+    "key_text_elements": [
+     "Five major parts",
+     "Step by step"
+    ],
+    "layout_description": "Five numbered boxes are arranged in a sequence, connected by arrows.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). Five simple squares arranged in a gentle curve, connected by yellow (#FFD700) arrows. The first box is highlighted with an orange (#FF8C00) outline. Hand-written text is placed above the sequence."
+   },
+   {
+    "scene_number": 4,
+    "narration": "First, students reflected upon their current activities. They noted down both their academic tasks and their extracurricular activities to see everything together.",
+    "key_text_elements": [
+     "Step 1",
+     "Current activities"
+    ],
+    "layout_description": "A piece of paper shows two columns of listed items, representing academic and extracurricular tasks.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A minimalist sketch of a clipboard holding a piece of paper divided into two columns. A hand holds a pen, writing on the paper. Yellow (#FFD700) squiggly lines represent text. An orange (#FF8C00) circle highlights the top of the page."
+   },
+   {
+    "scene_number": 5,
+    "narration": "They reflected on the importance of these different activities for their study goals. They asked themselves why these activities were important to them.",
+    "key_text_elements": [
+     "Reflect on importance",
+     "Why important?"
+    ],
+    "layout_description": "A thought bubble contains a question mark and a lightbulb over the list of activities.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A large thought bubble floats above the clipboard from the previous scene. Inside the bubble is a lightbulb accented in yellow (#FFD700) and a large orange (#FF8C00) question mark. Hand-written text is placed beside the bubble."
+   },
+   {
+    "scene_number": 6,
+    "narration": "Through this phase of self-reflection, the trainees tried to define the most important activities out of everything they had on their plates.",
+    "key_text_elements": [
+     "Define most important"
+    ],
+    "layout_description": "A hand circles one specific item on the list with a bright marker.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). Close-up of the list on the clipboard. A hand is drawing a bold orange (#FF8C00) circle around one specific line of yellow (#FFD700) text, making it stand out from the rest. Minimalist and clean."
+   },
+   {
+    "scene_number": 7,
+    "narration": "In the next step, the students defined concrete, challenging, and proximal goals for the important activities they had just identified in step one.",
+    "key_text_elements": [
+     "Step 2",
+     "Concrete goals"
+    ],
+    "layout_description": "A target with an arrow in the bullseye sits next to the prioritized list.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A simple archery target with an arrow hitting the center. The bullseye is colored orange (#FF8C00). Yellow (#FFD700) speed lines radiate from the impact. Hand-written text is placed below the target."
+   },
+   {
+    "scene_number": 8,
+    "narration": "They asked themselves exactly what they wanted to achieve in detail. Then, they defined specific deadlines for reaching those newly set goals.",
+    "key_text_elements": [
+     "Achieve in detail",
+     "Specific deadlines"
+    ],
+    "layout_description": "A desk calendar has a specific date circled, with a small flag planted on it.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A minimalist desk calendar showing a grid of days. One day is circled heavily in orange (#FF8C00). A small yellow (#FFD700) flag is drawn sticking out of that specific date. Hand-written text is placed to the side."
+   },
+   {
+    "scene_number": 9,
+    "narration": "The third phase was developing a strategy for achieving their goals. The students noted down the different steps required for each goal.",
+    "key_text_elements": [
+     "Step 3",
+     "Strategy development"
+    ],
+    "layout_description": "A staircase is drawn on a piece of paper, leading up to a star.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A sketch of a staircase going upwards, drawn as if on a piece of paper. At the top of the stairs is a yellow (#FFD700) star. An orange (#FF8C00) arrow points up the steps. Hand-written text is nearby."
+   },
+   {
+    "scene_number": 10,
+    "narration": "They set priorities for these individual steps and planned exactly how to start. The importance of proximal deadlines for these steps was emphasized.",
+    "key_text_elements": [
+     "Set priorities",
+     "Proximal deadlines"
+    ],
+    "layout_description": "Numbers 1, 2, and 3 are written next to the individual steps of the staircase.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). The same staircase from the previous scene, but now the bottom three steps have large numbers '1', '2', and '3' written on them. The number '1' is highlighted with an orange (#FF8C00) circle. Yellow (#FFD700) accents highlight the edges."
+   },
+   {
+    "scene_number": 11,
+    "narration": "During strategy development, they also thought about possible obstacles that might get in their way, and what they could do to overcome them.",
+    "key_text_elements": [
+     "Possible obstacles",
+     "Overcome them"
+    ],
+    "layout_description": "A hurdle is drawn on one of the steps, with a curved arrow jumping over it.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A close-up of the staircase. On step '2', there is a small hurdle blocking the path. A dynamic orange (#FF8C00) arrow leaps over the hurdle, landing safely on the next step. Yellow (#FFD700) action lines emphasize the jump."
+   },
+   {
+    "scene_number": 12,
+    "narration": "The fourth part of the training focused on daily planning. Trainees decided what they wanted to do and when they would do it.",
+    "key_text_elements": [
+     "Step 4",
+     "Daily planning"
+    ],
+    "layout_description": "A daily planner book lies open, showing hourly time slots.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). An open daily planner notebook. The visible page has horizontal lines representing hourly time slots. An orange (#FF8C00) pen rests on the book. Yellow (#FFD700) highlights mark a few specific time blocks. Hand-written text is above."
+   },
+   {
+    "scene_number": 13,
+    "narration": "They developed a concrete schedule for their studies. They asked themselves which important tasks they should concentrate on during the very next day.",
+    "key_text_elements": [
+     "Concrete schedule",
+     "The next day"
+    ],
+    "layout_description": "A magnifying glass focuses on a single day's column in a weekly planner.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A weekly planner layout. A large magnifying glass is held over one specific column representing 'tomorrow'. The area inside the magnifying glass is accented with yellow (#FFD700), and an orange (#FF8C00) star marks the top of that column."
+   },
+   {
+    "scene_number": 14,
+    "narration": "They planned exactly when and where they were going to complete these tasks, and how much time should be scheduled for different tasks.",
+    "key_text_elements": [
+     "When and where",
+     "How much time"
+    ],
+    "layout_description": "A clock face and a map location pin are drawn next to a written task.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A minimalist sketch of a single task written on a line. Next to it is a small clock face colored yellow (#FFD700) and a map location pin colored orange (#FF8C00). Hand-written text sits below."
+   },
+   {
+    "scene_number": 15,
+    "narration": "As part of this daily planning phase, the students also asked themselves how they could avoid distractions while trying to complete their work.",
+    "key_text_elements": [
+     "Avoid distractions"
+    ],
+    "layout_description": "A smartphone is drawn with a large 'X' over it, next to a closed door.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A smartphone lying face up with a large orange (#FF8C00) 'X' drawn across the screen. Next to it is a simple sketch of a closed door with a yellow (#FFD700) 'do not disturb' sign hanging on the knob."
+   },
+   {
+    "scene_number": 16,
+    "narration": "The last part of the training dealt with monitoring task completion. Trainees were instructed to monitor their tasks each and every single day.",
+    "key_text_elements": [
+     "Step 5",
+     "Monitoring"
+    ],
+    "layout_description": "A checklist with several boxes, some of which have checkmarks in them.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A simple checklist on a piece of paper. The top two boxes have bold orange (#FF8C00) checkmarks in them. The bottom two boxes are empty. A yellow (#FFD700) pencil is checking off the second box. Hand-written text is to the side."
+   },
+   {
+    "scene_number": 17,
+    "narration": "By monitoring daily, they could see exactly which tasks they had successfully completed and clearly identify what still had to be done next.",
+    "key_text_elements": [
+     "Successfully completed",
+     "What to do next"
+    ],
+    "layout_description": "Two trays on a desk: one labeled 'done' full of paper, one labeled 'to-do' with a single sheet.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). Two simple document trays side by side. The left tray has a yellow (#FFD700) label and is full of papers. The right tray has an orange (#FF8C00) label and holds only one paper. An arrow points from right to left."
+   },
+   {
+    "scene_number": 18,
+    "narration": "To see if this training worked, researchers measured perceived stress, perceived control of time, and demands directly before, two weeks, and four weeks after.",
+    "key_text_elements": [
+     "Measured directly before",
+     "2 and 4 weeks"
+    ],
+    "layout_description": "A timeline with three points marked: before, 2 weeks, and 4 weeks.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A horizontal timeline line. Three vertical tick marks are drawn. The first is labeled 'before', the second '2 weeks', the third '4 weeks'. The tick marks are highlighted with orange (#FF8C00) circles. Yellow (#FFD700) arrows point to the marks."
+   },
+   {
+    "scene_number": 19,
+    "narration": "Demands was used as a control variable. It covered external duties and the amount of work. As expected, demands did not change after training.",
+    "key_text_elements": [
+     "Demands",
+     "Did not change"
+    ],
+    "layout_description": "A flat, horizontal line graph representing no change.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A simple graph with an X and Y axis. A perfectly flat, horizontal line runs across the graph, drawn in bold orange (#FF8C00). Yellow (#FFD700) dots mark the three measurement points on the flat line. Hand-written text is above."
+   },
+   {
+    "scene_number": 20,
+    "narration": "Perceived stress was measured with the tension scale. As hypothesized, trainees reported significantly less stress two and four weeks after the time management training.",
+    "key_text_elements": [
+     "Tension scale",
+     "Significantly less stress"
+    ],
+    "layout_description": "A line graph showing a downward trend across three points.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A simple graph with an X and Y axis. A line starts high on the left and drops downward across the two subsequent points. The downward line is bold orange (#FF8C00), with a yellow (#FFD700) arrow head pointing down at the end."
+   },
+   {
+    "scene_number": 21,
+    "narration": "Perceived control of time increased, but with a time lag. Two weeks after training, there was only a moderate tendency in the expected direction.",
+    "key_text_elements": [
+     "Perceived control of time",
+     "Moderate tendency"
+    ],
+    "layout_description": "A line graph showing a very slight upward bump at the middle point.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A graph showing a line that starts flat and only slightly tilts upward at the middle point (2 weeks). The slight tilt is highlighted with a yellow (#FFD700) dashed circle. Hand-written text is placed below."
+   },
+   {
+    "scene_number": 22,
+    "narration": "However, four weeks after the training, the trainees reported a significant increase in perceived control of time compared to the measurement directly before.",
+    "key_text_elements": [
+     "4 weeks after",
+     "Significant increase"
+    ],
+    "layout_description": "The same line graph now shows a sharp upward trajectory at the final point.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). The graph from the previous scene, but now the line shoots clearly upward at the final point (4 weeks). The upward line is bold orange (#FF8C00) with an arrow pointing up. Yellow (#FFD700) stars surround the arrow head."
+   },
+   {
+    "scene_number": 23,
+    "narration": "The researchers also checked if students actually used the strategies. Trainees reported a significant increase in use between the first and third measurements.",
+    "key_text_elements": [
+     "Used the strategies",
+     "Significant increase"
+    ],
+    "layout_description": "A bar chart with two bars, the second bar noticeably taller than the first.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A simple bar chart with two vertical bars. The first bar is short. The second bar is much taller and colored solid orange (#FF8C00). A yellow (#FFD700) arrow curves from the top of the first bar to the top of the second."
+   },
+   {
+    "scene_number": 24,
+    "narration": "Most students reported having no or little experience with time management before training. The training effect was much stronger for these particular students.",
+    "key_text_elements": [
+     "No or little experience",
+     "Much stronger effect"
+    ],
+    "layout_description": "Two stick figures, one standing next to a small upward arrow, the other next to a massive upward arrow.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). Two minimalist figures. The left figure has a small yellow (#FFD700) arrow pointing up beside them. The right figure has a massive, bold orange (#FF8C00) arrow pointing up beside them. Hand-written text is centered above."
+   },
+   {
+    "scene_number": 25,
+    "narration": "The authors suggest that prioritizing and goal setting might give more orientation, which might reduce stress and foster perceived control of time.",
+    "key_text_elements": [
+     "More orientation",
+     "Reduce stress"
+    ],
+    "layout_description": "A compass pointing true north, surrounded by calm, straight lines.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A minimalist drawing of a navigational compass. The needle points straight up and is colored orange (#FF8C00). Smooth, horizontal yellow (#FFD700) lines radiate outward, representing calm and orientation. Hand-written text is placed below."
+   },
+   {
+    "scene_number": 26,
+    "narration": "They also note that daily planning might be helpful for initiating goal-oriented behavior without much effort, while monitoring clearly shows successfully completed tasks.",
+    "key_text_elements": [
+     "Initiating behavior",
+     "Shows completed tasks"
+    ],
+    "layout_description": "A gear turning smoothly, pushing a smaller gear.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). Two interlocking gears. The larger gear has a yellow (#FFD700) circular arrow inside it showing rotation. It connects to a smaller gear, which has an orange (#FF8C00) checkmark inside it. Minimalist and clean."
+   },
+   {
+    "scene_number": 27,
+    "narration": "Ultimately, learning these five steps led to a decrease in perceived stress, suggesting time management training might be beneficial for undergraduate students' well-being.",
+    "key_text_elements": [
+     "Decrease in stress",
+     "Beneficial for well-being"
+    ],
+    "layout_description": "A smiling student walks forward, leaving a tangled knot of scribbles behind them.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background (#F9F7F2). A minimalist sketch of a student walking confidently to the right, smiling. Behind them on the left is a messy, tangled knot of black lines. Above the student is a bright yellow (#FFD700) sun and an orange (#FF8C00) path forward."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

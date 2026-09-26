@@ -1,0 +1,320 @@
+{
+ "config": "gpt-5.4-mini@t0.7",
+ "task": "video_default",
+ "run": 3,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.4-mini",
+  "temperature": 0.7
+ },
+ "focus": null,
+ "seconds": 10.7,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 611,
+ "estMinutes": 4.77,
+ "output": {
+  "title": "Decreasing Students’ Stress Through Time Management Training",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "University students often feel stressed, and this study asks whether a short time management training can reduce that stress and improve control of time.",
+    "key_text_elements": [
+     "student stress",
+     "time training",
+     "control of time"
+    ],
+    "layout_description": "A student sits surrounded by papers and a clock, with orange arrows pointing toward a calmer path.",
+    "visual_prompt": "Minimal hand-drawn university student at a desk with scattered papers, a wall clock, and a small orange arrow leading from clutter to a neat planner, cream background, black ink line art, orange and yellow highlights, lots of white space."
+   },
+   {
+    "scene_number": 2,
+    "narration": "The authors trained 23 undergraduate students and measured demands, perceived stress, and perceived control of time before training, then 2 and 4 weeks later.",
+    "key_text_elements": [
+     "23 students",
+     "3 measurements",
+     "2 and 4 weeks"
+    ],
+    "layout_description": "Three simple time points appear beside one student group, linked by a thin line.",
+    "visual_prompt": "Three small calendar cards labeled by symbols for before, 2 weeks, and 4 weeks, with a group of students in the center and a single training booklet, minimalist ink drawing with orange highlights."
+   },
+   {
+    "scene_number": 3,
+    "narration": "They used a non-equivalent dependent variable design: stress and control of time should change, while demands should stay unchanged if training mattered.",
+    "key_text_elements": [
+     "study design",
+     "stress changes",
+     "demands stay"
+    ],
+    "layout_description": "Two expected changing scales are shown beside one stable scale.",
+    "visual_prompt": "A balance-like sketch with two gauges labeled by icons for stress and control moving in opposite directions, and one third gauge staying still, with orange and yellow accents."
+   },
+   {
+    "scene_number": 4,
+    "narration": "After training, perceived stress decreased and perceived control of time increased, while demands did not change, suggesting the program may help student well-being.",
+    "key_text_elements": [
+     "stress down",
+     "control up",
+     "demands unchanged"
+    ],
+    "layout_description": "A before-and-after split picture shows calmer posture on the right.",
+    "visual_prompt": "Split scene of a stressed student on the left and a calmer student on the right, with a downward arrow for stress and upward arrow for control, cream background, black ink, orange and yellow accents."
+   },
+   {
+    "scene_number": 5,
+    "narration": "The paper begins by noting that mental health of university students is an increasing concern, and many students report at least moderate stress.",
+    "key_text_elements": [
+     "mental health",
+     "student stress",
+     "increasing concern"
+    ],
+    "layout_description": "A campus scene centers on one worried student with a large thought cloud.",
+    "visual_prompt": "Simple university campus outline with a worried student holding their head, a cloud of scribbles above, and a small orange exclamation mark, minimalist line art."
+   },
+   {
+    "scene_number": 6,
+    "narration": "The authors say time-related demands like workload, time pressure, and self-organized learning are serious problems for many students and are linked to higher stress levels.",
+    "key_text_elements": [
+     "time pressure",
+     "workload",
+     "self-organized learning"
+    ],
+    "layout_description": "Three icons for student demands cluster around a clock.",
+    "visual_prompt": "A clock surrounded by books, a checklist, and a backpack, with orange circles around the clock hands to suggest pressure, hand-drawn black ink style."
+   },
+   {
+    "scene_number": 7,
+    "narration": "Because of that, time management interventions are recommended as part of student support, yet the authors say research on their effectiveness is scarce.",
+    "key_text_elements": [
+     "student support",
+     "time management",
+     "research scarce"
+    ],
+    "layout_description": "A small support sign stands beside a thin stack of papers marked as limited evidence.",
+    "visual_prompt": "A student support signpost next to a small stack of papers and a magnifying glass, with one highlighted page, minimalist cream background."
+   },
+   {
+    "scene_number": 8,
+    "narration": "The study aimed to extend that scarce research and test whether effects would stay stable across two follow-up points after training.",
+    "key_text_elements": [
+     "study aim",
+     "stable effects",
+     "follow-up"
+    ],
+    "layout_description": "One training session leads to two later check-ins along a timeline.",
+    "visual_prompt": "A simple timeline with a training icon at the center and two later circles marked by small calendar symbols, orange line connecting them."
+   },
+   {
+    "scene_number": 9,
+    "narration": "The training was built around prioritizing, goal setting, strategy development, daily planning, and monitoring, all meant to improve control of time.",
+    "key_text_elements": [
+     "prioritize",
+     "daily planning",
+     "monitoring"
+    ],
+    "layout_description": "Five small action icons orbit a planner notebook.",
+    "visual_prompt": "Open planner notebook with five tiny surrounding icons: star, target, stepping stones, calendar, and check mark, drawn in black ink with orange highlights."
+   },
+   {
+    "scene_number": 10,
+    "narration": "Students first reflected on their activities, then set concrete goals, planned steps, thought about obstacles, and finally monitored task completion each day.",
+    "key_text_elements": [
+     "reflect",
+     "set goals",
+     "monitor tasks"
+    ],
+    "layout_description": "A sequence of four simple sketches shows the training flow from reflection to monitoring.",
+    "visual_prompt": "Four-panel strip: thinking student, target goal, staircase plan, and checklist calendar, all minimalist line art with yellow highlights on goals."
+   },
+   {
+    "scene_number": 11,
+    "narration": "The sample came from a medium-sized German university, with students invited through boards, newsletters, and seminars, and the training lasted 4 h.",
+    "key_text_elements": [
+     "German university",
+     "4 h",
+     "voluntary"
+    ],
+    "layout_description": "A campus invitation scene shows flyers leading to one workshop room.",
+    "visual_prompt": "University bulletin board with flyers, a newsletter sheet, and a seminar door opening to a small workshop, cream background, black ink, orange accents."
+   },
+   {
+    "scene_number": 12,
+    "narration": "Of the 48 students who began, 23 completed all questionnaires for the main analyses, and the average age was 23.30 years.",
+    "key_text_elements": [
+     "48 began",
+     "23 analyzed",
+     "23.30 years"
+    ],
+    "layout_description": "A funnel narrows from the starting group to the final analysis group.",
+    "visual_prompt": "Simple funnel diagram with 48 small student icons entering and 23 leaving at the bottom, with a small age tag beside the final group."
+   },
+   {
+    "scene_number": 13,
+    "narration": "About half of the final sample were female, and most students reported no or little experience using time management strategies before training.",
+    "key_text_elements": [
+     "about half",
+     "little experience",
+     "before training"
+    ],
+    "layout_description": "Two small profile icons and a simple experience ladder appear beside the group.",
+    "visual_prompt": "Group of student icons with a half-highlighted female symbol and a small ladder showing experience levels, orange and yellow accents."
+   },
+   {
+    "scene_number": 14,
+    "narration": "The researchers measured time management behaviour, perceived stress using the tension scale, perceived control of time, and demands as the control variable.",
+    "key_text_elements": [
+     "time management",
+     "tension scale",
+     "demands"
+    ],
+    "layout_description": "Four labeled cards are arranged around a central clipboard.",
+    "visual_prompt": "Clipboard with four surrounding cards, each with a simple icon: planner, tense face, clock with hands, and workload stack, black ink line art with orange highlights."
+   },
+   {
+    "scene_number": 15,
+    "narration": "Time management behaviour was measured with 18 items, perceived stress with five items, perceived control of time with ten items, and demands with five items.",
+    "key_text_elements": [
+     "18 items",
+     "10 items",
+     "5 items"
+    ],
+    "layout_description": "The item counts are shown as neat handwritten numbers beside each scale icon.",
+    "visual_prompt": "Four stacked cards with handwritten item counts, each card paired with a tiny icon, minimalist and clean."
+   },
+   {
+    "scene_number": 16,
+    "narration": "At time 1, time management behaviour correlated positively with perceived control of time, while perceived control of time correlated negatively with stress and demands.",
+    "key_text_elements": [
+     "positive link",
+     "negative link",
+     "time 1"
+    ],
+    "layout_description": "Three arrows connect the first measurement variables in a simple network.",
+    "visual_prompt": "A small network diagram with circles for behavior, control, stress, and demands, using orange arrows for positive and yellow arrows for negative relationships."
+   },
+   {
+    "scene_number": 17,
+    "narration": "After training, reported use of the taught strategies increased significantly by 4 weeks, and it nearly increased at 2 weeks after training.",
+    "key_text_elements": [
+     "strategy use",
+     "significant increase",
+     "nearly significant"
+    ],
+    "layout_description": "A rising line climbs from the first to the third measurement point.",
+    "visual_prompt": "A simple upward line graph with three points, the last point circled in orange, and a small notebook icon beside it."
+   },
+   {
+    "scene_number": 18,
+    "narration": "For the main outcomes, there was a significant overall time effect at 2 weeks, and stress was significantly lower than before training.",
+    "key_text_elements": [
+     "2 weeks",
+     "stress lower",
+     "overall effect"
+    ],
+    "layout_description": "The stress line drops from the first to second point beside a small statistic symbol.",
+    "visual_prompt": "Two-panel mini chart showing a downward stress arrow and a small table-like marker for overall time effect, with orange emphasis on the drop."
+   },
+   {
+    "scene_number": 19,
+    "narration": "Perceived control of time showed only a tendency at 2 weeks, but by 4 weeks it had increased significantly compared with the pretest.",
+    "key_text_elements": [
+     "tendency",
+     "4 weeks",
+     "control up"
+    ],
+    "layout_description": "A delayed upward arrow appears after an initial faint rise.",
+    "visual_prompt": "A timeline with a faint upward curve at 2 weeks and a bold upward curve at 4 weeks, highlighted in orange and yellow."
+   },
+   {
+    "scene_number": 20,
+    "narration": "At 4 weeks, the overall time effect remained significant, and both perceived stress and perceived control of time changed in the expected directions.",
+    "key_text_elements": [
+     "4 weeks",
+     "stress down",
+     "control up"
+    ],
+    "layout_description": "Two arrows move away from a central pretraining point.",
+    "visual_prompt": "A central starting point splitting into one downward arrow labeled by a tense face and one upward arrow labeled by a clock, minimalist ink art."
+   },
+   {
+    "scene_number": 21,
+    "narration": "Students with no or little prior experience seemed to profit more from training than those with moderate or some experience, especially for perceived stress.",
+    "key_text_elements": [
+     "more benefit",
+     "little experience",
+     "stress"
+    ],
+    "layout_description": "Two small student groups are shown with different sized arrows of change.",
+    "visual_prompt": "Side-by-side groups of students, one with a larger orange arrow and one with a smaller arrow, showing stronger change for the less experienced group."
+   },
+   {
+    "scene_number": 22,
+    "narration": "The control variable, demands, did not change significantly at either follow-up, which supports the authors' interpretation that training mattered.",
+    "key_text_elements": [
+     "demands unchanged",
+     "no significance",
+     "training mattered"
+    ],
+    "layout_description": "A stable gauge remains flat across all three time points.",
+    "visual_prompt": "A flat line gauge labeled with workload icons staying level across three points, with only a small orange circle around it."
+   },
+   {
+    "scene_number": 23,
+    "narration": "In discussion, the authors argue that prioritizing, goal setting, daily planning, and monitoring may have given students more orientation and control.",
+    "key_text_elements": [
+     "more orientation",
+     "daily planning",
+     "control"
+    ],
+    "layout_description": "A student follows a clear path through several small planning markers.",
+    "visual_prompt": "A student walking along stepping stones marked with a target, calendar, and checklist, with orange arrows showing direction."
+   },
+   {
+    "scene_number": 24,
+    "narration": "They also note that the training was short, only 4 h, yet it still had a positive impact in this mixed student sample.",
+    "key_text_elements": [
+     "short training",
+     "4 h",
+     "positive impact"
+    ],
+    "layout_description": "A small workshop clock sits beside a group of different students.",
+    "visual_prompt": "Workshop room with a small clock labeled 4 h and diverse student figures around a planner, minimalist black ink with orange accents."
+   },
+   {
+    "scene_number": 25,
+    "narration": "The authors treat this as a preliminary study because the sample was small and many students dropped out before the second measurement.",
+    "key_text_elements": [
+     "preliminary",
+     "small sample",
+     "dropout"
+    ],
+    "layout_description": "A shrinking group of student icons moves toward later time points.",
+    "visual_prompt": "A row of student icons gradually thinning across a timeline, with a small warning mark near the later point."
+   },
+   {
+    "scene_number": 26,
+    "narration": "They suggest future studies should use larger samples, compare time management training with other stress interventions, and test whether effects last longer.",
+    "key_text_elements": [
+     "larger samples",
+     "compare interventions",
+     "last longer"
+    ],
+    "layout_description": "Three future research paths branch from one central question mark.",
+    "visual_prompt": "A branching path diagram from a question mark to three icons: bigger group, two different intervention boxes, and a longer timeline, orange highlights."
+   },
+   {
+    "scene_number": 27,
+    "narration": "Overall, the paper concludes that time management training may help undergraduate students reduce stress and increase perceived control of time, though more evidence is needed.",
+    "key_text_elements": [
+     "may help",
+     "reduce stress",
+     "more evidence"
+    ],
+    "layout_description": "The final slide shows a calm student beside a simple takeaway statement.",
+    "visual_prompt": "A calm student holding a planner with a small upward clock and downward stress arrow, clean minimalist composition, cream background, black ink, orange and yellow highlights."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

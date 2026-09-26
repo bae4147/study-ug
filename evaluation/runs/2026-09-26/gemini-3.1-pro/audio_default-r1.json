@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.1-pro",
+ "task": "audio_default",
+ "run": 1,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 54.2,
+ "targetWords": 312,
+ "draftWords": 294,
+ "finalWords": 294,
+ "expanded": false,
+ "estMinutes": 1.88,
+ "output": "Alex: Welcome back, today we are looking at a study on decreasing students' stress through time management training.\n\nJordan: The authors set out to examine the effects of a time management training program on perceived control of time and perceived stress in higher education.\n\nAlex: How was the study done, and who participated?\n\nJordan: Forty-eight undergraduate students started, but the main statistical analyses used the twenty-three students who filled out all the questionnaires.\n\nAlex: I read they used a non-equivalent dependent variable design.\n\nJordan: That means they trained one single group and measured variables they expected to change, alongside a control variable they expected to stay the same.\n\nAlex: Right, as Frese and colleagues noted in 2003, this design effectively controls for testing and Hawthorne effects without needing a control group.\n\nJordan: Exactly. They measured perceived stress using the tension scale, and perceived control of time, expecting both to be influenced by the four-hour training.\n\nAlex: The control variable was demands, meaning perceived, self-reported demands, which they hypothesized should remain unchanged.\n\nJordan: Yes, and they measured these directly before, two weeks after, and four weeks after the training.\n\nAlex: What did they find at those two and four-week marks?\n\nJordan: As expected, perceived stress significantly decreased two and four weeks after training, while demands did not change.\n\nAlex: Did perceived control of time increase right away?\n\nJordan: Not immediately. There was a time lag where they only found a tendency in the expected direction at two weeks, but trainees reported a significant increase four weeks after training.\n\nAlex: The authors noted the training effect was much stronger for students with no or little experience compared to those with moderate and some experience.\n\nJordan: Ultimately, the authors interpret these findings to mean time management training might be beneficial for undergraduate students' well-being, though more intervention studies with larger samples are necessary."
+}

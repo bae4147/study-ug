@@ -1,0 +1,285 @@
+{
+ "config": "gemini-3.1-pro",
+ "task": "video_request",
+ "run": 3,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.4
+ },
+ "focus": "Explain step by step what the training actually taught students to do.",
+ "seconds": 57.8,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 614,
+ "estMinutes": 4.8,
+ "output": {
+  "title": "Decreasing students' stress through time management training: an intervention study",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "University students often face high stress levels. This study explored whether a specific time management training program could help undergraduates deal with time-related demands.",
+    "key_text_elements": [
+     "Undergraduate students",
+     "Perceived stress"
+    ],
+    "layout_description": "A stressed student is in the center, with text floating above a background of scattered clocks.",
+    "visual_prompt": "Hand-drawn black ink sketch of a stressed student surrounded by floating clocks and open books, with orange and yellow highlights on the clock faces."
+   },
+   {
+    "scene_number": 2,
+    "narration": "Researchers evaluated a four-hour time management training intervention. Twenty-three undergraduate students from various faculties attended the program in the middle of the semester.",
+    "key_text_elements": [
+     "23 undergraduate students",
+     "4 hours"
+    ],
+    "layout_description": "A table is in the center with students, and text is written on a whiteboard in the background.",
+    "visual_prompt": "Sketch of a group of students sitting around a table with a trainer, a whiteboard behind them highlighted with yellow."
+   },
+   {
+    "scene_number": 3,
+    "narration": "The training aimed to increase perceived control of time and decrease perceived stress, which the study measured using a scale called tension.",
+    "key_text_elements": [
+     "Perceived control of time",
+     "Tension"
+    ],
+    "layout_description": "A balancing scale is centered, with text labeling the two sides.",
+    "visual_prompt": "A vintage balancing scale with a clock on one side and a heavy weight on the other, accented with orange arrows showing the clock rising and the weight falling."
+   },
+   {
+    "scene_number": 4,
+    "narration": "The training was designed as a homogeneous intervention. It focused on five major parts: prioritizing, goal setting, strategy development, daily planning, and monitoring.",
+    "key_text_elements": [
+     "Prioritizing",
+     "Goal setting",
+     "Daily planning"
+    ],
+    "layout_description": "A winding roadmap crosses the screen, with text placed next to the first three flags.",
+    "visual_prompt": "A winding roadmap with five distinct stops marked with flags, the path highlighted in yellow ink."
+   },
+   {
+    "scene_number": 5,
+    "narration": "The first step taught in the training was self-reflection. Students were asked to carefully reflect upon all of their current daily activities.",
+    "key_text_elements": [
+     "Step 1",
+     "Self-reflection"
+    ],
+    "layout_description": "A student is on the left, with text written on the notebook page they are looking at.",
+    "visual_prompt": "A student looking thoughtfully at a blank notebook, holding a pen, with an orange thought bubble above their head."
+   },
+   {
+    "scene_number": 6,
+    "narration": "During this first phase, students noted down their different activities. This list included both their academic tasks and their various extracurricular activities.",
+    "key_text_elements": [
+     "Academic tasks",
+     "Extracurricular activities"
+    ],
+    "layout_description": "A split list is centered, with text serving as headers for each column.",
+    "visual_prompt": "A split list showing a graduation cap icon on one side and a soccer ball on the other, drawn in slightly imperfect black lines."
+   },
+   {
+    "scene_number": 7,
+    "narration": "Next, they reflected on why these activities were important for their study goals. They asked themselves which activities were truly the most important.",
+    "key_text_elements": [
+     "Study goals",
+     "Importance"
+    ],
+    "layout_description": "A list is on the right, with a magnifying glass enlarging the text.",
+    "visual_prompt": "A magnifying glass focusing on a specific item in a long handwritten list, the glass tinted with a yellow highlight."
+   },
+   {
+    "scene_number": 8,
+    "narration": "By answering these questions, the students tried to define the most important activities they needed to focus on to succeed in their studies.",
+    "key_text_elements": [
+     "Most important activities"
+    ],
+    "layout_description": "A clipboard is angled in the center, with text at the top.",
+    "visual_prompt": "A hand drawing a bright orange star next to a top priority item on a clipboard."
+   },
+   {
+    "scene_number": 9,
+    "narration": "The second step of the training was goal setting. Students learned how to define goals specifically for the important activities they just identified.",
+    "key_text_elements": [
+     "Step 2",
+     "Goal setting"
+    ],
+    "layout_description": "A target is on the right, with text written on a banner above it.",
+    "visual_prompt": "A target board with an arrow hitting the bullseye, accented with orange circles."
+   },
+   {
+    "scene_number": 10,
+    "narration": "They were taught to make these goals concrete, challenging, and proximal. This meant figuring out exactly what they wanted to achieve in detail.",
+    "key_text_elements": [
+     "Concrete",
+     "Challenging",
+     "Proximal"
+    ],
+    "layout_description": "Three puzzle pieces are in the center, with text written inside each piece.",
+    "visual_prompt": "Three puzzle pieces fitting together to form the shape of a lightbulb, glowing with yellow ink."
+   },
+   {
+    "scene_number": 11,
+    "narration": "As part of this goal-setting phase, the students also defined clear deadlines for when these specific achievements needed to be fully completed.",
+    "key_text_elements": [
+     "Define deadlines"
+    ],
+    "layout_description": "A calendar is centered, with text written across the top margin.",
+    "visual_prompt": "A calendar page with a specific date circled heavily in orange ink, with a small arrow pointing to it."
+   },
+   {
+    "scene_number": 12,
+    "narration": "The third major step was strategy development. Students developed a concrete strategy for achieving the goals they had just set for themselves.",
+    "key_text_elements": [
+     "Step 3",
+     "Strategy development"
+    ],
+    "layout_description": "A chessboard is at the bottom, with text floating above a chess piece.",
+    "visual_prompt": "A chess piece, specifically a knight, moving across a chessboard with a dashed orange line showing its path."
+   },
+   {
+    "scene_number": 13,
+    "narration": "To build this strategy, they noted down different steps required to reach the goal, set priorities for these steps, and planned how to start.",
+    "key_text_elements": [
+     "Different steps",
+     "Set priorities"
+    ],
+    "layout_description": "A staircase ascends from left to right, with text along the steps.",
+    "visual_prompt": "A staircase with numbers on each step leading upward, with a yellow glow at the top step."
+   },
+   {
+    "scene_number": 14,
+    "narration": "They also thought about possible obstacles that might get in their way, and they planned out exactly what to do to overcome them.",
+    "key_text_elements": [
+     "Possible obstacles",
+     "Overcome them"
+    ],
+    "layout_description": "A figure is in mid-air, with text written on the hurdle below.",
+    "visual_prompt": "A sketch of a stick figure jumping over a hurdle on a running track, the hurdle highlighted in orange."
+   },
+   {
+    "scene_number": 15,
+    "narration": "In this strategy phase, the trainer emphasized the importance of setting proximal deadlines for each of the individual steps leading to goal achievement.",
+    "key_text_elements": [
+     "Proximal deadlines"
+    ],
+    "layout_description": "Stopwatches are arranged in a sequence, with text above the connecting line.",
+    "visual_prompt": "A series of small stopwatches linked by a dotted orange line, showing a progression of time."
+   },
+   {
+    "scene_number": 16,
+    "narration": "The fourth part of the training focused on daily planning. Trainees decided what they wanted to do and developed a concrete schedule.",
+    "key_text_elements": [
+     "Step 4",
+     "Daily planning"
+    ],
+    "layout_description": "A planner is centered, with text written on its cover.",
+    "visual_prompt": "A daily planner book open to a specific day, with time slots visible and highlighted in yellow."
+   },
+   {
+    "scene_number": 17,
+    "narration": "They asked themselves which important tasks they should concentrate on the next day, and exactly when and where they were going to complete them.",
+    "key_text_elements": [
+     "When and where"
+    ],
+    "layout_description": "Icons are in the center, with text written below them.",
+    "visual_prompt": "A clock face overlapping with a map pin icon, drawn in simple black ink with orange accents."
+   },
+   {
+    "scene_number": 18,
+    "narration": "Students also learned to ask themselves how much time should be scheduled for different tasks, and how they could successfully avoid distractions.",
+    "key_text_elements": [
+     "Avoid distractions"
+    ],
+    "layout_description": "A phone and book are side-by-side, with text above the phone.",
+    "visual_prompt": "A smartphone with a crossed-out circle over it in orange ink, sitting next to an open textbook."
+   },
+   {
+    "scene_number": 19,
+    "narration": "The fifth and final part of the training dealt with monitoring. Trainees were instructed to monitor their goal progress and task completion.",
+    "key_text_elements": [
+     "Step 5",
+     "Monitoring"
+    ],
+    "layout_description": "A checklist is slightly tilted in the center, with text at the top.",
+    "visual_prompt": "A checklist with several boxes checked off in thick yellow ink."
+   },
+   {
+    "scene_number": 20,
+    "narration": "They learned to monitor their tasks each day to clearly see which ones they had completed and what still had to be done.",
+    "key_text_elements": [
+     "Completed",
+     "Still to be done"
+    ],
+    "layout_description": "Two baskets are side-by-side, with text labeling each basket.",
+    "visual_prompt": "Two baskets, one full of checked papers and one empty, with an orange arrow pointing from the full to the empty one."
+   },
+   {
+    "scene_number": 21,
+    "narration": "To see if this step-by-step training worked, researchers measured the students directly before the training, and then two and four weeks after.",
+    "key_text_elements": [
+     "Before training",
+     "2 and 4 weeks"
+    ],
+    "layout_description": "A timeline stretches across the screen, with text above the markers.",
+    "visual_prompt": "A horizontal timeline with three distinct points marked with orange circles."
+   },
+   {
+    "scene_number": 22,
+    "narration": "After the training, the trainees reported a more frequent use of the taught time management strategies than they did before the intervention.",
+    "key_text_elements": [
+     "More frequent use"
+    ],
+    "layout_description": "A chart is in the center, with text written along the upward arrow.",
+    "visual_prompt": "A simple bar chart showing an upward trend, with a large yellow arrow pointing up and to the right."
+   },
+   {
+    "scene_number": 23,
+    "narration": "As expected, the students reported significantly less perceived stress two weeks and four weeks after the training, compared to the pretest before training.",
+    "key_text_elements": [
+     "Less perceived stress"
+    ],
+    "layout_description": "A line moves left to right, with text above the smooth section.",
+    "visual_prompt": "A jagged, chaotic black line that transitions into a calm, straight line, highlighted in yellow."
+   },
+   {
+    "scene_number": 24,
+    "narration": "Perceived control of time also increased. While there was only a tendency after two weeks, trainees reported a significant increase four weeks after training.",
+    "key_text_elements": [
+     "Perceived control of time"
+    ],
+    "layout_description": "A student is on the right, with text written on the clock face.",
+    "visual_prompt": "A student confidently holding a large clock face like a shield, accented with orange."
+   },
+   {
+    "scene_number": 25,
+    "narration": "Meanwhile, self-reported demands did not change. This control variable measured things like the amount of work or external duties students were confronted with.",
+    "key_text_elements": [
+     "Demands",
+     "Did not change"
+    ],
+    "layout_description": "Two frames are side-by-side, with text above the boxes.",
+    "visual_prompt": "A stack of heavy boxes remaining exactly the same size in two side-by-side frames, connected by an equals sign."
+   },
+   {
+    "scene_number": 26,
+    "narration": "Because demands remained unchanged while stress decreased, researchers concluded the positive changes could be attributed to the time management training the students received.",
+    "key_text_elements": [
+     "Training effect"
+    ],
+    "layout_description": "A lightbulb is centered, with text written in the yellow glow.",
+    "visual_prompt": "A lightbulb glowing brightly above a stack of books, with yellow ink radiating outward."
+   },
+   {
+    "scene_number": 27,
+    "narration": "By teaching students to prioritize, set goals, plan, and monitor, time management training might be a beneficial way to improve undergraduate well-being.",
+    "key_text_elements": [
+     "Student well-being"
+    ],
+    "layout_description": "A student is centered, with text written in an arc above them.",
+    "visual_prompt": "A smiling student wearing a graduation cap, holding a well-organized planner, surrounded by small orange stars."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

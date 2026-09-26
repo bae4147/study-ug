@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.1-pro",
+ "task": "audio_default",
+ "run": 3,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 31.7,
+ "targetWords": 312,
+ "draftWords": 307,
+ "finalWords": 307,
+ "expanded": false,
+ "estMinutes": 1.97,
+ "output": "Alex: Welcome back, today we are looking at a study on decreasing students' stress through time management training.\n\nJordan: Right, the authors wanted to see if a four-hour time management training program could affect perceived control of time and perceived stress in higher education.\n\nAlex: They used a \"non-equivalent dependent variable design\", which sounds complicated, so how exactly did they set that up?\n\nJordan: They measured variables they expected the training to change, like perceived stress and perceived control of time, alongside a control variable they expected would not change, which was self-reported demands.\n\nAlex: And just to be clear, perceived stress was measured with the \"tension\" scale, while \"demands\" means perceived, self-reported demands, right?\n\nJordan: Exactly, and they measured these in twenty-three undergraduate students directly before the training, two weeks after, and four weeks after.\n\nAlex: That makes sense. What did they find when they checked the students' scores after those two and four weeks?\n\nJordan: As expected, perceived stress decreased significantly at both two and four weeks, while perceived control of time showed a moderate tendency to increase at two weeks and increased significantly at four weeks.\n\nAlex: Did the self-reported demands stay the same, as they hypothesized?\n\nJordan: Yes, demands did not change significantly. Also, the trainees transferred the training content to their daily work at least to some extent, reporting a significant increase in using the taught strategies between the first measurement and four weeks after training.\n\nAlex: So the authors' interpretation is that things like prioritizing and daily planning might give more orientation, which might reduce stress and foster perceived control of time? And did prior experience matter?\n\nJordan: Yes, they noted that students with no or little experience seem to profit more from training than students with moderate or more experience. Ultimately, they suggest time management training might be beneficial for undergraduate students' well-being, though more intervention studies with larger samples are necessary."
+}

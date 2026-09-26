@@ -1,0 +1,18 @@
+{
+ "config": "gpt-5.5",
+ "task": "audio_default",
+ "run": 2,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.5",
+  "temperature": null
+ },
+ "focus": null,
+ "seconds": 42.4,
+ "targetWords": 312,
+ "draftWords": 318,
+ "finalWords": 318,
+ "expanded": false,
+ "estMinutes": 2.04,
+ "output": "Alex: Hi Jordan—what was this study trying to test about time management training for undergraduates?\n\nJordan: The authors tested whether a 4 h training would increase perceived control of time and reduce perceived stress, measured with the tension scale. They also expected perceived, self-reported demands not to change, as a control variable in their “non-equivalent dependent variable design.”\n\nAlex: So who took part, and what did the training involve?\n\nJordan: Forty-eight local undergraduates began, but the main analyses used the 23 who completed questionnaires directly before training, 2 weeks after, and 4 weeks after. The training covered prioritizing, concrete, challenging and proximal goals, strategy development, daily planning, and monitoring task completion.\n\nAlex: Did the students report using the strategies afterward?\n\nJordan: Yes. Time management behaviour rose from M=3.01 before training to M=3.19 at 2 weeks and M=3.31 at 4 weeks; the 4-week increase was significant, while the 2-week increase was nearly significant.\n\nAlex: What happened to perceived stress and perceived control of time?\n\nJordan: Tension decreased from M=3.30 before training to M=2.96 at 2 weeks and M=3.03 at 4 weeks, with significant decreases at both follow-ups. Perceived control of time rose from M=2.75 to M=2.89 to M=3.05; at 2 weeks there was only a tendency in the expected direction, but at 4 weeks the increase was significant.\n\nAlex: And demands—the thing that should not change?\n\nJordan: Demands were M=3.59 before training, M=3.35 at 2 weeks, and M=3.46 at 4 weeks, with no significant changes. That supported the authors’ interpretation that the training, not just measurement or context, likely drove the intended changes.\n\nAlex: Did everyone seem to benefit equally, and how cautious should we be?\n\nJordan: Table 6 suggested students with no or little prior time management experience seemed to profit more than those with moderate or some experience. But the authors treat the study as preliminary because the sample was small, about half dropped out before the second measurement, and future studies need larger samples and stronger comparison designs."
+}

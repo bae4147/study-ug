@@ -1,0 +1,18 @@
+{
+ "config": "current",
+ "task": "audio_default",
+ "run": 2,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-4o",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 5.5,
+ "targetWords": 312,
+ "draftWords": 325,
+ "finalWords": 325,
+ "expanded": false,
+ "estMinutes": 2.08,
+ "output": "Alex: Hi everyone, welcome back! Today, we're diving into a study on time management training and its effects on stress and perceived control of time among students. Jordan, can you start us off with the basics of what this study aimed to do?\n\nJordan: Absolutely, Alex. This study, conducted by Häfner, Stock, and Oberst, aimed to see if a time management training program could help undergraduates feel more in control of their time and less stressed. They used a specific design called a \"non-equivalent dependent variable design,\" which doesn't require a control group.\n\nAlex: Interesting. So, how was the study set up?\n\nJordan: They had 23 undergraduate students go through a time management training. The students reported on their perceived stress, perceived control of time, and demands before the training, and again 2 and 4 weeks after. The idea was to see changes in stress and control of time, but not in demands, which served as a control variable.\n\nAlex: And what did they find?\n\nJordan: The results were quite promising. The students reported significantly less stress and more perceived control of time after the training. However, the demands they faced didn't change, which suggests the training specifically impacted stress and control of time.\n\nAlex: That's great to hear! Did the study mention anything about the effectiveness of the training over time?\n\nJordan: Yes, the effects seemed to strengthen over time. While perceived control of time showed only a moderate increase after 2 weeks, it became significant after 4 weeks. This indicates the training's impact might grow as students continue to apply the strategies.\n\nAlex: So, what's the takeaway for students who might be struggling with stress and time management?\n\nJordan: The key takeaway is that time management training can be a valuable tool for reducing stress and increasing control over one's time. However, the authors note that more studies with larger samples are needed to confirm these findings. For now, prioritizing tasks, setting clear goals, and daily planning could be beneficial strategies for students."
+}

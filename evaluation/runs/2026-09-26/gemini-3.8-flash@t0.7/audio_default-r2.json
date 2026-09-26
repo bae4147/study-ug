@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.8-flash@t0.7",
+ "task": "audio_default",
+ "run": 2,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.7
+ },
+ "focus": null,
+ "seconds": 24.8,
+ "targetWords": 312,
+ "draftWords": 310,
+ "finalWords": 310,
+ "expanded": false,
+ "estMinutes": 1.99,
+ "output": "Alex: Welcome back; today we are examining the intervention study by Häfner, Stock, and Oberst on undergraduate time management training. What was the core purpose of their research?\n\nJordan: The authors wanted to examine the effects of a four-hour time management training intervention on perceived control of time and perceived stress in the context of higher education.\n\nAlex: How did they set up the study without using a separate control group?\n\nJordan: They used a non-equivalent dependent variable design, which is an evaluation method where researchers track experimental variables hypothesized to change, alongside an untreated control variable that should not change.\n\nAlex: Which specific variables did they measure directly before the training, and then two and four weeks afterward?\n\nJordan: Across twenty-three undergraduates who completed all questionnaires, perceived stress was measured using the tension scale, alongside perceived control of time, and perceived, self-reported demands served as the control variable.\n\nAlex: What did their statistical analysis show across those measurement points?\n\nJordan: Perceived stress decreased significantly at two weeks and four weeks after training. Perceived control of time showed a tendency in the expected direction at two weeks, and increased significantly at four weeks.\n\nAlex: And did the students report any significant differences in their perceived demands?\n\nJordan: No, perceived demands did not change significantly, which the authors interpret as evidence that the positive changes were caused by the training rather than testing, history, or placebo effects.\n\nAlex: Did a student's prior time management experience make any difference to the outcomes?\n\nJordan: Yes, the training effect was much stronger for students with no or little experience. Furthermore, participants transferred the taught time management strategies to their daily work at least to some extent.\n\nAlex: What are the primary takeaways and implications the authors emphasize?\n\nJordan: The authors conclude time management training might be beneficial for undergraduate students' well-being, though they stress that more intervention studies with larger samples are necessary to reach more robust conclusions."
+}

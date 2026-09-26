@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.8-flash@t0.7",
+ "task": "audio_default",
+ "run": 1,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.7
+ },
+ "focus": null,
+ "seconds": 15.6,
+ "targetWords": 312,
+ "draftWords": 316,
+ "finalWords": 316,
+ "expanded": false,
+ "estMinutes": 2.03,
+ "output": "Alex: Welcome! Jordan, what did this study by Häfner, Stock, and Oberst set out to examine?\n\nJordan: They wanted to examine whether a four-hour time management training program could increase undergraduate students' perceived control of time and decrease their perceived stress.\n\nAlex: How did they design the study to test that without a traditional control group?\n\nJordan: They used a non-equivalent dependent variable design with twenty-three undergraduates who completed all questionnaires. In this design, dependent variables expected to change are evaluated alongside an unaffected control variable, which was perceived demands.\n\nAlex: How were those specific variables defined and measured?\n\nJordan: Perceived stress was measured using the tension scale, covering mental fatigue and nervousness. Perceived control of time assessed feelings of control and avoiding procrastination, while demands covered external duties and workload.\n\nAlex: What did the results show two weeks after the training?\n\nJordan: Trainees reported significantly less perceived stress, while perceived control of time showed a tendency in the expected direction, and perceived demands did not change significantly.\n\nAlex: Did those effects continue four weeks after the training took place?\n\nJordan: Yes, four weeks after training, participants reported significantly less perceived stress and a significant increase in perceived control of time, while demands still showed no significant changes.\n\nAlex: Did the trainees actually use the time management strategies in daily life?\n\nJordan: Trainees reported a significant increase in time management behaviour four weeks after training, which the authors noted shows transfer to daily work at least to some extent.\n\nAlex: Did the students' prior experience make any difference to the outcomes?\n\nJordan: Yes, the training effect was much stronger for students with no or little prior time management experience than for those with moderate or some experience.\n\nAlex: What are the key takeaways and limitations highlighted by the authors?\n\nJordan: The authors concluded that time management training might be beneficial for student well-being. However, because about half of the initial forty-eight students dropped out, they emphasized that larger intervention studies are necessary."
+}

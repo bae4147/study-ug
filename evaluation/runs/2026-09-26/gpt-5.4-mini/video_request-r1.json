@@ -1,0 +1,320 @@
+{
+ "config": "gpt-5.4-mini",
+ "task": "video_request",
+ "run": 1,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.4-mini",
+  "temperature": 0.4
+ },
+ "focus": "Explain step by step what the training actually taught students to do.",
+ "seconds": 9.7,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 564,
+ "estMinutes": 4.41,
+ "output": {
+  "title": "What the time management training taught students to do",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "This video explains, step by step, what the training taught students to do, using the paper’s own description of the intervention.",
+    "key_text_elements": [
+     "step by step",
+     "training",
+     "students"
+    ],
+    "layout_description": "A simple title card with a student beside a checklist and an arrow pointing forward.",
+    "visual_prompt": "Hand-drawn student holding a checklist labeled with small boxes, an orange arrow moving from left to right, cream background, minimalist black ink line art with orange and yellow accents."
+   },
+   {
+    "scene_number": 2,
+    "narration": "The training was built around prioritizing, goal setting, strategy development, daily planning, and monitoring, all aimed at time management.",
+    "key_text_elements": [
+     "prioritize",
+     "set goals",
+     "monitor"
+    ],
+    "layout_description": "Five small icons are arranged in a row, showing the training’s five parts.",
+    "visual_prompt": "Five simple sketches in a row: a star, target, path, calendar, and clipboard, with orange highlights connecting them."
+   },
+   {
+    "scene_number": 3,
+    "narration": "First, students reflected on their current activities, including academic tasks and extracurricular activities, and wrote them down before judging their importance.",
+    "key_text_elements": [
+     "current activities",
+     "write them down",
+     "importance"
+    ],
+    "layout_description": "A student sits at a desk with two piles of activities and a notebook in the center.",
+    "visual_prompt": "Student at desk with two small stacks labeled by icons for books and hobbies, writing in a notebook, with a yellow circle around the notebook."
+   },
+   {
+    "scene_number": 4,
+    "narration": "They asked which activities were most important and why, then tried to identify the most important ones for their study goals.",
+    "key_text_elements": [
+     "most important",
+     "why",
+     "study goals"
+    ],
+    "layout_description": "A thought bubble rises above the student, showing a few activities being compared.",
+    "visual_prompt": "Student looking at floating icons of tasks, with one highlighted in orange and a question mark above it."
+   },
+   {
+    "scene_number": 5,
+    "narration": "Next, they defined concrete, challenging, and proximal goals for those important activities, and they set deadlines for what they wanted to achieve.",
+    "key_text_elements": [
+     "concrete goals",
+     "deadlines",
+     "challenging"
+    ],
+    "layout_description": "A goal target and a small calendar sit side by side, linked by an arrow.",
+    "visual_prompt": "A target with a small flag, a calendar page, and an arrow connecting them, all in black ink with orange accents."
+   },
+   {
+    "scene_number": 6,
+    "narration": "In the third phase, they developed a strategy for reaching the goals by listing steps, setting priorities for those steps, and planning how to start.",
+    "key_text_elements": [
+     "steps",
+     "set priorities",
+     "how to start"
+    ],
+    "layout_description": "A staircase of steps leads upward, with the first step highlighted.",
+    "visual_prompt": "Simple staircase path with three labeled stepping stones, one orange-highlighted first step, and a student pointing at it."
+   },
+   {
+    "scene_number": 7,
+    "narration": "They also thought about possible obstacles and what to do to overcome them, while the training emphasized proximal deadlines for each step.",
+    "key_text_elements": [
+     "obstacles",
+     "overcome",
+     "proximal deadlines"
+    ],
+    "layout_description": "A path with a small obstacle is shown, and a side note marks a near deadline.",
+    "visual_prompt": "A winding path with a small rock obstacle and a tiny calendar close to the next step, with an orange arrow showing a workaround."
+   },
+   {
+    "scene_number": 8,
+    "narration": "The fourth part focused on daily planning, where trainees decided what they wanted to do and when, and built a concrete schedule for studying.",
+    "key_text_elements": [
+     "daily planning",
+     "when",
+     "schedule"
+    ],
+    "layout_description": "A calendar grid fills the center, with a student placing tasks into time slots.",
+    "visual_prompt": "Calendar page with small task icons being placed into boxes by a hand, orange circles marking chosen slots."
+   },
+   {
+    "scene_number": 9,
+    "narration": "They asked themselves which important tasks to concentrate on tomorrow, and where and when they would complete them.",
+    "key_text_elements": [
+     "tomorrow",
+     "where",
+     "when"
+    ],
+    "layout_description": "A tomorrow calendar page is shown beside a map-like workspace and clock.",
+    "visual_prompt": "A calendar page labeled tomorrow, a clock, and a desk scene with arrows pointing to a study spot."
+   },
+   {
+    "scene_number": 10,
+    "narration": "Students also considered how much time should be scheduled for different tasks and how to avoid distractions during study time.",
+    "key_text_elements": [
+     "how much time",
+     "avoid distractions",
+     "study time"
+    ],
+    "layout_description": "A clock, a set of task blocks, and a crossed-out distraction icon appear together.",
+    "visual_prompt": "Clock beside several task blocks, with a small phone-like distraction icon crossed out in orange."
+   },
+   {
+    "scene_number": 11,
+    "narration": "The last part dealt with monitoring task completion, so trainees checked each day what they had finished and what still remained.",
+    "key_text_elements": [
+     "monitoring",
+     "finished",
+     "still remains"
+    ],
+    "layout_description": "A daily checklist shows some boxes checked and one box left open.",
+    "visual_prompt": "Clipboard with a row of checkmarks and one empty box, plus a student marking progress in orange."
+   },
+   {
+    "scene_number": 12,
+    "narration": "The paper says this daily monitoring helped students see completed tasks clearly, creating reinforcing information about their progress.",
+    "key_text_elements": [
+     "daily check",
+     "progress",
+     "completed"
+    ],
+    "layout_description": "A student looks at a checklist that visually fills up over time.",
+    "visual_prompt": "Checklist gradually filling with checkmarks, a small upward arrow beside it, and a calm student figure."
+   },
+   {
+    "scene_number": 13,
+    "narration": "The authors also say the training was meant to help students deal with external demands through these time management strategies.",
+    "key_text_elements": [
+     "external demands",
+     "time strategies",
+     "help students"
+    ],
+    "layout_description": "A student stands between several outside demands and the training tools that organize them.",
+    "visual_prompt": "Student surrounded by simple icons for work and duties, with a calendar and priority list creating order around them."
+   },
+   {
+    "scene_number": 14,
+    "narration": "Before training, students were asked about their learning history with time management, and most reported no or little experience.",
+    "key_text_elements": [
+     "learning history",
+     "no experience",
+     "little experience"
+    ],
+    "layout_description": "A small survey sheet appears next to a student with a mostly empty experience meter.",
+    "visual_prompt": "Questionnaire page beside a nearly empty gauge, with orange highlighting only a small filled section."
+   },
+   {
+    "scene_number": 15,
+    "narration": "The training itself lasted 4 h and was given in groups of about ten students by one trainer experienced in time management.",
+    "key_text_elements": [
+     "4 h",
+     "about ten",
+     "one trainer"
+    ],
+    "layout_description": "A small group scene shows one instructor at the front and several students around a table.",
+    "visual_prompt": "Minimal group workshop scene with one trainer pointing to a board and about ten seated students, cream background."
+   },
+   {
+    "scene_number": 16,
+    "narration": "Students were told the procedure, their data would be confidential, and honest responses mattered, but the paper does not describe more detail.",
+    "key_text_elements": [
+     "confidential",
+     "honest",
+     "procedure"
+    ],
+    "layout_description": "A consent-style scene shows a paper, a lock, and a student nodding.",
+    "visual_prompt": "A simple consent sheet with a small lock icon and a student holding a pen, orange circle around the lock."
+   },
+   {
+    "scene_number": 17,
+    "narration": "The researchers measured outcomes directly before training, then 2 weeks later, and again 4 weeks later to see whether the training held up.",
+    "key_text_elements": [
+     "before",
+     "2 weeks",
+     "4 weeks"
+    ],
+    "layout_description": "Three time points are shown on a horizontal line with the training in the middle.",
+    "visual_prompt": "Timeline with three dots labeled by small calendar icons, the middle one marked by a training symbol and orange arrow."
+   },
+   {
+    "scene_number": 18,
+    "narration": "They also checked whether trainees actually used the taught strategies after training, because that would help rule out a placebo effect.",
+    "key_text_elements": [
+     "used strategies",
+     "after training",
+     "placebo"
+    ],
+    "layout_description": "A student applies a checklist to a real study desk, linking training to daily work.",
+    "visual_prompt": "Student moving a checklist from a training board to a desk calendar, with an orange arrow showing transfer."
+   },
+   {
+    "scene_number": 19,
+    "narration": "The paper’s design used one trained group and a control variable, demands, which was expected not to change after training.",
+    "key_text_elements": [
+     "one group",
+     "demands",
+     "not change"
+    ],
+    "layout_description": "A split illustration contrasts the trained outcomes with the control variable staying steady.",
+    "visual_prompt": "One side shows a rising and falling set of arrows for outcomes, the other shows a flat line for demands, all hand-drawn."
+   },
+   {
+    "scene_number": 20,
+    "narration": "In the results, trainees reported a significant increase in using the taught strategies between the first and third measurements.",
+    "key_text_elements": [
+     "significant increase",
+     "strategies",
+     "third measurement"
+    ],
+    "layout_description": "A simple upward arrow connects the first and third measurement points on a chart.",
+    "visual_prompt": "Three-point line sketch with the last point higher, orange arrow rising from the first to the third point."
+   },
+   {
+    "scene_number": 21,
+    "narration": "There was also a nearly significant increase between the first and second measurements, showing an early move toward using the strategies more.",
+    "key_text_elements": [
+     "nearly significant",
+     "early move",
+     "second measurement"
+    ],
+    "layout_description": "A chart shows a smaller upward shift from the first to the second point.",
+    "visual_prompt": "Two-point line sketch with a modest rise, a dotted orange arrow, and a small note-like symbol for near significance."
+   },
+   {
+    "scene_number": 22,
+    "narration": "For perceived stress, measured with the tension scale, trainees reported significantly less stress 2 weeks after training than before.",
+    "key_text_elements": [
+     "tension",
+     "less stress",
+     "2 weeks"
+    ],
+    "layout_description": "A stress gauge drops from the first point to the second point.",
+    "visual_prompt": "A simple gauge labeled tension with the needle moving downward, orange highlight on the lower stress side."
+   },
+   {
+    "scene_number": 23,
+    "narration": "Four weeks after training, the paper reports less perceived stress and more perceived control of time compared with the measurement directly before training.",
+    "key_text_elements": [
+     "less stress",
+     "more control",
+     "4 weeks"
+    ],
+    "layout_description": "Two side-by-side arrows show stress going down and control of time going up.",
+    "visual_prompt": "Paired arrows: one descending beside a tension icon, one ascending beside a clock icon, with orange accents."
+   },
+   {
+    "scene_number": 24,
+    "narration": "The control variable, demands, did not change significantly at either follow-up, which matched the authors’ expectation for this measure.",
+    "key_text_elements": [
+     "demands",
+     "did not change",
+     "follow-up"
+    ],
+    "layout_description": "A flat line for demands sits beside the changing outcome lines.",
+    "visual_prompt": "A steady horizontal line labeled demands with no rise or fall, contrasted with nearby changing arrows."
+   },
+   {
+    "scene_number": 25,
+    "narration": "The authors interpret the training as helping students prioritize, set goals, plan their day, and monitor progress, which may reduce stress.",
+    "key_text_elements": [
+     "prioritize",
+     "plan day",
+     "monitor"
+    ],
+    "layout_description": "The four main actions are gathered into one compact flow around a student figure.",
+    "visual_prompt": "Student at center with four surrounding icons—star, target, calendar, clipboard—linked by orange arrows."
+   },
+   {
+    "scene_number": 26,
+    "narration": "They also note that students with no or little experience seemed to profit more, but they call the study preliminary and small.",
+    "key_text_elements": [
+     "no experience",
+     "small study",
+     "preliminary"
+    ],
+    "layout_description": "Two student figures are shown, one with a larger effect bubble, alongside a small sample note.",
+    "visual_prompt": "Two students side by side with different-sized orange effect circles, plus a tiny note-like sample marker."
+   },
+   {
+    "scene_number": 27,
+    "narration": "So, step by step, the training taught students to reflect, choose priorities, set goals, plan daily work, and monitor completion.",
+    "key_text_elements": [
+     "reflect",
+     "set goals",
+     "daily work"
+    ],
+    "layout_description": "A closing summary card shows the five steps as a simple path forward.",
+    "visual_prompt": "A clean path of five stepping stones labeled by icons for reflection, priority, goal, planning, and monitoring, ending with a small checkmark."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

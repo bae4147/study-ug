@@ -1,0 +1,320 @@
+{
+ "config": "gpt-5.5",
+ "task": "video_request",
+ "run": 3,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.5",
+  "temperature": null
+ },
+ "focus": "Explain step by step what the training actually taught students to do.",
+ "seconds": 86.9,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 601,
+ "estMinutes": 4.7,
+ "output": {
+  "title": "What the Time Management Training Taught Students to Do",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "This video unpacks the training itself: the 4 h time management session students attended, and the exact actions the paper says they practiced.",
+    "key_text_elements": [
+     "4 h",
+     "training",
+     "steps"
+    ],
+    "layout_description": "A single student sits beside a large simple timeline, with an orange arrow pointing toward five empty step circles.",
+    "visual_prompt": "On a cream background, draw a hand-drawn student at a desk looking at a simple horizontal timeline with five blank circles; highlight the arrow and circles in orange and yellow, black ink line art, lots of white space."
+   },
+   {
+    "scene_number": 2,
+    "narration": "In the study, local undergraduate students attended this training in the middle of the semester, in groups of about ten students each.",
+    "key_text_elements": [
+     "students",
+     "mid semester",
+     "about ten"
+    ],
+    "layout_description": "Small groups of students are arranged around simple tables under a semester calendar icon.",
+    "visual_prompt": "On a cream background, draw two small table groups of students with sketchy black lines, a simple calendar above them, and orange circles around each group; minimalist hand-drawn style."
+   },
+   {
+    "scene_number": 3,
+    "narration": "The authors wanted these taught strategies to help students deal with external demands, decrease tension, and increase perceived control of time afterward.",
+    "key_text_elements": [
+     "less tension",
+     "more control",
+     "demands"
+    ],
+    "layout_description": "A student faces a stack of tasks, with arrows showing tension lowering and time control rising.",
+    "visual_prompt": "Draw a student beside a stack of papers labeled with simple hand-written words, a downward orange arrow near a tight knot, and an upward yellow arrow near a clock; cream background, black ink."
+   },
+   {
+    "scene_number": 4,
+    "narration": "The evaluated intervention was intentionally homogeneous, focusing on prioritizing, goal setting, strategy development, daily planning, and monitoring as its major parts overall.",
+    "key_text_elements": [
+     "pick tasks",
+     "set goals",
+     "check work"
+    ],
+    "layout_description": "Five connected icons form a simple process path from task list to check mark.",
+    "visual_prompt": "Draw a clean process path of five hand-drawn icons: list, target, stepping stones, daily calendar, check mark; orange arrows connect them on cream background."
+   },
+   {
+    "scene_number": 5,
+    "narration": "The strategies came from Häfner and Stock's earlier training, developed from psychological theory and empirical findings, as described by the study authors.",
+    "key_text_elements": [
+     "earlier training",
+     "theory",
+     "findings"
+    ],
+    "layout_description": "A small book and a training plan sit side by side, linked by an arrow.",
+    "visual_prompt": "Draw a simple open book with abstract notes and a training worksheet beside it, connected by an orange arrow; black ink, yellow highlights, cream background."
+   },
+   {
+    "scene_number": 6,
+    "narration": "Step one began with self-reflection. Students looked at their current activities, including academic tasks and extracurricular activities, and wrote all of them down.",
+    "key_text_elements": [
+     "step one",
+     "current tasks",
+     "write down"
+    ],
+    "layout_description": "A student writes a mixed list of study and other activities in a notebook.",
+    "visual_prompt": "Draw a student leaning over a notebook, with small icons for books, sports, and social activity floating into a written list; orange highlight on the notebook, cream background."
+   },
+   {
+    "scene_number": 7,
+    "narration": "Then they reflected on how important those activities were for their study goals, trying to identify the most important activities among them.",
+    "key_text_elements": [
+     "study goals",
+     "most important",
+     "choose"
+    ],
+    "layout_description": "Several activity cards are sorted toward a central goal marker.",
+    "visual_prompt": "Draw scattered activity cards being moved toward a simple target labeled by an icon, with an orange circle around the most important cards; sketchy black line art on cream."
+   },
+   {
+    "scene_number": 8,
+    "narration": "The guiding questions were simple: which activities are most important, and why are these activities important to me for my study goals?",
+    "key_text_elements": [
+     "what matters",
+     "why",
+     "study goals"
+    ],
+    "layout_description": "A student looks at two large question marks beside a target.",
+    "visual_prompt": "Draw a thoughtful student with a pencil, two large hand-drawn question marks, and a target icon; use orange for the question marks and yellow around the target, minimalist cream background."
+   },
+   {
+    "scene_number": 9,
+    "narration": "Step two turned important activities into goals. Students defined goals that were concrete, challenging, and proximal, rather than vague intentions for themselves.",
+    "key_text_elements": [
+     "step two",
+     "clear goals",
+     "near goals"
+    ],
+    "layout_description": "A fuzzy cloud of ideas changes into a clear target with a short path.",
+    "visual_prompt": "Draw a vague scribble cloud on the left transforming through an orange arrow into a clear target on the right with a short path; hand-drawn black ink on cream."
+   },
+   {
+    "scene_number": 10,
+    "narration": "They asked what they wanted to achieve in detail, and they defined deadlines for the goals they had chosen during this step.",
+    "key_text_elements": [
+     "details",
+     "deadlines",
+     "chosen goals"
+    ],
+    "layout_description": "A goal card is filled with details and connected to a calendar date box.",
+    "visual_prompt": "Draw a hand holding a goal card with small lines for details, next to a simple calendar box circled in orange; cream background, sketch-like ink lines."
+   },
+   {
+    "scene_number": 11,
+    "narration": "Step three was strategy development. Students developed a way to achieve their goals, not just naming the goals themselves in the session.",
+    "key_text_elements": [
+     "step three",
+     "make a way",
+     "not just goals"
+    ],
+    "layout_description": "A target is connected to a route made of stepping stones.",
+    "visual_prompt": "Draw a target at the top right and stepping stones leading toward it, with a student sketching the route; orange arrows show movement, cream background, black ink."
+   },
+   {
+    "scene_number": 12,
+    "narration": "They noted different steps, set priorities for those steps, and planned how to start moving toward the goals they had defined earlier.",
+    "key_text_elements": [
+     "steps",
+     "priorities",
+     "start"
+    ],
+    "layout_description": "A staircase of task steps is numbered by importance, with the first step highlighted.",
+    "visual_prompt": "Draw a simple staircase of task cards leading upward, one card circled in orange as the starting point, and a target at the top; minimalist black ink on cream."
+   },
+   {
+    "scene_number": 13,
+    "narration": "They also developed and mentally simulated their way to goal achievement, considering possible obstacles and what to do to overcome them in advance.",
+    "key_text_elements": [
+     "picture the path",
+     "obstacles",
+     "overcome"
+    ],
+    "layout_description": "A student imagines a path with a small obstacle and a planned way around it.",
+    "visual_prompt": "Draw a student with a thought bubble showing a path to a target, a small rock obstacle, and an orange curved arrow around it; cream background, sketchy line art."
+   },
+   {
+    "scene_number": 14,
+    "narration": "In this strategy phase, the training emphasized proximal deadlines for the steps that would lead toward goal achievement in their own studies.",
+    "key_text_elements": [
+     "near deadlines",
+     "goal steps",
+     "study path"
+    ],
+    "layout_description": "Short deadline flags are placed along a path toward a study goal.",
+    "visual_prompt": "Draw a winding path with small calendar flags close together leading to a target, with orange flags and yellow highlights; clean cream background, black ink."
+   },
+   {
+    "scene_number": 15,
+    "narration": "Step four focused on daily planning. Trainees decided what they wanted to do and when, creating a concrete study schedule for themselves.",
+    "key_text_elements": [
+     "step four",
+     "daily plan",
+     "when"
+    ],
+    "layout_description": "A daily planner page sits open with time blocks and a pencil.",
+    "visual_prompt": "Draw an open daily planner with simple blocks, a pencil, and a small clock; orange highlights mark planned blocks, black ink line art on cream."
+   },
+   {
+    "scene_number": 16,
+    "narration": "One daily planning question was which important tasks they should concentrate on tomorrow, linking plans back to their priorities from earlier work.",
+    "key_text_elements": [
+     "tomorrow",
+     "important tasks",
+     "focus"
+    ],
+    "layout_description": "Tomorrow's page shows only a few priority tasks selected from a larger list.",
+    "visual_prompt": "Draw a large messy task list on the left and a small tomorrow page on the right with three selected lines; orange arrows move chosen tasks across, cream background."
+   },
+   {
+    "scene_number": 17,
+    "narration": "Another question was when and where they were going to complete those tasks, making the planned action more specific for the next day.",
+    "key_text_elements": [
+     "when",
+     "where",
+     "next day"
+    ],
+    "layout_description": "A task card is matched with a clock icon and a simple place icon.",
+    "visual_prompt": "Draw one task card in the center connected by orange lines to a clock and a desk location icon; minimalist black ink, yellow highlights, cream background."
+   },
+   {
+    "scene_number": 18,
+    "narration": "They also asked how much time to schedule for different tasks, and how they could avoid distractions during the planned work periods.",
+    "key_text_elements": [
+     "how much time",
+     "avoid distractions",
+     "work period"
+    ],
+    "layout_description": "Time blocks are protected by a simple boundary from distraction symbols.",
+    "visual_prompt": "Draw a planner with time blocks and small distraction icons outside a curved orange boundary; a student works inside the boundary, cream background, black ink."
+   },
+   {
+    "scene_number": 19,
+    "narration": "The paper says daily planning especially used implementation intentions, but it does not give scripted exercises beyond those planning questions for students.",
+    "key_text_elements": [
+     "planning questions",
+     "no script",
+     "paper says"
+    ],
+    "layout_description": "A planner page shows question marks instead of detailed scripts.",
+    "visual_prompt": "Draw an open planner with a few large question marks and blank lines, with an orange note saying no script; hand-drawn black ink on cream background."
+   },
+   {
+    "scene_number": 20,
+    "narration": "Step five was monitoring task completion. Trainees were instructed to check their tasks each day after planning and working on them during studies.",
+    "key_text_elements": [
+     "step five",
+     "check tasks",
+     "each day"
+    ],
+    "layout_description": "A student reviews a daily list and marks completed items.",
+    "visual_prompt": "Draw a student holding a checklist with several boxes, one being checked in orange; a small day calendar sits nearby, cream background, sketchy ink."
+   },
+   {
+    "scene_number": 21,
+    "narration": "They looked to see which tasks they had completed and what still had to be done, keeping track of goal progress daily.",
+    "key_text_elements": [
+     "done",
+     "still to do",
+     "progress"
+    ],
+    "layout_description": "A checklist is split into completed and remaining tasks with a progress arrow.",
+    "visual_prompt": "Draw a checklist divided into two simple columns, check marks on one side and empty boxes on the other, with a yellow progress arrow upward; cream background."
+   },
+   {
+    "scene_number": 22,
+    "narration": "So the training moved from broad reflection, to selected goals, to strategies, to tomorrow's schedule, and finally to daily checking of progress.",
+    "key_text_elements": [
+     "reflect",
+     "plan",
+     "check"
+    ],
+    "layout_description": "A full left-to-right workflow summarizes the sequence with five simple icons.",
+    "visual_prompt": "Draw five icons in a horizontal chain: mirror, target, path, calendar, checklist; connect them with orange arrows, using black ink on a cream background."
+   },
+   {
+    "scene_number": 23,
+    "narration": "The authors connect these strategies to student demands described in earlier work: self-organized learning, time pressures, and high workload as major demands.",
+    "key_text_elements": [
+     "learning",
+     "time pressure",
+     "workload"
+    ],
+    "layout_description": "Three demand symbols feed into the training workflow as challenges to handle.",
+    "visual_prompt": "Draw three simple icons: open book, clock with pressure lines, and tall paper stack, all pointing with orange arrows toward a planner; cream background, black ink."
+   },
+   {
+    "scene_number": 24,
+    "narration": "In the discussion, the authors interpret prioritizing, goal setting, and strategy development as giving students more orientation in their studies over time.",
+    "key_text_elements": [
+     "authors say",
+     "more direction",
+     "study path"
+    ],
+    "layout_description": "A confused maze becomes a clearer study path pointing toward a target.",
+    "visual_prompt": "Draw a small tangled maze on the left fading into a straight path toward a target on the right, with orange path line; minimalist cream background."
+   },
+   {
+    "scene_number": 25,
+    "narration": "They interpret daily planning as helping goal-oriented behaviour, and monitoring as showing completed tasks, information that might positively affect stress for trainees.",
+    "key_text_elements": [
+     "daily plan",
+     "completed tasks",
+     "might help"
+    ],
+    "layout_description": "A daily plan and checked tasks are shown beside a loosening stress knot.",
+    "visual_prompt": "Draw a planner page and checklist with orange check marks, next to a tight knot becoming looser; black ink line art, yellow highlights, cream background."
+   },
+   {
+    "scene_number": 26,
+    "narration": "Reported use showed a nearly significant increase after 2 weeks, and a significant increase after 4 weeks, according to the paper results.",
+    "key_text_elements": [
+     "2 weeks",
+     "4 weeks",
+     "use rose"
+    ],
+    "layout_description": "A small line rises from before training to two later time points.",
+    "visual_prompt": "Draw a simple hand-drawn three-point line chart with labels before, 2 weeks, and 4 weeks; orange line rises, with the 4 weeks point highlighted yellow on cream."
+   },
+   {
+    "scene_number": 27,
+    "narration": "Finally, tension decreased after 2 and 4 weeks, perceived control of time increased after 4 weeks, and demands did not change in reports.",
+    "key_text_elements": [
+     "tension down",
+     "control up",
+     "demands same"
+    ],
+    "layout_description": "Three side-by-side mini gauges show tension down, control up, and demands level.",
+    "visual_prompt": "Draw three minimalist gauges: one arrow down, one arrow up, and one flat line; use orange and yellow accents, black ink on solid cream background."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

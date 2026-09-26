@@ -1,0 +1,18 @@
+{
+ "config": "gpt-5.4-mini@t0.2",
+ "task": "audio_default",
+ "run": 1,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.4-mini",
+  "temperature": 0.2
+ },
+ "focus": null,
+ "seconds": 2.6,
+ "targetWords": 312,
+ "draftWords": 396,
+ "finalWords": 396,
+ "expanded": false,
+ "estMinutes": 2.54,
+ "output": "Alex: Hi Jordan, what was this study actually trying to find out?\n\nJordan: It asked whether a time management training could increase perceived control of time and reduce perceived stress in undergraduate students. The authors also expected demands, meaning perceived, self-reported demands, to stay unchanged.\n\nAlex: How did they test that without a control group?\n\nJordan: They used a “non-equivalent dependent variable design,” also called an internal referencing strategy. In plain terms, they measured variables they expected to change, plus one they expected not to change, and compared them before training, 2 weeks after, and 4 weeks after.\n\nAlex: Who took part?\n\nJordan: The sample for the main analyses was 23 undergraduate students from a medium-sized German university. Their mean age was 23.30 years, SD=2.80, and 52 % were female.\n\nAlex: What was the training like?\n\nJordan: It lasted 4 h and focused on prioritizing, goal setting, strategy development, daily planning, and monitoring. The students reflected on their activities, set concrete goals, planned steps and deadlines, and monitored task completion.\n\nAlex: What did they measure?\n\nJordan: Time management behaviour, perceived stress using the tension scale, perceived control of time, and demands. The tension scale was the paper’s measure of perceived stress.\n\nAlex: Did the students actually use the strategies afterward?\n\nJordan: Yes. Reported use of the taught time management strategies increased significantly from before training to 4 weeks after, t(22)=2.67, p<0.01, one-tailed. The increase at 2 weeks was nearly significant, t(22)=1.62, p=0.060, one-tailed.\n\nAlex: And the main results?\n\nJordan: Two weeks after training, perceived stress was significantly lower, with a significant overall time effect and a significant time effect for tension. Perceived control of time showed only a tendency in the expected direction at that point.\n\nAlex: What happened by 4 weeks?\n\nJordan: By 4 weeks, both outcomes changed significantly: perceived stress was lower and perceived control of time was higher than before training. The overall time effect was also significant.\n\nAlex: What about demands?\n\nJordan: Demands did not change significantly at either follow-up, which supports the authors’ interpretation that the training affected the intended variables rather than everything equally.\n\nAlex: Did experience with time management matter?\n\nJordan: The paper says the effect was much stronger for students with no or little experience than for those with moderate or some experience, especially for perceived stress.\n\nAlex: So what’s the takeaway?\n\nJordan: The authors conclude that time management training might be beneficial for undergraduate students’ well-being, but they also stress that more intervention studies with larger samples are needed."
+}

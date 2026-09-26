@@ -1,0 +1,306 @@
+{
+ "config": "gemini-3.8-flash@t0.7",
+ "task": "video_default",
+ "run": 3,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.7
+ },
+ "focus": null,
+ "seconds": 33.4,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 586,
+ "estMinutes": 4.58,
+ "output": {
+  "title": "Decreasing Students' Stress Through Time Management Training",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "The mental health of university students is a growing concern worldwide, prompting researchers to examine how institutional support can address alarming student stress.",
+    "key_text_elements": [
+     "Student mental health",
+     "Increasing concern"
+    ],
+    "layout_description": "Centered illustration with handwritten heading at the top.",
+    "visual_prompt": "Hand-drawn black ink illustration of a university campus building under a subtle orange question mark, with silhouettes of students walking with bowed heads."
+   },
+   {
+    "scene_number": 2,
+    "narration": "In one cited study, seventy-five percent of community college students perceived at least moderate stress, and thirteen percent reported high stress levels.",
+    "key_text_elements": [
+     "75% moderate stress",
+     "13% high stress"
+    ],
+    "layout_description": "A side-by-side comparison of grouped student stick figures highlighted with yellow and orange circles.",
+    "visual_prompt": "Hand-drawn minimalist ink sketch showing a cluster of student figures, with orange ink circling seventy-five percent and dark ink highlighting thirteen percent."
+   },
+   {
+    "scene_number": 3,
+    "narration": "Heightened stress contributes to student underachievement and dropout, while some students report unhealthy coping strategies such as drinking, smoking, and drug use.",
+    "key_text_elements": [
+     "Academic dropout",
+     "Unhealthy coping"
+    ],
+    "layout_description": "A central downward arrow dividing academic difficulties from coping behaviors.",
+    "visual_prompt": "Hand-drawn black ink sketch of an open notebook with an orange downward arrow next to sketched cigarette and bottle outlines."
+   },
+   {
+    "scene_number": 4,
+    "narration": "Time-related demands, including heavy workloads, time pressure, and self-organized learning, represent serious challenges that are strongly associated with higher perceived student stress.",
+    "key_text_elements": [
+     "Time demands",
+     "Heavy workload",
+     "Time pressure"
+    ],
+    "layout_description": "A student desk surrounded by balanced stacks of books and an accented ticking clock.",
+    "visual_prompt": "Hand-drawn black ink drawing of a student seated at a desk overwhelmed by tall piles of papers, with a ticking clock highlighted in yellow."
+   },
+   {
+    "scene_number": 5,
+    "narration": "Although time management interventions are widely recommended to help undergraduates cope, empirical research examining the actual effectiveness of such training remains scarce.",
+    "key_text_elements": [
+     "Scarce research",
+     "Time management"
+    ],
+    "layout_description": "A magnifying glass focused on an empty research ledger.",
+    "visual_prompt": "Hand-drawn ink sketch of an open binder with mostly blank pages, inspected by a magnifying glass outlined in orange ink."
+   },
+   {
+    "scene_number": 6,
+    "narration": "Previous research showed mixed results, and the authors noted that no prior intervention study had demonstrated a decrease in students' perceived stress.",
+    "key_text_elements": [
+     "Mixed results",
+     "No stress decrease"
+    ],
+    "layout_description": "Two contrasting document icons on the left and right of the frame.",
+    "visual_prompt": "Hand-drawn black ink illustration of two study reports with question marks, with an orange line indicating no documented reduction in stress."
+   },
+   {
+    "scene_number": 7,
+    "narration": "Process models propose that time management practices increase perceived control of time, which subsequently acts as an antecedent reducing students' perceived stress.",
+    "key_text_elements": [
+     "Time management",
+     "Control of time",
+     "Lower stress"
+    ],
+    "layout_description": "A three-step horizontal flowchart connected by directional arrows.",
+    "visual_prompt": "Hand-drawn black ink sequence showing a daily planner pointing via an orange arrow to a clock in a hand, pointing to a relaxed face."
+   },
+   {
+    "scene_number": 8,
+    "narration": "This study evaluated whether a time management training program could increase perceived control of time and reduce perceived stress across four weeks.",
+    "key_text_elements": [
+     "Study purpose",
+     "Four-week stability"
+    ],
+    "layout_description": "A timeline illustration stretching horizontally across the page.",
+    "visual_prompt": "Hand-drawn ink timeline marking pretest, two weeks, and four weeks with yellow accent pins highlighting the measurement points."
+   },
+   {
+    "scene_number": 9,
+    "narration": "The researchers employed a non-equivalent dependent variable design, assessing a single trained group across multiple variables without requiring an untreated control group.",
+    "key_text_elements": [
+     "Single group",
+     "Control variable"
+    ],
+    "layout_description": "A split visual showing experimental variables separated from an unaffected baseline variable.",
+    "visual_prompt": "Hand-drawn black ink illustration of two clipboards, one marked for change with orange ink, one marked unchanged with neutral lines."
+   },
+   {
+    "scene_number": 10,
+    "narration": "Frese and colleagues argued this design rules out testing, Hawthorne, and nonspecific placebo effects if changes occur only in the experimental variables.",
+    "key_text_elements": [
+     "Frese et al.",
+     "Rules out placebo",
+     "Controls testing"
+    ],
+    "layout_description": "A centered shield icon protecting experimental data points.",
+    "visual_prompt": "Hand-drawn ink drawing of a protective shield drawn in black ink with yellow highlights, deflecting labels for Hawthorne and testing effects."
+   },
+   {
+    "scene_number": 11,
+    "narration": "The experimenters measured perceived stress using the tension scale, alongside perceived control of time, while self-reported demands served as the unchanged control.",
+    "key_text_elements": [
+     "Tension scale",
+     "Control of time",
+     "Demands control"
+    ],
+    "layout_description": "Three distinct survey cards displayed side by side.",
+    "visual_prompt": "Hand-drawn black ink sketch of three questionnaire clipboards, highlighting tension and control of time with orange brackets, and demands with plain ink."
+   },
+   {
+    "scene_number": 12,
+    "narration": "The homogeneous four-hour intervention taught students five major components: prioritizing tasks, setting goals, developing strategies, daily planning, and monitoring progress.",
+    "key_text_elements": [
+     "Four-hour training",
+     "Five core skills"
+    ],
+    "layout_description": "A circular layout connecting five practical skill icons.",
+    "visual_prompt": "Hand-drawn ink circle showing icons for prioritizing, goal setting, strategy development, daily planning, and monitoring, accented with yellow highlights."
+   },
+   {
+    "scene_number": 13,
+    "narration": "Forty-eight German undergraduates voluntarily entered the study as an extracurricular activity, receiving no incentives for taking part in the training program.",
+    "key_text_elements": [
+     "48 undergraduates",
+     "Voluntary",
+     "No incentives"
+    ],
+    "layout_description": "A campus bulletin board with an invitation flyer in the center.",
+    "visual_prompt": "Hand-drawn black ink noticeboard holding an announcement flyer outlined in orange, with student figures gathering to read it."
+   },
+   {
+    "scene_number": 14,
+    "narration": "Twenty-seven trainees completed questionnaires at two weeks, and twenty-three finished all surveys at four weeks, yielding a forty-eight percent response rate.",
+    "key_text_elements": [
+     "23 completed all",
+     "48% response rate"
+    ],
+    "layout_description": "A funnel graphic tapering from baseline participants down to the final cohort.",
+    "visual_prompt": "Hand-drawn minimalist ink funnel showing forty-eight starting students narrowing to twenty-seven, and finally twenty-three circled in orange."
+   },
+   {
+    "scene_number": 15,
+    "narration": "The final sample had a mean age of twenty-three point three zero years, about half were female, representing various academic subjects.",
+    "key_text_elements": [
+     "Age 23.30",
+     "52% female",
+     "Diverse majors"
+    ],
+    "layout_description": "A demographic profile graphic with clean handwritten icons.",
+    "visual_prompt": "Hand-drawn ink illustration displaying male and female student profiles beside textbook icons representing psychology, medicine, and law, accented in yellow."
+   },
+   {
+    "scene_number": 16,
+    "narration": "Before training, most participants reported minimal preparation, with over sixty percent indicating they had no experience or little experience with time management.",
+    "key_text_elements": [
+     "Little experience",
+     "Over 60 percent"
+    ],
+    "layout_description": "A horizontal bar chart indicating levels of prior training.",
+    "visual_prompt": "Hand-drawn ink bar chart showing large stacked bars for no and little experience highlighted in orange, with tiny bars for prior knowledge."
+   },
+   {
+    "scene_number": 17,
+    "narration": "Trainees reported a nearly significant increase in time management behaviour at two weeks and a statistically significant increase four weeks after training.",
+    "key_text_elements": [
+     "Behaviour transfer",
+     "Significant change"
+    ],
+    "layout_description": "An upward trending step graph over four weeks.",
+    "visual_prompt": "Hand-drawn ink graph showing time management behaviour climbing from baseline to four weeks, with an orange star marking statistical significance."
+   },
+   {
+    "scene_number": 18,
+    "narration": "Two weeks post-training, perceived stress decreased significantly, while perceived control of time showed a non-significant tendency in the hypothesized positive direction.",
+    "key_text_elements": [
+     "Two weeks post",
+     "Stress decreased",
+     "Control tendency"
+    ],
+    "layout_description": "Two parallel vertical indicator bars showing divergent trends at two weeks.",
+    "visual_prompt": "Hand-drawn black ink illustration showing a downward orange arrow for stress tension beside a gently rising yellow dashed arrow for control of time."
+   },
+   {
+    "scene_number": 19,
+    "narration": "Four weeks after training, participants reported a significant decrease in perceived stress alongside a statistically significant increase in perceived control of time.",
+    "key_text_elements": [
+     "Four weeks post",
+     "Stress down",
+     "Control of time up"
+    ],
+    "layout_description": "Two bold contrasting arrows showing clear opposing trajectories.",
+    "visual_prompt": "Hand-drawn black ink diagram with a solid orange downward arrow for tension and a solid yellow upward arrow for perceived control of time."
+   },
+   {
+    "scene_number": 20,
+    "narration": "Self-reported demands showed no significant changes at two weeks or four weeks, supporting the authors' expectation that external workloads remained unchanged.",
+    "key_text_elements": [
+     "Demands unchanged",
+     "External workload"
+    ],
+    "layout_description": "A flat horizontal line graph maintaining a steady level across time.",
+    "visual_prompt": "Hand-drawn black ink line maintaining a flat, level path across pretest, two weeks, and four weeks, accented with small yellow anchor points."
+   },
+   {
+    "scene_number": 21,
+    "narration": "Students with no or little prior time management experience experienced training effects more than twice as strong as those with moderate experience.",
+    "key_text_elements": [
+     "Stronger effect",
+     "Twice as strong",
+     "No experience"
+    ],
+    "layout_description": "Two contrasting student figures comparing benefit magnitudes.",
+    "visual_prompt": "Hand-drawn ink illustration comparing two bars, where the inexperienced student bar rises twice as high, highlighted in vibrant orange ink."
+   },
+   {
+    "scene_number": 22,
+    "narration": "The authors suggested prioritizing provides orientation, while daily planning and monitoring reinforce progress, together diminishing perceived stress and enhancing time control.",
+    "key_text_elements": [
+     "Authors view",
+     "Clear orientation",
+     "Reinforced progress"
+    ],
+    "layout_description": "A path leading forward through open gates toward defined goals.",
+    "visual_prompt": "Hand-drawn black ink pathway marked with milestones and checkmarks, illuminated by a warm yellow sun representing reduced stress and clear orientation."
+   },
+   {
+    "scene_number": 23,
+    "narration": "A key methodological advantage was the homogeneous training design, which avoided confounding components like assertiveness training or relaxation exercises used in past studies.",
+    "key_text_elements": [
+     "Homogeneous training",
+     "No confounders"
+    ],
+    "layout_description": "A neat modular box showing core time skills separate from extraneous techniques.",
+    "visual_prompt": "Hand-drawn ink sketch of a tidy toolbox containing only planning tools, with crossed-out outside elements like relaxation tapes in light ink."
+   },
+   {
+    "scene_number": 24,
+    "narration": "Because trainees transferred strategies into daily work at least to some extent, the authors concluded results were unlikely due to placebo effects.",
+    "key_text_elements": [
+     "Skill transfer",
+     "Not a placebo"
+    ],
+    "layout_description": "A student actively implementing a written daily schedule.",
+    "visual_prompt": "Hand-drawn black ink drawing of a student crossing off completed tasks on a desk planner, highlighted with yellow ink checkmarks."
+   },
+   {
+    "scene_number": 25,
+    "narration": "However, the study is preliminary because of its small sample size of twenty-three participants and an attrition rate of about half.",
+    "key_text_elements": [
+     "23 participants",
+     "About half dropout",
+     "Preliminary study"
+    ],
+    "layout_description": "A cautious notepad with highlighted limitation notes.",
+    "visual_prompt": "Hand-drawn minimalist ink sketch of a clipboard displaying the number twenty-three alongside an orange caution symbol indicating sample size limitations."
+   },
+   {
+    "scene_number": 26,
+    "narration": "Future studies should evaluate larger student samples, compare time management against other stress interventions, and examine potential impacts on academic performance.",
+    "key_text_elements": [
+     "Future research",
+     "Larger samples",
+     "Academic outcomes"
+    ],
+    "layout_description": "Three research expansion paths branching from a central node.",
+    "visual_prompt": "Hand-drawn black ink tree diagram showing paths toward larger samples, comparisons with meditation or exercise, and student grades, accented in yellow."
+   },
+   {
+    "scene_number": 27,
+    "narration": "In conclusion, time management training might benefit student well-being, suggesting universities could introduce these practical planning skills during courses or freshman orientations.",
+    "key_text_elements": [
+     "Student well-being",
+     "Freshman training",
+     "Practical tools"
+    ],
+    "layout_description": "A university entrance banner welcoming new students with study planners.",
+    "visual_prompt": "Hand-drawn ink sketch of an arched university gateway welcoming students holding time planners, accented with warm orange and yellow morning rays."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

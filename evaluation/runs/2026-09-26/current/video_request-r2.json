@@ -1,0 +1,293 @@
+{
+ "config": "current",
+ "task": "video_request",
+ "run": 2,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.6-flash",
+  "temperature": 0.4
+ },
+ "focus": "Explain step by step what the training actually taught students to do.",
+ "seconds": 63.4,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 600,
+ "estMinutes": 4.69,
+ "output": {
+  "title": "Step-by-Step Time Management Training to Reduce Student Stress",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "Many university students face serious time-related demands like heavy workloads and self-organized learning that contribute directly to heightened levels of perceived stress.",
+    "key_text_elements": [
+     "Time Demands",
+     "Perceived Stress"
+    ],
+    "layout_description": "A minimalist drawing places a student in the center surrounded by mounting study pressures.",
+    "visual_prompt": "Hand-drawn black ink line art on a solid cream background (#F9F7F2) depicting a student sitting at a desk, looking stressed under a growing stack of books and a large clock. An orange (#FF8C00) highlight circle surrounds the clock face."
+   },
+   {
+    "scene_number": 2,
+    "narration": "To help undergraduates handle these challenges, researchers evaluated a four-hour time management training program based on psychological theory and solid empirical research.",
+    "key_text_elements": [
+     "4 Hour Training",
+     "Psychological Theory"
+    ],
+    "layout_description": "A structured overview diagram highlights the academic foundation of the four-hour workshop.",
+    "visual_prompt": "Minimalist black ink sketch on cream background showing a four-hour workshop agenda on a whiteboard, with a orange arrow (#FF8C00) pointing to open student notebooks and manual outlines on a desk."
+   },
+   {
+    "scene_number": 3,
+    "narration": "The training focused on prioritizing, goal setting, strategy development, daily planning, and monitoring to increase perceived control of time and reduce stress.",
+    "key_text_elements": [
+     "Five Modules",
+     "Control of Time"
+    ],
+    "layout_description": "Five interconnected boxes display the core training modules in a clear sequential chain.",
+    "visual_prompt": "Black line art showing five horizontal boxes connected by arrows on cream background, with yellow (#FFD700) fills highlighting the labels for prioritizing, goals, strategy, planning, and monitoring."
+   },
+   {
+    "scene_number": 4,
+    "narration": "First, students began by noting down all their current academic tasks and extracurricular activities to gain complete clarity on their everyday commitments.",
+    "key_text_elements": [
+     "Step 1",
+     "List Activities"
+    ],
+    "layout_description": "An open notepad displays listed tasks divided into academic and personal categories.",
+    "visual_prompt": "Hand-drawn black ink drawing on cream background showing a notepad with listed items. Academic tasks and extracurricular commitments are marked with subtle orange (#FF8C00) bullet points."
+   },
+   {
+    "scene_number": 5,
+    "narration": "Next, participants engaged in deep self-reflection, asking why specific activities mattered to them and identifying which ones were genuinely most important to pursue.",
+    "key_text_elements": [
+     "Prioritizing",
+     "Self Reflection"
+    ],
+    "layout_description": "A reflective thought bubble emphasizes selecting key tasks over minor activities.",
+    "visual_prompt": "Minimalist sketch of a student looking thoughtfully at a task list, with an orange (#FF8C00) star drawn next to the top-priority activity while minor items remain unhighlighted on cream background."
+   },
+   {
+    "scene_number": 6,
+    "narration": "In the second step, students defined concrete, challenging, and proximal goals for their important tasks, complete with clear deadlines for task completion.",
+    "key_text_elements": [
+     "Step 2",
+     "Concrete Goals"
+    ],
+    "layout_description": "A target symbol connected to a calendar illustrates setting clear, proximal deadlines.",
+    "visual_prompt": "Black line art on cream background showing a target icon with an orange (#FF8C00) bullseye next to a desk calendar, with a specific date circled in yellow (#FFD700)."
+   },
+   {
+    "scene_number": 7,
+    "narration": "Participants carefully specified what they wanted to achieve in detail, ensuring their defined targets were actionable rather than vague or overly distant.",
+    "key_text_elements": [
+     "Actionable Targets",
+     "Clear Deadlines"
+    ],
+    "layout_description": "A contrast visual compares a vague hazy cloud with a sharp, concrete goal checklist.",
+    "visual_prompt": "Hand-drawn illustration on cream background featuring a vague cloud crossed out in black ink, contrasted with a clean checklist box highlighted with yellow (#FFD700) felt lines."
+   },
+   {
+    "scene_number": 8,
+    "narration": "The third phase instructed trainees to build a detailed strategy, noting down individual steps required to reach each of their chosen goals.",
+    "key_text_elements": [
+     "Step 3",
+     "Strategy Steps"
+    ],
+    "layout_description": "A staircase diagram shows intermediate action steps leading up toward a final goal.",
+    "visual_prompt": "Minimalist ink drawing on cream background showing ascending stairs labeled step by step, leading to a flag at the top. Orange (#FF8C00) dots mark each intermediate step."
+   },
+   {
+    "scene_number": 9,
+    "narration": "Students assigned explicit priorities to these individual sequential steps and planned exactly how to start working on them without any unnecessary delay.",
+    "key_text_elements": [
+     "Set Priorities",
+     "Plan Start"
+    ],
+    "layout_description": "Numbered action items demonstrate clear prioritization and immediate starting points.",
+    "visual_prompt": "Black line drawing on cream background of a numbered step-by-step action plan, with step number one highlighted in bright yellow (#FFD700) and an orange arrow showing immediate action."
+   },
+   {
+    "scene_number": 10,
+    "narration": "Trainees also identified potential obstacles in advance, mentally simulating their path to goal achievement and planning specific actions to overcome potential barriers.",
+    "key_text_elements": [
+     "Identify Barriers",
+     "Mental Simulation"
+    ],
+    "layout_description": "A pathway with a hurdle illustrates anticipating obstacles and drawing detour routes.",
+    "visual_prompt": "Hand-drawn line art on cream background showing a path with a barrier block, where an orange (#FF8C00) dotted line draws a clear detour route around the hurdle."
+   },
+   {
+    "scene_number": 11,
+    "narration": "Throughout this strategy phase, trainers emphasized assigning proximal deadlines to intermediate steps to keep students moving steadily toward their ultimate goal completion.",
+    "key_text_elements": [
+     "Proximal Deadlines",
+     "Steady Progress"
+    ],
+    "layout_description": "A timeline marked with short-term milestones shows steady forward movement.",
+    "visual_prompt": "Minimalist black ink timeline on cream background with multiple short-term deadline ticks highlighted in yellow (#FFD700), guiding an arrow smoothly toward the final outcome."
+   },
+   {
+    "scene_number": 12,
+    "narration": "The fourth module targeted daily planning, teaching trainees to structure each workday specifically using implementation intentions that state when and where to act.",
+    "key_text_elements": [
+     "Step 4",
+     "Daily Planning"
+    ],
+    "layout_description": "A daily calendar grid displays specific task blocks marked with time and place.",
+    "visual_prompt": "Hand-drawn daily planner page on cream background, with time blocks specifying exact hours and locations written in black ink, encircled with orange (#FF8C00) outlines."
+   },
+   {
+    "scene_number": 13,
+    "narration": "Students formulated precise daily schedules, asking themselves which key tasks to concentrate on tomorrow and where they would complete each planned task.",
+    "key_text_elements": [
+     "Tomorrow Plan",
+     "When and Where"
+    ],
+    "layout_description": "A quiet study desk setup is paired with a written schedule for the next day.",
+    "visual_prompt": "Ink sketch on cream background showing a clean desk with a desk lamp, and a single sheet of paper displaying 'Tomorrow's Key Tasks' highlighted with yellow (#FFD700)."
+   },
+   {
+    "scene_number": 14,
+    "narration": "They calculated how much time to allocate to each activity and developed explicit practical techniques to avoid potential daily distractions while studying.",
+    "key_text_elements": [
+     "Time Allocation",
+     "Avoid Distractions"
+    ],
+    "layout_description": "A smartphone placed inside a drawer illustrates techniques to minimize study distractions.",
+    "visual_prompt": "Minimalist black line art on cream background showing a smartphone put away inside a desk drawer, with an orange (#FF8C00) shield icon drawn above the study area."
+   },
+   {
+    "scene_number": 15,
+    "narration": "The final training module focused on monitoring task completion, where students learned to review their daily progress routinely against their planned schedules.",
+    "key_text_elements": [
+     "Step 5",
+     "Daily Monitoring"
+    ],
+    "layout_description": "A student reviews a completed day planner at dusk, checking off accomplished tasks.",
+    "visual_prompt": "Hand-drawn illustration on cream background showing a hand holding a pen and ticking off checkmarks on a daily plan, with checkmarks filled in yellow (#FFD700)."
+   },
+   {
+    "scene_number": 16,
+    "narration": "Each day, trainees recorded which tasks were finished and identified what remained to be done, generating valuable reinforcing information about goal progress.",
+    "key_text_elements": [
+     "Track Completion",
+     "Reinforcement"
+    ],
+    "layout_description": "A progress bar visual shows finished work alongside remaining tasks.",
+    "visual_prompt": "Minimalist line sketch on cream background of a two-part task log: finished items in an orange (#FF8C00) column and remaining tasks clearly organized in a second column."
+   },
+   {
+    "scene_number": 17,
+    "narration": "To evaluate this four-hour program, researchers used a non-equivalent dependent variable design with twenty-three undergraduate students completing all three measurement survey waves.",
+    "key_text_elements": [
+     "N = 23 Students",
+     "Study Design"
+    ],
+    "layout_description": "A group icon represents the twenty-three participants across three survey waves.",
+    "visual_prompt": "Black line art drawing on cream background depicting a group of 23 student figure silhouettes, connected by an orange (#FF8C00) arrow across three measurement point icons."
+   },
+   {
+    "scene_number": 18,
+    "narration": "The design measured perceived stress through a tension scale and perceived control of time, alongside demands as an uninfluenced control variable in the study.",
+    "key_text_elements": [
+     "Tension Scale",
+     "Demands Control"
+    ],
+    "layout_description": "A balance scale measures tension and control of time against external demands.",
+    "visual_prompt": "Minimalist line drawing on cream background showing scales measuring 'Tension' and 'Control of Time', with 'Demands' placed on a separate neutral platform highlighted in yellow (#FFD700)."
+   },
+   {
+    "scene_number": 19,
+    "narration": "Participants completed questionnaires directly before training, two weeks after training, and four weeks after training to track changes over time within the ongoing semester.",
+    "key_text_elements": [
+     "Pretest",
+     "2 and 4 Weeks"
+    ],
+    "layout_description": "A timeline marks three survey collection points during the ongoing semester.",
+    "visual_prompt": "Hand-drawn timeline on cream background marking 'Pretest', '2 Weeks', and '4 Weeks' with orange (#FF8C00) circles around each survey point, set before final exam dates."
+   },
+   {
+    "scene_number": 20,
+    "narration": "First, researchers checked training transfer, finding students reported significantly increased use of the taught time management strategies four weeks after completing training.",
+    "key_text_elements": [
+     "Strategy Transfer",
+     "Significant Increase"
+    ],
+    "layout_description": "A rising line graph illustrates increased use of time management strategies over time.",
+    "visual_prompt": "Minimalist line graph on cream background showing a line climbing upward from baseline to week 4, highlighted with a bright orange (#FF8C00) trend line."
+   },
+   {
+    "scene_number": 21,
+    "narration": "Perceived stress decreased significantly two weeks after training and remained significantly lower four weeks after training compared to their baseline pretest levels.",
+    "key_text_elements": [
+     "Stress Decreased",
+     "Significant Effect"
+    ],
+    "layout_description": "A downward sloping curve demonstrates the reduction in perceived stress scores.",
+    "visual_prompt": "Black line drawing on cream background featuring a downward graph line for tension, with yellow (#FFD700) highlights emphasizing the drops at 2 weeks and 4 weeks."
+   },
+   {
+    "scene_number": 22,
+    "narration": "Perceived control of time showed a non-significant tendency at two weeks and reached a statistically significant increase four weeks after completing training.",
+    "key_text_elements": [
+     "Control of Time",
+     "Increased at 4 Wks"
+    ],
+    "layout_description": "A delayed growth curve shows control of time rising significantly by week four.",
+    "visual_prompt": "Hand-drawn chart on cream background with a subtle rise at week 2 leading to a sharp, orange (#FF8C00) highlighted increase at week 4 for perceived control of time."
+   },
+   {
+    "scene_number": 23,
+    "narration": "Crucially, self-reported demands showed no significant changes at two or four weeks after training, ruling out history, testing, and generic placebo effects.",
+    "key_text_elements": [
+     "Demands Unchanged",
+     "Valid Design"
+    ],
+    "layout_description": "A flat horizontal line shows constant demand levels across all timepoints.",
+    "visual_prompt": "Minimalist ink sketch on cream background displaying a completely flat horizontal line for 'Demands', with a yellow (#FFD700) checkmark indicating valid control design."
+   },
+   {
+    "scene_number": 24,
+    "narration": "Students with no or little prior time management experience gained effect sizes more than twice as strong as those with prior experience.",
+    "key_text_elements": [
+     "Novices Profit",
+     "2x Effect Size"
+    ],
+    "layout_description": "A bar chart compares large stress reductions for novices against smaller changes for experienced students.",
+    "visual_prompt": "Hand-drawn bar graph on cream background showing a tall orange (#FF8C00) effect bar for students with no experience compared to a shorter bar for experienced students."
+   },
+   {
+    "scene_number": 25,
+    "narration": "The authors suggest prioritizing and goal setting offer orientation, daily planning lowers execution effort, and monitoring progress delivers strong positive psychological reinforcement.",
+    "key_text_elements": [
+     "Orientation",
+     "Reinforcement"
+    ],
+    "layout_description": "A compass icon signifies orientation, paired with a checkmark for progress reinforcement.",
+    "visual_prompt": "Minimalist black line art on cream background showing a compass highlighted in orange (#FF8C00) next to a progress checklist illuminated with yellow (#FFD700) glow accents."
+   },
+   {
+    "scene_number": 26,
+    "narration": "Although the sample size was small with twenty-three participants, the results highlight practical potential for short, structured training in higher education institutions.",
+    "key_text_elements": [
+     "Small Sample",
+     "Practical Potential"
+    ],
+    "layout_description": "A small sample cohort graphic bridges into a larger educational framework.",
+    "visual_prompt": "Black line drawing on cream background showing a university building icon, with an orange (#FF8C00) light bulb shining above a small group of student figures."
+   },
+   {
+    "scene_number": 27,
+    "narration": "Universities can effectively teach step-by-step prioritizing, concrete goal setting, daily planning, and monitoring to reduce student stress and bolster control of time.",
+    "key_text_elements": [
+     "Step-by-Step",
+     "Student Well-being"
+    ],
+    "layout_description": "A cheerful student operates a structured personal desk planner with calm confidence.",
+    "visual_prompt": "Hand-drawn minimalist illustration on cream background showing a relaxed student working organized at a desk, surrounded by a subtle yellow (#FFD700) aura of control and calm."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

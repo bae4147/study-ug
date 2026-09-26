@@ -1,0 +1,320 @@
+{
+ "config": "gemini-3.8-flash",
+ "task": "video_request",
+ "run": 2,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.4
+ },
+ "focus": "Explain step by step what the training actually taught students to do.",
+ "seconds": 67.8,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 626,
+ "estMinutes": 4.89,
+ "output": {
+  "title": "What the Time Management Training Taught: A Step-by-Step Guide",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "The researchers evaluated a four hour time management training intervention designed to help undergraduate students manage academic demands, study routines, and self organized learning.",
+    "key_text_elements": [
+     "Time management training",
+     "Four hour intervention",
+     "Student demands"
+    ],
+    "layout_description": "A central student desk flanked by simple symbolic icons representing academic demands and time management.",
+    "visual_prompt": "Minimalist hand-drawn black ink line art on a solid cream background (#F9F7F2) showing an undergraduate student sitting at a desk with books, highlighted with soft yellow (#FFD700) and orange (#FF8C00) around an analog clock."
+   },
+   {
+    "scene_number": 2,
+    "narration": "The training lasted four hours, took place during the middle of the semester, and was delivered in groups of about ten undergraduate students.",
+    "key_text_elements": [
+     "Four hours",
+     "Middle of semester",
+     "Groups of ten"
+    ],
+    "layout_description": "A horizontal timeline marking the mid-semester point with a circle of student figures.",
+    "visual_prompt": "Clean black ink sketch on an off-white background showing a semi-circle of about ten student chairs with an orange accent arrow pointing to the midpoint of a calendar line."
+   },
+   {
+    "scene_number": 3,
+    "narration": "One experienced trainer delivered the program, strictly focusing on five major components: prioritizing, goal setting, strategy development, daily planning, and monitoring task completion.",
+    "key_text_elements": [
+     "One trainer",
+     "Five core steps",
+     "Homogeneous program"
+    ],
+    "layout_description": "A trainer figure standing beside a clean five-step vertical roadmap.",
+    "visual_prompt": "Hand-drawn ink line drawing of an instructor gesturing toward a five-step vertical pathway, with yellow and orange circular accents numbering each stage."
+   },
+   {
+    "scene_number": 4,
+    "narration": "The authors built this homogeneous training on psychological theory, specifically drawing upon goal setting, mental simulation, implementation intentions, and self monitoring research findings.",
+    "key_text_elements": [
+     "Psychological theory",
+     "Empirical foundations",
+     "Action research"
+    ],
+    "layout_description": "Four balanced open notebooks arranged symmetrically around a central ink lightbulb.",
+    "visual_prompt": "Minimalist line art on a cream background showing four small notebooks labeled with ink concepts, connected by subtle yellow ink lines to an orange accented lightbulb."
+   },
+   {
+    "scene_number": 5,
+    "narration": "In the first training phase, students engaged in structured self reflection by noting down all of their ongoing academic and extracurricular activities clearly.",
+    "key_text_elements": [
+     "Phase one",
+     "Self reflection",
+     "Listing activities"
+    ],
+    "layout_description": "A student writing on a lined pad with tasks branching out into two distinct categories.",
+    "visual_prompt": "Hand-drawn black line art of a person writing in a notepad, with yellow ink lines dividing academic lecture symbols from extracurricular hobbies on an off-white background."
+   },
+   {
+    "scene_number": 6,
+    "narration": "Participants carefully reflected on the importance of each listed activity for their personal study goals, attempting to identify their most important academic tasks.",
+    "key_text_elements": [
+     "Examine importance",
+     "Study goals",
+     "Identify priorities"
+    ],
+    "layout_description": "A split view comparing an extensive list of tasks to a refined list of top priorities.",
+    "visual_prompt": "Black line sketch showing a long list of items with orange ink rings circling the top three crucial study items, surrounded by ample clean white space."
+   },
+   {
+    "scene_number": 7,
+    "narration": "Trainees addressed specific guiding questions during this reflection phase: Which activities are the most important ones, and why are they important to me?",
+    "key_text_elements": [
+     "Which are important",
+     "Why important to me",
+     "Guiding questions"
+    ],
+    "layout_description": "Two prominent hand-lettered speech bubbles resting above an open study notebook.",
+    "visual_prompt": "Minimalist hand-drawn ink art on cream paper showing two hand-drawn dialog bubbles highlighted with yellow watercolor fills, pointing down to a neat open workbook."
+   },
+   {
+    "scene_number": 8,
+    "narration": "The second training phase moved into goal setting, where students established explicit targets for the important activities identified during their initial reflection exercise.",
+    "key_text_elements": [
+     "Phase two",
+     "Goal setting",
+     "Explicit targets"
+    ],
+    "layout_description": "An arrow moving forward from a reflective notepad directly into an archery bullseye.",
+    "visual_prompt": "Hand-drawn black line illustration of a pen drawing a straight orange arrow pointing into a circular bullseye target accented with yellow."
+   },
+   {
+    "scene_number": 9,
+    "narration": "Following psychological goal setting theory, trainees were taught to formulate goals that were strictly concrete, challenging, and proximal rather than vague or distant.",
+    "key_text_elements": [
+     "Concrete goals",
+     "Challenging targets",
+     "Proximal deadlines"
+    ],
+    "layout_description": "Three upright stone pillars representing concrete, challenging, and proximal attributes.",
+    "visual_prompt": "Simple black ink drawing of three clean geometric blocks supporting an arch, highlighted with warm orange ink accents on a solid cream background."
+   },
+   {
+    "scene_number": 10,
+    "narration": "Students specifically asked themselves what they wanted to achieve in detail, translating broad study intentions into specific outcomes and defining explicit completion deadlines.",
+    "key_text_elements": [
+     "Define outcomes",
+     "Specific detail",
+     "Set deadlines"
+    ],
+    "layout_description": "A vague cloud shape refining through a funnel into a sharp calendar date.",
+    "visual_prompt": "Hand-drawn line art of a nebulous ink cloud passing through a funnel and landing onto an open calendar page marked with an orange ink deadline circle."
+   },
+   {
+    "scene_number": 11,
+    "narration": "In the third training phase, participants developed an explicit strategy for achieving their chosen goals, rather than relying on unstructured daily study efforts.",
+    "key_text_elements": [
+     "Phase three",
+     "Strategy development",
+     "Structured roadmap"
+    ],
+    "layout_description": "A winding path transforming into an orderly stepped stairway toward a summit.",
+    "visual_prompt": "Minimalist black line sketch contrasting a wandering scribble with an orderly stepped line ascending toward a small flag highlighted in yellow."
+   },
+   {
+    "scene_number": 12,
+    "narration": "Students were instructed to mentally simulate their pathway to goal achievement, carefully writing down all the different individual steps required to reach it.",
+    "key_text_elements": [
+     "Mental simulation",
+     "Write down steps",
+     "Path to goal"
+    ],
+    "layout_description": "A student profile with a thought bubble depicting a neat ladder of sequential actions.",
+    "visual_prompt": "Black ink line art of a student silhouette looking forward, with an orange thought bubble containing neat numbered steps on an off-white background."
+   },
+   {
+    "scene_number": 13,
+    "narration": "Trainees prioritized these intermediate steps, systematically organized their sequential order, and planned concrete practical actions for how to start working on each task.",
+    "key_text_elements": [
+     "Prioritize steps",
+     "Sequential order",
+     "How to start"
+    ],
+    "layout_description": "Three numbered rectangular blocks arranged in descending priority order.",
+    "visual_prompt": "Hand-drawn line illustration showing blocks labeled one, two, and three stacked neatly, with yellow arrows indicating starting actions for each block."
+   },
+   {
+    "scene_number": 14,
+    "narration": "The strategy phase also required students to anticipate possible obstacles that might arise, determining in advance what specific practical actions would overcome them.",
+    "key_text_elements": [
+     "Anticipate obstacles",
+     "Overcome barriers",
+     "Preplanned solutions"
+    ],
+    "layout_description": "A stone hurdle on a running track with a clear curved arrow vaulting over it.",
+    "visual_prompt": "Minimalist ink art of a small hurdle across a running lane, with a bright orange curved arrow illustrating a clear planned way over the barrier."
+   },
+   {
+    "scene_number": 15,
+    "narration": "Throughout strategy development, the trainer strongly emphasized the critical practical importance of setting proximal deadlines for each individual step toward overall goal achievement.",
+    "key_text_elements": [
+     "Proximal deadlines",
+     "Intermediate steps",
+     "Step by step"
+    ],
+    "layout_description": "A calendar track with frequent small flags marking intermediate checkpoints.",
+    "visual_prompt": "Clean black line drawing of a timeline with four close yellow flag markers spaced evenly before a final orange achievement star."
+   },
+   {
+    "scene_number": 16,
+    "narration": "The fourth part of the training focused on daily planning, guiding trainees to decide exactly what tasks they wanted to do and when.",
+    "key_text_elements": [
+     "Phase four",
+     "Daily planning",
+     "What and when"
+    ],
+    "layout_description": "A simple daily diary page open beside an ink wristwatch.",
+    "visual_prompt": "Hand-drawn line illustration showing a clean daily planner grid next to an analog wristwatch with orange hour hands on a cream background."
+   },
+   {
+    "scene_number": 17,
+    "narration": "Students developed a concrete schedule for their studies, utilizing implementation intentions that clearly linked specific times and physical locations to planned academic actions.",
+    "key_text_elements": [
+     "Concrete schedule",
+     "Specific times",
+     "Specific locations"
+    ],
+    "layout_description": "A planner entry connecting a clock time, a library desk, and an open book.",
+    "visual_prompt": "Minimalist ink sketch of a clock reading nine o'clock linked by a dotted line to a library chair and a study book, highlighted with yellow ink."
+   },
+   {
+    "scene_number": 18,
+    "narration": "During daily planning, trainees asked themselves two questions: Which important tasks should I concentrate on tomorrow? When and where am I going to complete these tasks?",
+    "key_text_elements": [
+     "Tasks tomorrow",
+     "When and where",
+     "Tomorrow's focus"
+    ],
+    "layout_description": "Two side-by-side prompt cards displaying the core daily planning questions.",
+    "visual_prompt": "Hand-drawn black line art of two neat cards with rounded corners, each displaying handwritten question marks with subtle yellow wash highlights."
+   },
+   {
+    "scene_number": 19,
+    "narration": "Trainees also answered two additional practical planning questions: How much time should be scheduled for the different tasks? How can I avoid distractions?",
+    "key_text_elements": [
+     "How much time",
+     "Avoid distractions",
+     "Focus planning"
+    ],
+    "layout_description": "An hourglass next to a smartphone crossed out with a neat diagonal line.",
+    "visual_prompt": "Minimalist ink drawing showing an hourglass with yellow sand beside a smartphone encircled and crossed out by a thin orange stroke."
+   },
+   {
+    "scene_number": 20,
+    "narration": "The final training component dealt with monitoring task completion, instructing students to actively monitor their study tasks each day as an ongoing routine.",
+    "key_text_elements": [
+     "Phase five",
+     "Monitor completion",
+     "Daily routine"
+    ],
+    "layout_description": "A hand holding a pen checking off a series of square checklist boxes.",
+    "visual_prompt": "Hand-drawn black line illustration of a hand checking off boxes on a daily checklist with bright orange checkmarks against off-white paper."
+   },
+   {
+    "scene_number": 21,
+    "narration": "Through daily monitoring, students systematically reviewed what they had completed and what remained unfinished, generating reinforcing feedback that the authors suggest reduces stress.",
+    "key_text_elements": [
+     "Completed tasks",
+     "Remaining work",
+     "Reinforcing feedback"
+    ],
+    "layout_description": "A balanced scale comparing checked finished items against remaining open tasks.",
+    "visual_prompt": "Simple black ink line art of a two-pan scale balancing a pile of completed checked pages with a small stack of open pages, accented with yellow."
+   },
+   {
+    "scene_number": 22,
+    "narration": "Unlike other intervention programs, this training remained strictly homogeneous, intentionally omitting components like relaxation exercises or assertiveness training to evaluate pure time management.",
+    "key_text_elements": [
+     "Pure training",
+     "No relaxation",
+     "No assertiveness"
+    ],
+    "layout_description": "A single focused funnel excluding extraneous icons like yoga poses or speech bubbles.",
+    "visual_prompt": "Minimalist drawing of a neat central time management box while symbols for relaxation and assertiveness are set aside outside orange boundary lines."
+   },
+   {
+    "scene_number": 23,
+    "narration": "The paper describes these five specific steps and four hour format, but does not provide complete training scripts, participant worksheets, or course handouts.",
+    "key_text_elements": [
+     "Paper details",
+     "Five core steps",
+     "Scripts not included"
+    ],
+    "layout_description": "An open research paper showing visible headings alongside blank outline pages.",
+    "visual_prompt": "Hand-drawn ink sketch of an open academic journal article on cream paper, with clean dotted outlines indicating absent full workshop handouts."
+   },
+   {
+    "scene_number": 24,
+    "narration": "An eighteen item questionnaire confirmed trainees transferred these strategies, reporting significantly increased time management behavior four weeks after completing the four hour session.",
+    "key_text_elements": [
+     "Training transfer",
+     "Eighteen item scale",
+     "Four weeks after"
+    ],
+    "layout_description": "A line graph showing time management behavior rising from baseline to four weeks.",
+    "visual_prompt": "Clean black line chart showing an upward trajectory from pretest to four weeks, with a sharp yellow dot marking the significant behavioral gain."
+   },
+   {
+    "scene_number": 25,
+    "narration": "The authors explain that prioritizing, goal setting, planning, and monitoring provided orientation, which ultimately increased perceived control of time and reduced perceived stress.",
+    "key_text_elements": [
+     "Clear orientation",
+     "Higher control",
+     "Reduced stress"
+    ],
+    "layout_description": "A compass rose pointing directly toward an upward control arrow and a downward stress arrow.",
+    "visual_prompt": "Minimalist hand-drawn ink compass with an orange needle pointing forward, flanked by an upward arrow for control and a downward arrow for stress."
+   },
+   {
+    "scene_number": 26,
+    "narration": "These taught practices yielded more than twice the effect size for undergraduates who began the training with no or little prior time management experience.",
+    "key_text_elements": [
+     "Twice effect size",
+     "Little experience",
+     "Maximum benefit"
+    ],
+    "layout_description": "A bar chart comparing strong gains for novices against modest gains for experienced students.",
+    "visual_prompt": "Black ink bar chart on a cream background showing a tall orange bar for students with little experience and a shorter yellow bar for experienced peers."
+   },
+   {
+    "scene_number": 27,
+    "narration": "In summary, this concise four hour intervention taught students to self reflect, define proximal goals, formulate strategies, schedule days, and monitor completion daily.",
+    "key_text_elements": [
+     "Reflect and goal",
+     "Plan and monitor",
+     "Five student tools"
+    ],
+    "layout_description": "A circular cycle linking all five core practices into one continuous self-management loop.",
+    "visual_prompt": "Minimalist hand-drawn black line art showing a circular loop of five icons representing reflection, goals, strategy, planning, and monitoring, highlighted in yellow and orange."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

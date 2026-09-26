@@ -1,0 +1,18 @@
+{
+ "config": "current",
+ "task": "audio_default",
+ "run": 3,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-4o",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 7.5,
+ "targetWords": 312,
+ "draftWords": 277,
+ "finalWords": 312,
+ "expanded": true,
+ "estMinutes": 2,
+ "output": "Alex: Hi everyone! Today, we're diving into a study that looks at how time management training might help reduce stress for university students. Jordan, what was the main goal of this research?\n\nJordan: The study aimed to see if a time management training program could increase students' perceived control of time and decrease their perceived stress. They specifically looked at 23 undergraduate students who participated in this training.\n\nAlex: Interesting! How did the researchers measure these changes?\n\nJordan: They used a design called \"non-equivalent dependent variable design.\" This involved measuring perceived stress and perceived control of time before the training, and then again 2 and 4 weeks after. They also measured demands, which they expected wouldn't change due to the training.\n\nAlex: And what did they find?\n\nJordan: The results showed a significant decrease in perceived stress and an increase in perceived control of time after the training. Importantly, demands didn't change, suggesting that the training specifically impacted stress and time control. The effects were particularly strong for students with little prior experience in time management.\n\nAlex: So, the training seemed effective. But were there any limitations?\n\nJordan: Yes, the authors noted the small sample size as a limitation. They suggested more studies with larger samples are needed to confirm these findings. Also, about half of the participants dropped out before the final measurement, which is something to consider.\n\nAlex: What do these findings mean for students and universities?\n\nJordan: The study suggests that time management training could be a valuable tool for improving student well-being. Universities might consider offering such training to help students manage their time better and reduce stress. The authors also highlighted that more research is needed to explore the long-term effects and potential performance outcomes of such training.\n\nAlex: Thanks, Jordan! It sounds like this research could really benefit students who struggle with stress. That's all for today. Join us next time for more insights into academic research!"
+}

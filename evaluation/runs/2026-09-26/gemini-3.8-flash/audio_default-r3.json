@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.8-flash",
+ "task": "audio_default",
+ "run": 3,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 27.9,
+ "targetWords": 312,
+ "draftWords": 289,
+ "finalWords": 289,
+ "expanded": false,
+ "estMinutes": 1.85,
+ "output": "Alex: Hi Jordan, what did this study by Häfner, Stock, and Oberst set out to examine?\n\nJordan: They wanted to examine the effects of a four-hour time management training program on perceived control of time and perceived stress in undergraduate students, tracking results directly before, two weeks after, and four weeks after training.\n\nAlex: How was the training structured, and what did it cover?\n\nJordan: The intervention focused on prioritizing, goal setting, strategy development, daily planning, and monitoring task completion, delivered in groups of about ten students.\n\nAlex: How did they evaluate it without a separate control group?\n\nJordan: They used a non-equivalent dependent variable design. Perceived control of time and perceived stress, measured using the tension scale, were expected to change, whereas perceived demands served as a control variable that should remain unchanged.\n\nAlex: Who took part in the study?\n\nJordan: Forty-eight German undergraduate students enrolled, but twenty-three completed all questionnaires. That final sample had a mean age of 23.30 years, and about half, specifically 52 %, were female.\n\nAlex: What did they find regarding stress and control over time?\n\nJordan: Trainees reported significantly less perceived stress at two and four weeks. Perceived control of time showed a tendency in the expected direction at two weeks, and a significant increase at four weeks.\n\nAlex: And what happened to their self-reported demands and actual behaviors?\n\nJordan: Perceived demands showed no significant changes. For time management behaviour, trainees reported a nearly significant increase at two weeks and a significant increase at four weeks, showing transfer at least to some extent.\n\nAlex: What are the key takeaways the authors emphasize?\n\nJordan: The authors conclude that time management training might be beneficial for student well-being, noting training effects were stronger for students with no or little prior experience, though larger samples are needed for robust conclusions."
+}

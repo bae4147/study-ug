@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.8-flash@t0.2",
+ "task": "audio_default",
+ "run": 2,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.2
+ },
+ "focus": null,
+ "seconds": 22.8,
+ "targetWords": 312,
+ "draftWords": 285,
+ "finalWords": 285,
+ "expanded": false,
+ "estMinutes": 1.83,
+ "output": "Alex: Hi Jordan, what did Häfner and colleagues set out to investigate in this study?\n\nJordan: They examined whether a four-hour time management training program could decrease perceived stress—measured with the tension scale, which covers mental fatigue and nervousness—and increase perceived control of time among undergraduate students.\n\nAlex: How was the study designed and conducted?\n\nJordan: They used a non-equivalent dependent variable design. In this framework, perceived control of time and tension were hypothesized to change, while perceived, self-reported demands served as a control variable that should not change. Twenty-three undergraduates completed surveys directly before training, as well as two and four weeks later.\n\nAlex: What changes did the researchers find after training?\n\nJordan: Participants reported significantly less perceived stress at two and four weeks after training. Perceived control of time showed a tendency in the expected direction at two weeks, followed by a significant increase at four weeks.\n\nAlex: And did their perceived demands change as well?\n\nJordan: No, self-reported demands showed no significant changes at two or four weeks. Trainees also transferred the strategies to their daily work at least to some extent, showing a nearly significant increase in time management behaviour at two weeks and a significant increase at four weeks.\n\nAlex: Did the students' prior time management experience matter?\n\nJordan: Yes. Four weeks after training, effect sizes for students with no or little experience were more than twice as strong as for students who reported moderate or some experience.\n\nAlex: What are the key takeaways from the authors' discussion?\n\nJordan: The authors concluded that time management training might be beneficial for undergraduate students' well-being. However, because about half of the initial forty-eight participants dropped out, leaving twenty-three participants, they emphasized that more intervention studies with larger samples are necessary to reach robust conclusions."
+}

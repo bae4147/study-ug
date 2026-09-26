@@ -1,0 +1,276 @@
+{
+ "config": "gemini-3.1-pro",
+ "task": "video_request",
+ "run": 1,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.4
+ },
+ "focus": "Explain step by step what the training actually taught students to do.",
+ "seconds": 77.6,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 600,
+ "estMinutes": 4.69,
+ "output": {
+  "title": "Decreasing students' stress through time management training: an intervention study",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "University students face high stress, often associated with time-related demands like high workload, time pressure, and the daily challenge of self-organized learning.",
+    "key_text_elements": [
+     "High workload",
+     "Time pressure"
+    ],
+    "layout_description": "A student sits slumped at a desk surrounded by floating clocks and tall stacks of paper.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background showing a stressed student at a desk, with orange and yellow accents highlighting the clocks and paper stacks."
+   },
+   {
+    "scene_number": 2,
+    "narration": "Researchers Häfner, Stock, and Oberst tested whether a four-hour time management training program could successfully reduce perceived stress in a student sample.",
+    "key_text_elements": [
+     "Time management training",
+     "Reduce perceived stress"
+    ],
+    "layout_description": "A researcher stands next to a whiteboard pointing to a downward trending graph.",
+    "visual_prompt": "Minimalist black ink sketch on a cream background of a figure pointing at a whiteboard, with a downward arrow highlighted in bright orange."
+   },
+   {
+    "scene_number": 3,
+    "narration": "Twenty-three undergraduate students from various faculties attended the training intervention and completed all the required questionnaires directly before and after the program.",
+    "key_text_elements": [
+     "23 undergraduate students"
+    ],
+    "layout_description": "A group of students sit in a circle of chairs holding clipboards.",
+    "visual_prompt": "Simple black ink line drawing on a cream background showing a small group of students with clipboards, using yellow accents on the clipboards."
+   },
+   {
+    "scene_number": 4,
+    "narration": "The evaluated training was developed as a rather homogeneous intervention focusing on prioritizing, goal setting, strategy development, daily planning, and monitoring as major parts.",
+    "key_text_elements": [
+     "Prioritizing",
+     "Goal setting",
+     "Monitoring"
+    ],
+    "layout_description": "A large hand points to a five-part list on a clipboard.",
+    "visual_prompt": "Hand-drawn black ink art on a cream background showing a clipboard with five distinct bullet points, with the first three highlighted in yellow."
+   },
+   {
+    "scene_number": 5,
+    "narration": "First, the students in the study reflected upon their current activities, which included their academic tasks as well as their extracurricular activities.",
+    "key_text_elements": [
+     "Academic tasks",
+     "Extracurricular activities"
+    ],
+    "layout_description": "A thought bubble above a student's head contains a book and a soccer ball.",
+    "visual_prompt": "Minimalist black ink sketch on a cream background of a student thinking, with orange accents on the book and soccer ball inside the thought bubble."
+   },
+   {
+    "scene_number": 6,
+    "narration": "During this initial phase of self-reflection, they noted down these different activities and reflected on their importance for their overall study goals.",
+    "key_text_elements": [
+     "Self-reflection"
+    ],
+    "layout_description": "A hand writes a list of activities on a piece of paper.",
+    "visual_prompt": "Black ink line art on a cream background showing a hand holding a pen over a piece of paper, with yellow highlights on the written lines."
+   },
+   {
+    "scene_number": 7,
+    "narration": "The trainees tried to define the most important activities by asking themselves which ones mattered the most and why they were important to them.",
+    "key_text_elements": [
+     "Most important activities"
+    ],
+    "layout_description": "A hand uses a marker to circle specific items on a written list.",
+    "visual_prompt": "Hand-drawn black ink sketch on a cream background showing a list where two items are boldly circled in bright orange ink."
+   },
+   {
+    "scene_number": 8,
+    "narration": "In the next step of the training, the trainees defined concrete, challenging, and proximal goals for the important activities they had just identified.",
+    "key_text_elements": [
+     "Concrete goals",
+     "Challenging goals"
+    ],
+    "layout_description": "An arrow hits the center of a target board.",
+    "visual_prompt": "Minimalist black ink line drawing on a cream background of a bullseye target with an arrow in the center, highlighted with yellow and orange."
+   },
+   {
+    "scene_number": 9,
+    "narration": "To do this effectively, the students asked themselves exactly what they wanted to achieve in detail, and then they defined specific deadlines.",
+    "key_text_elements": [
+     "Specific deadlines"
+    ],
+    "layout_description": "A desk calendar has a specific date circled with a thick marker.",
+    "visual_prompt": "Black ink sketch on a cream background showing a monthly calendar page, with one day circled in bright orange."
+   },
+   {
+    "scene_number": 10,
+    "narration": "In a third phase, the participants developed a strategy for achieving their goals, noting down the different steps they needed to take.",
+    "key_text_elements": [
+     "Strategy development"
+    ],
+    "layout_description": "A staircase is drawn leading up to a glowing lightbulb.",
+    "visual_prompt": "Hand-drawn black ink art on a cream background showing a set of stairs leading upward, with a yellow lightbulb at the top."
+   },
+   {
+    "scene_number": 11,
+    "narration": "As part of this strategy development, they set priorities for these different steps and planned exactly how they were going to start.",
+    "key_text_elements": [
+     "Set priorities"
+    ],
+    "layout_description": "Numbers one, two, and three are written next to steps on a path.",
+    "visual_prompt": "Minimalist black ink line drawing on a cream background showing a winding path with numbered markers highlighted in orange."
+   },
+   {
+    "scene_number": 12,
+    "narration": "The trainees also thought carefully about possible obstacles they might encounter and what they could do to successfully overcome those specific challenges.",
+    "key_text_elements": [
+     "Possible obstacles"
+    ],
+    "layout_description": "A figure looks at a large boulder blocking a path, with a curved arrow showing a way around it.",
+    "visual_prompt": "Black ink sketch on a cream background of a person facing a rock on a path, with a yellow curved arrow indicating a detour."
+   },
+   {
+    "scene_number": 13,
+    "narration": "In this context, the trainer explicitly emphasized the importance of setting proximal deadlines for their individual steps toward their successful goal achievement.",
+    "key_text_elements": [
+     "Proximal deadlines"
+    ],
+    "layout_description": "Small flags are planted along a timeline.",
+    "visual_prompt": "Hand-drawn black ink line art on a cream background showing a horizontal line with several small flags, accented in orange."
+   },
+   {
+    "scene_number": 14,
+    "narration": "The fourth part of the training focused heavily on daily planning, where trainees developed a concrete schedule for their ongoing university studies.",
+    "key_text_elements": [
+     "Daily planning"
+    ],
+    "layout_description": "An open daily planner book shows time slots filled with scribbles.",
+    "visual_prompt": "Minimalist black ink sketch on a cream background of an open planner notebook, with yellow highlights over the time slots."
+   },
+   {
+    "scene_number": 15,
+    "narration": "During this daily planning stage, the trainees decided exactly what they wanted to do and when they were going to do it.",
+    "key_text_elements": [
+     "What to do",
+     "When to do it"
+    ],
+    "layout_description": "A clock face sits next to a short to-do list.",
+    "visual_prompt": "Black ink line drawing on a cream background showing a simple clock and a piece of paper with checkboxes, using orange accents."
+   },
+   {
+    "scene_number": 16,
+    "narration": "To build their schedules, they asked themselves specific questions like which important tasks they should concentrate on during the very next day.",
+    "key_text_elements": [
+     "Important tasks"
+    ],
+    "layout_description": "A magnifying glass hovers over a single item on a list.",
+    "visual_prompt": "Hand-drawn black ink art on a cream background showing a magnifying glass enlarging one line of text, highlighted in yellow."
+   },
+   {
+    "scene_number": 17,
+    "narration": "They also planned out the logistics of their schedule, asking themselves exactly when and where they were going to complete these tasks.",
+    "key_text_elements": [
+     "When and where"
+    ],
+    "layout_description": "A map location pin sits next to an alarm clock.",
+    "visual_prompt": "Minimalist black ink sketch on a cream background featuring a location pin and a clock, both accented with bright orange."
+   },
+   {
+    "scene_number": 18,
+    "narration": "Furthermore, the students asked themselves exactly how much time should be scheduled for the different tasks they needed to complete that day.",
+    "key_text_elements": [
+     "How much time"
+    ],
+    "layout_description": "An hourglass with sand falling is drawn next to a stack of books.",
+    "visual_prompt": "Black ink line art on a cream background showing an hourglass and books, with yellow sand inside the hourglass."
+   },
+   {
+    "scene_number": 19,
+    "narration": "Finally, as part of their daily planning process, the trainees asked themselves how they could successfully avoid distractions while they were working.",
+    "key_text_elements": [
+     "Avoid distractions"
+    ],
+    "layout_description": "A smartphone has a large 'X' drawn over its screen.",
+    "visual_prompt": "Hand-drawn black ink sketch on a cream background of a phone with a thick orange 'X' crossing it out."
+   },
+   {
+    "scene_number": 20,
+    "narration": "The last part of the time management training dealt with the monitoring of task completion to track their ongoing daily academic progress.",
+    "key_text_elements": [
+     "Monitoring",
+     "Task completion"
+    ],
+    "layout_description": "A clipboard holds a paper with several empty square checkboxes.",
+    "visual_prompt": "Minimalist black ink line drawing on a cream background showing a clipboard with empty boxes, accented with yellow."
+   },
+   {
+    "scene_number": 21,
+    "narration": "The trainees were instructed to monitor their tasks each day to clearly see which of their planned activities they had actually completed.",
+    "key_text_elements": [
+     "Completed activities"
+    ],
+    "layout_description": "A hand draws a large checkmark inside one of the boxes.",
+    "visual_prompt": "Black ink sketch on a cream background showing a pen drawing a bright orange checkmark in a box."
+   },
+   {
+    "scene_number": 22,
+    "narration": "They also used this daily monitoring process to clearly see what work still had to be done to achieve their defined goals.",
+    "key_text_elements": [
+     "Work still to do"
+    ],
+    "layout_description": "An eye looks at the remaining empty checkboxes on the list.",
+    "visual_prompt": "Hand-drawn black ink art on a cream background showing an eye looking down at empty squares, with yellow highlights."
+   },
+   {
+    "scene_number": 23,
+    "narration": "The researchers measured perceived stress, perceived control of time, and demands directly before the training, and then two and four weeks later.",
+    "key_text_elements": [
+     "Before training",
+     "Two weeks later",
+     "Four weeks later"
+    ],
+    "layout_description": "A timeline has three distinct points marked on it.",
+    "visual_prompt": "Minimalist black ink line drawing on a cream background showing a horizontal timeline with three dots, accented in orange."
+   },
+   {
+    "scene_number": 24,
+    "narration": "As expected, the trainees reported significantly less perceived stress two and four weeks after the training compared to the pretest before training.",
+    "key_text_elements": [
+     "Less perceived stress"
+    ],
+    "layout_description": "A downward pointing arrow is drawn next to a calm face.",
+    "visual_prompt": "Black ink sketch on a cream background showing a relaxed face profile and a large downward arrow filled with yellow."
+   },
+   {
+    "scene_number": 25,
+    "narration": "Four weeks after the training, the participants also reported a significant increase in their perceived control of time compared to the pretest.",
+    "key_text_elements": [
+     "More control of time"
+    ],
+    "layout_description": "An upward pointing arrow is drawn next to a clock.",
+    "visual_prompt": "Hand-drawn black ink art on a cream background showing a clock face and a large upward arrow in bright orange."
+   },
+   {
+    "scene_number": 26,
+    "narration": "Meanwhile, the trainees reported no changes concerning demands, a control variable measuring external duties that the training was not designed to change.",
+    "key_text_elements": [
+     "No changes in demands"
+    ],
+    "layout_description": "A flat, horizontal line is drawn next to an overflowing inbox tray.",
+    "visual_prompt": "Minimalist black ink line drawing on a cream background showing an inbox full of paper next to a flat yellow line."
+   },
+   {
+    "scene_number": 27,
+    "narration": "The authors conclude that this specific combination of goal setting, daily planning, and monitoring might be beneficial for undergraduate students' overall well-being.",
+    "key_text_elements": [
+     "Beneficial for well-being"
+    ],
+    "layout_description": "A smiling student stands next to a perfectly balanced scale.",
+    "visual_prompt": "Black ink sketch on a cream background of a happy student and a balanced scale, with orange and yellow accents."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

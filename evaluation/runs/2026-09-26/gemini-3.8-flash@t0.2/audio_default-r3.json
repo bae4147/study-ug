@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.8-flash@t0.2",
+ "task": "audio_default",
+ "run": 3,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.2
+ },
+ "focus": null,
+ "seconds": 25.7,
+ "targetWords": 312,
+ "draftWords": 298,
+ "finalWords": 298,
+ "expanded": false,
+ "estMinutes": 1.91,
+ "output": "Alex: Welcome! What did Häfner and colleagues set out to examine in this study?\n\nJordan: They examined whether a four-hour time management training program could increase perceived control of time and decrease perceived stress among undergraduate students at a German university.\n\nAlex: How was the study designed without a separate control group?\n\nJordan: They used a non-equivalent dependent variable design, an internal referencing strategy where one group is trained and two types of variables are tracked. They hypothesized that perceived control of time and perceived stress, measured with the tension scale, would change, while perceived demands would remain unchanged.\n\nAlex: Who participated, and what was the procedure?\n\nJordan: Forty-eight undergraduates began the study, and twenty-three completed all questionnaires directly before, two weeks after, and four weeks after training. About half the participants were female, at fifty-two percent.\n\nAlex: What did the statistical analyses find?\n\nJordan: Trainees reported significantly less perceived stress two weeks and four weeks after training. Perceived control of time showed a tendency in the expected direction at two weeks, and reached a significant increase at four weeks.\n\nAlex: Did self-reported demands or time management behaviour change as well?\n\nJordan: Demands showed no significant changes at either two or four weeks. Meanwhile, trainees reported a significant increase in time management behaviour at four weeks, showing they transferred the taught strategies at least to some extent.\n\nAlex: How did prior experience factor into these results?\n\nJordan: The authors found that training effects were much stronger for students with no or little experience compared to those with moderate or some experience, especially regarding stress.\n\nAlex: What are the authors' overall conclusions and takeaways?\n\nJordan: They noted that because this was a preliminary study with a small sample of twenty-three students, more intervention studies with larger samples are necessary. Still, they concluded that time management training might be beneficial for undergraduate students' well-being."
+}

@@ -1,0 +1,292 @@
+{
+ "config": "gemini-3.1-pro",
+ "task": "video_default",
+ "run": 2,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 71.3,
+ "targetScenes": 27,
+ "scenes": 27,
+ "narrationWords": 644,
+ "estMinutes": 5.03,
+ "output": {
+  "title": "Decreasing students' stress through time management training",
+  "scenes": [
+   {
+    "scene_number": 1,
+    "narration": "The mental health of university students is an area of increasing concern worldwide, with many experiencing alarming minor signs of depression, anxiety, and stress.",
+    "key_text_elements": [
+     "Student mental health",
+     "Increasing concern"
+    ],
+    "layout_description": "A stressed student sitting at a desk with head in hands, text floating above in a yellow highlighted cloud.",
+    "visual_prompt": "Hand-drawn black ink sketch of a university student sitting at a desk with their head resting in their hands, looking overwhelmed. A soft yellow circle highlights their head. Cream background, minimalist style."
+   },
+   {
+    "scene_number": 2,
+    "narration": "Research shows heightened stress levels for undergraduate students compared to non-student samples, and time-related demands are a serious problem associated with higher stress.",
+    "key_text_elements": [
+     "Heightened stress levels"
+    ],
+    "layout_description": "A simple bar chart comparing two bars, with an orange arrow pointing to the taller bar representing students.",
+    "visual_prompt": "Minimalist black ink line art of a bar chart. The taller bar has a sketched figure of a student on top, highlighted with an orange arrow pointing upward. Cream background, plenty of white space."
+   },
+   {
+    "scene_number": 3,
+    "narration": "These time-related demands include high workload, time pressure, and the challenge of self-organized learning, making time management a considerable concern for many undergraduates.",
+    "key_text_elements": [
+     "Time-related demands",
+     "High workload"
+    ],
+    "layout_description": "A large clock face and a heavy stack of books pressing down, with text integrated into the white space.",
+    "visual_prompt": "Sketch-like black ink drawing of a large, slightly distorted clock face resting heavily on a tall stack of textbooks. Orange accent lines radiate from the clock to indicate pressure. Cream background."
+   },
+   {
+    "scene_number": 4,
+    "narration": "To successfully deal with these demands, time management interventions are recommended, yet research concerning the effectiveness of these training programs for students is scarce.",
+    "key_text_elements": [
+     "Time management interventions",
+     "Scarce research"
+    ],
+    "layout_description": "A magnifying glass hovering over a blank calendar page, with text written inside the calendar grid.",
+    "visual_prompt": "Hand-drawn black ink illustration of a magnifying glass examining an empty calendar. The glass has a subtle yellow highlight. Minimalist composition on a cream background."
+   },
+   {
+    "scene_number": 5,
+    "narration": "This study asked: is it possible to increase perceived control of time and reduce perceived stress through time management training in a student sample?",
+    "key_text_elements": [
+     "Reduce perceived stress?",
+     "Increase time control?"
+    ],
+    "layout_description": "A large question mark drawn next to a stylized training manual, with text arranged in bullet points.",
+    "visual_prompt": "Black ink sketch of a large, imperfect question mark next to a notebook labeled 'Training'. Orange and yellow highlight circles accent the punctuation. Cream background, clean and minimalist."
+   },
+   {
+    "scene_number": 6,
+    "narration": "The researchers measured perceived stress using a tension scale, which contains aspects of mental fatigue, trouble relaxing, and feelings of nervousness among the students.",
+    "key_text_elements": [
+     "Perceived stress",
+     "Tension scale"
+    ],
+    "layout_description": "A stylized brain with jagged lines indicating tension, text placed below.",
+    "visual_prompt": "Hand-drawn black ink art of a human brain with jagged, lightning-like lines radiating from it to symbolize tension and mental fatigue. Orange accents on the jagged lines. Cream background."
+   },
+   {
+    "scene_number": 7,
+    "narration": "They also measured perceived control of time, which characterizes having a strong feeling of control, keeping deadlines, procrastinating little, and following one's plans.",
+    "key_text_elements": [
+     "Perceived control",
+     "Keeping deadlines"
+    ],
+    "layout_description": "A hand checking off a box on a to-do list, text written alongside the list items.",
+    "visual_prompt": "Minimalist black ink sketch of a hand holding a pen, drawing a checkmark in a square box on a piece of paper. The checkmark is highlighted in yellow. Cream background."
+   },
+   {
+    "scene_number": 8,
+    "narration": "Finally, they measured demands as a control variable. This covers external duties and the amount of work students are confronted with in their studies.",
+    "key_text_elements": [
+     "Demands",
+     "Control variable"
+    ],
+    "layout_description": "An overflowing inbox tray, with text floating above the papers.",
+    "visual_prompt": "Sketch-like black ink drawing of an office inbox tray overflowing with messy papers, representing external duties. A subtle orange circle highlights the pile. Cream background."
+   },
+   {
+    "scene_number": 9,
+    "narration": "The researchers used a non-equivalent dependent variable design. This means they trained one single group without using a separate control group for the study.",
+    "key_text_elements": [
+     "Single group",
+     "No control group"
+    ],
+    "layout_description": "A single cluster of stick figures enclosed in a circle, with text positioned to the right.",
+    "visual_prompt": "Hand-drawn black ink line art of a single group of three simple figures standing together, enclosed by a yellow hand-drawn circle. No other groups are present. Cream background."
+   },
+   {
+    "scene_number": 10,
+    "narration": "As Frese and colleagues noted, this design effectively rules out nonspecific placebo effects if the training only changes experimental variables but not control variables.",
+    "key_text_elements": [
+     "Rules out placebo"
+    ],
+    "layout_description": "A balance scale with one side tipping down, text placed above the scale.",
+    "visual_prompt": "Minimalist black ink sketch of a classic balance scale. One side is heavier, representing the changed experimental variables, while the other remains unchanged. Orange highlight on the heavier side. Cream background."
+   },
+   {
+    "scene_number": 11,
+    "narration": "Forty-eight undergraduate students from a medium-sized German university initially volunteered to take part in a four-hour training program to improve their time management skills.",
+    "key_text_elements": [
+     "Forty-eight students",
+     "Four-hour training"
+    ],
+    "layout_description": "A clock face showing a four-hour span highlighted, with text underneath.",
+    "visual_prompt": "Hand-drawn black ink illustration of a clock face where a four-hour wedge is shaded with a yellow highlight. Cream background, minimalist sketch style."
+   },
+   {
+    "scene_number": 12,
+    "narration": "The training focused on prioritizing, setting concrete and challenging goals, developing strategies, daily planning, and monitoring goal progress to help students manage their time.",
+    "key_text_elements": [
+     "Prioritizing",
+     "Setting goals",
+     "Daily planning"
+    ],
+    "layout_description": "A target with an arrow in the bullseye next to a planner, text listed vertically.",
+    "visual_prompt": "Black ink line art of an archery target with an arrow in the center, placed next to a small daily planner book. Orange highlight on the bullseye. Cream background."
+   },
+   {
+    "scene_number": 13,
+    "narration": "Participants filled in questionnaires directly before the training, two weeks after the training, and then again four weeks after the training was completed.",
+    "key_text_elements": [
+     "Before training",
+     "Two weeks after",
+     "Four weeks after"
+    ],
+    "layout_description": "A horizontal timeline with three distinct nodes, text labeling each node.",
+    "visual_prompt": "Hand-drawn black ink timeline with three distinct circular nodes. The nodes are highlighted in yellow. Minimalist composition on a cream background."
+   },
+   {
+    "scene_number": 14,
+    "narration": "Twenty-three undergraduate students filled in all the questionnaires. This final sample had a mean age of twenty-three point three zero years across different subjects.",
+    "key_text_elements": [
+     "Twenty-three students",
+     "Mean age 23.30"
+    ],
+    "layout_description": "A smaller group of figures than before, with a prominent number 23 integrated into the text.",
+    "visual_prompt": "Sketch-like black ink drawing of a small group of two figures representing the final sample. An orange arrow points to them. Cream background, clean and simple."
+   },
+   {
+    "scene_number": 15,
+    "narration": "About half of these participants were female, and most reported having no or little experience concerning the use of time management strategies before training.",
+    "key_text_elements": [
+     "About half female",
+     "Little prior experience"
+    ],
+    "layout_description": "A pie chart split down the middle, with text placed around the chart.",
+    "visual_prompt": "Minimalist black ink line art of a pie chart divided roughly in half. One half has a subtle yellow shading. Cream background, plenty of white space."
+   },
+   {
+    "scene_number": 16,
+    "narration": "Did they use the taught strategies? Trainees reported a significant increase in time management behavior when comparing the baseline to four weeks after training.",
+    "key_text_elements": [
+     "Significant increase",
+     "Time management behavior"
+    ],
+    "layout_description": "An upward trending line graph on a grid, text positioned above the line.",
+    "visual_prompt": "Hand-drawn black ink sketch of a line graph showing a clear upward trend. The line is bolded and ends with an orange arrow pointing up. Cream background."
+   },
+   {
+    "scene_number": 17,
+    "narration": "For perceived stress, measured as tension, the trainees reported significantly less stress both two weeks and four weeks after the time management training intervention.",
+    "key_text_elements": [
+     "Significantly less stress",
+     "Tension decreased"
+    ],
+    "layout_description": "A downward pointing arrow next to a relaxed face, text to the side.",
+    "visual_prompt": "Black ink line art of a downward-pointing arrow next to a simple, relaxed smiling face. The arrow is highlighted in yellow. Cream background, minimalist style."
+   },
+   {
+    "scene_number": 18,
+    "narration": "For perceived control of time, there was no significant increase two weeks after training, only a moderate tendency in the expected direction for students.",
+    "key_text_elements": [
+     "Moderate tendency",
+     "Two weeks after"
+    ],
+    "layout_description": "A clock with a small, dotted arrow nudging forward, text below.",
+    "visual_prompt": "Hand-drawn black ink illustration of a clock face with a small, dotted arrow indicating a slight forward movement. Subtle orange highlight on the arrow. Cream background."
+   },
+   {
+    "scene_number": 19,
+    "narration": "However, four weeks after the training, the trainees reported a significant increase in perceived control of time compared to the measurement directly before training.",
+    "key_text_elements": [
+     "Significant increase",
+     "Four weeks after"
+    ],
+    "layout_description": "A clock with a large, solid arrow leaping forward, text above.",
+    "visual_prompt": "Sketch-like black ink drawing of a clock face with a large, solid, sweeping arrow indicating a significant forward leap. The arrow is highlighted in yellow. Cream background."
+   },
+   {
+    "scene_number": 20,
+    "narration": "Meanwhile, the control variable, demands, showed no significant changes between the measurement before training and the measurements taken two and four weeks after training.",
+    "key_text_elements": [
+     "Demands",
+     "No significant changes"
+    ],
+    "layout_description": "A flat, horizontal line graph next to a stack of papers, text below.",
+    "visual_prompt": "Minimalist black ink line art of a completely flat, horizontal trend line next to a small stack of papers. The flat line has an orange highlight. Cream background."
+   },
+   {
+    "scene_number": 21,
+    "narration": "Because demands did not change while stress decreased, the authors conclude that the training led to the decrease in perceived stress for the students.",
+    "key_text_elements": [
+     "Training caused decrease"
+    ],
+    "layout_description": "A chain link connecting a training manual to a downward arrow, text in the center.",
+    "visual_prompt": "Hand-drawn black ink sketch of a training book connected by a drawn line to a downward-pointing arrow. A yellow circle highlights the connection. Cream background."
+   },
+   {
+    "scene_number": 22,
+    "narration": "The training effect was much stronger for students with no or little experience compared to students who had moderate and some time management experience.",
+    "key_text_elements": [
+     "Stronger training effect",
+     "Little prior experience"
+    ],
+    "layout_description": "Two figures, one with a small sprout growing into a large plant, text beside them.",
+    "visual_prompt": "Black ink line art of a small seedling growing into a much larger plant, symbolizing a strong effect for beginners. Orange highlight on the large leaves. Cream background."
+   },
+   {
+    "scene_number": 23,
+    "narration": "The authors explain that prioritizing and daily planning might give more orientation, which might reduce stress and foster perceived control of time for students.",
+    "key_text_elements": [
+     "More orientation",
+     "Fosters perceived control"
+    ],
+    "layout_description": "A compass pointing forward on a clear path, text integrated into the path.",
+    "visual_prompt": "Hand-drawn black ink sketch of a simple compass pointing straight ahead along a clear, drawn path. The compass needle is highlighted in yellow. Cream background."
+   },
+   {
+    "scene_number": 24,
+    "narration": "Because of the small sample size of twenty-three students, this is a preliminary study. More intervention studies with larger samples of students are necessary.",
+    "key_text_elements": [
+     "Preliminary study",
+     "Larger samples necessary"
+    ],
+    "layout_description": "A magnifying glass looking at a small group, with a larger empty circle nearby, text above.",
+    "visual_prompt": "Minimalist black ink drawing of a magnifying glass focused on a tiny group of dots, with a large, empty dashed circle next to it indicating the need for more. Orange accent on the empty circle. Cream background."
+   },
+   {
+    "scene_number": 25,
+    "narration": "Future research should also compare time management training with other interventions designed to decrease perceived stress, such as exercise, relaxation, or meditation support programs.",
+    "key_text_elements": [
+     "Compare other interventions",
+     "Meditation or relaxation"
+    ],
+    "layout_description": "A balance scale comparing a clock to a person in a lotus meditation pose, text below.",
+    "visual_prompt": "Sketch-like black ink art of a balance scale. On one side is a clock, and on the other is a simple figure sitting cross-legged in meditation. Yellow highlights on both items. Cream background."
+   },
+   {
+    "scene_number": 26,
+    "narration": "Setting clear goals, planning the work day, and monitoring goal progress might be good advice for students to increase perceived control and decrease stress.",
+    "key_text_elements": [
+     "Setting clear goals",
+     "Monitoring goal progress"
+    ],
+    "layout_description": "A clipboard with a checklist and a rising bar chart, text next to the clipboard.",
+    "visual_prompt": "Hand-drawn black ink illustration of a clipboard holding a checklist, with a small rising bar chart drawn at the bottom of the page. Orange highlight on the checkmarks. Cream background."
+   },
+   {
+    "scene_number": 27,
+    "narration": "Ultimately, the authors suggest that time management training might be beneficial for undergraduate students' well-being, helping them deal with the time-related challenges they face.",
+    "key_text_elements": [
+     "Beneficial for well-being",
+     "Time management"
+    ],
+    "layout_description": "A smiling student holding a clock like a shield, text floating above.",
+    "visual_prompt": "Minimalist black ink line art of a smiling student confidently holding a clock in front of them. A soft yellow circle glows behind the student. Cream background."
+   }
+  ],
+  "length": "default",
+  "targetScenes": 27
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "config": "current",
+ "task": "audio_default",
+ "run": 1,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-4o",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 4.5,
+ "targetWords": 312,
+ "draftWords": 286,
+ "finalWords": 286,
+ "expanded": false,
+ "estMinutes": 1.83,
+ "output": "Alex: Hi everyone, welcome back! Today, we're diving into a study about time management training and its impact on student stress and control over time.\n\nJordan: That's right, Alex. The study by Häfner, Stock, and Oberst aimed to see if a time management training program could help undergraduate students feel more in control of their time and reduce their perceived stress.\n\nAlex: How did they go about testing this?\n\nJordan: They conducted a non-equivalent dependent variable design with 23 undergraduate students. This means they measured perceived stress and control of time, which they expected to change, and demands, which they didn't expect to change, before and after the training.\n\nAlex: Interesting! So, what did they find?\n\nJordan: After the training, students reported a significant decrease in perceived stress and an increase in perceived control of time. Importantly, the demands didn't change, suggesting the training specifically affected stress and time control.\n\nAlex: Did the study mention how long these effects lasted?\n\nJordan: Yes, they measured outcomes at two and four weeks post-training. The significant changes in stress and control of time were still evident at four weeks, indicating some lasting impact.\n\nAlex: Were there any limitations to the study?\n\nJordan: The authors noted the small sample size and suggested that more studies with larger samples are needed. They also mentioned the dropout rate, which is common in such studies, but it didn't seem to affect the overall findings.\n\nAlex: So, what's the key takeaway here?\n\nJordan: Time management training appears to be beneficial for reducing stress and increasing control over time among students, at least in the short term. However, more research is needed to confirm these findings and explore long-term effects.\n\nAlex: Thanks, Jordan. This study certainly sheds light on the potential benefits of time management training for students."
+}

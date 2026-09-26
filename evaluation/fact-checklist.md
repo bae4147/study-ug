@@ -35,7 +35,9 @@ output from its own family. For reporting, a random sample should be re-scored
 by a person to give an agreement figure.
 
 Use the checklist below for the claims it covers; check anything else against
-the paper text directly.
+the paper text directly. (B1 was corrected on 2026-09-26: the first version said
+the paper gives no dropout figures, but it gives response rates -- found when a
+generated script cited them correctly.)
 
 ---
 
@@ -51,8 +53,8 @@ the paper text directly.
 
 | ID | Fact | Page |
 |---|---|---|
-| B1 | **48** undergraduates of a medium-sized German university took part; **23** answered all questionnaires (analysed n = 23) | 6 |
-| B2 | "**About half**" of the students left before the second measurement. The paper gives no percentage — a stated % is COMPUTED | 11 |
+| B1 | **48** undergraduates of a medium-sized German university took part and all filled in the pretest; **27** answered at 2 weeks (response rate **56%**) and **23** at 4 weeks (**48%**); the main analyses used the 23. Recruited via notice boards, newsletters and seminars; **no incentives** | 6 |
+| B2 | "**About half** of the students left our study before the second point of measurement" (p. 11), consistent with the response rates in B1. A dropout percentage is not stated: "52% dropped out" is COMPUTED (100 − 48); "about half" is fine | 6, 11 |
 | B3 | Dropouts did not differ from completers on the four study variables, age, semester or sex | 8 |
 | B4 | Mean age **23.30** (SD 2.80); about half female (**52%**); different subjects (psychology, medicine, biology, pedagogy, physics, law, computer science) and years of study | 6, 10 |
 | B5 | Prior time-management experience (Table 2): none **30.4%**, little **30.4%**, moderate **34.8%**, some more **4.4%**, quite a lot 0%. "Overall, they had little experience." No combined figure is given | 7, 10 |
@@ -131,7 +133,7 @@ Useful as a watch list; each shows the code it would get.
 | video plan with request, step 2 | "tasks that needed rescheduling" | ADDED | C2 |
 | video plan with request, step 2 | "proving they successfully transferred" | OVERSTATED | F2 |
 | video plan with request, step 2 | "theorists propose …" | MISATTRIBUTED | F3 |
-| video plan, step 2 | "a fifty-two percent dropout rate"; "60.8 percent" | COMPUTED | B2, B5 |
+| video plan, step 2 | "a fifty-two percent dropout rate" (the complement of the stated 48% response rate); "60.8 percent" | COMPUTED | B2, B5 |
 | 3.5-min audio, step 2 | stress and control effects "more pronounced four weeks after" | WRONG | E2 |
 | 3.5-min audio, step 2 | "about 61% reporting no or little experience" | COMPUTED | B5 |
 | 3.5-min audio, step 2 | the authors "argued that their design effectively ruled out placebo effects" | OVERSTATED | F4 |

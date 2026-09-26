@@ -1,0 +1,18 @@
+{
+ "config": "gpt-5.5",
+ "task": "audio_default",
+ "run": 3,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.5",
+  "temperature": null
+ },
+ "focus": null,
+ "seconds": 31.3,
+ "targetWords": 312,
+ "draftWords": 311,
+ "finalWords": 311,
+ "expanded": false,
+ "estMinutes": 1.99,
+ "output": "Alex: Hi Jordan—what did this paper set out to test?\nJordan: It tested whether a 4 h time management training could increase undergraduate students’ perceived control of time and decrease perceived stress, measured with the “tension” scale.\nAlex: How was the study run?\nJordan: Forty-eight local undergraduates at a medium-sized German university took the training; the main analyses used the 23 who completed questionnaires directly before, 2 weeks after, and 4 weeks after training.\nAlex: What did students do in the training?\nJordan: The training focused on prioritizing, goal setting, strategy development, daily planning, and monitoring. Students reflected on activities, set concrete, challenging, proximal goals with deadlines, planned steps, anticipated obstacles, scheduled study work, and monitored tasks.\nAlex: Since there was no separate control group, what was the comparison?\nJordan: The authors used a “non-equivalent dependent variable design”: tension and perceived control of time should change, while demands—perceived, self-reported demands—should not change if the training, not just measurement or context, mattered.\nAlex: What happened to tension?\nJordan: Tension decreased from M=3.30 before training to M=2.96 after 2 weeks and M=3.03 after 4 weeks. Both decreases compared with pretest were reported as significant.\nAlex: And perceived control of time?\nJordan: It increased from M=2.75 to M=2.89 after 2 weeks and M=3.05 after 4 weeks. At 2 weeks, this was only a tendency in the expected direction; at 4 weeks, it was significant.\nAlex: Did the control variable behave as expected?\nJordan: Yes. Demands were M=3.59 before training, M=3.35 after 2 weeks, and M=3.46 after 4 weeks, with no significant changes.\nAlex: Did students actually transfer the strategies?\nJordan: They reported more time management behaviour: the increase was nearly significant at 2 weeks, p=0.060, and significant at 4 weeks, t(22)=2.67, p<0.01.\nAlex: What’s the key takeaway?\nJordan: Key takeaway: training might reduce tension and raise perceived control of time, especially for students with no or little prior experience, but the small sample, dropout, and no control or pseudo-training groups limit conclusions."
+}

@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.8-flash@t0.2",
+ "task": "audio_default",
+ "run": 1,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.2
+ },
+ "focus": null,
+ "seconds": 9.4,
+ "targetWords": 312,
+ "draftWords": 287,
+ "finalWords": 287,
+ "expanded": false,
+ "estMinutes": 1.84,
+ "output": "Alex: Hi Jordan, so what did this Häfner, Stock, and Oberst study set out to test?\n\nJordan: They examined whether a four-hour time management training could increase perceived control of time and reduce perceived stress among undergraduate students.\n\nAlex: How was the study designed to evaluate that?\n\nJordan: They used a non-equivalent dependent variable design, meaning a single group is evaluated by tracking variables expected to change alongside a control variable expected not to change.\n\nAlex: Who participated, and what exactly did the researchers measure?\n\nJordan: Twenty-three undergraduates completed the full study across three time points: directly before training, two weeks after, and four weeks after. Perceived stress was measured using the tension scale, alongside perceived control of time, while self-reported demands served as the unchanged control variable.\n\nAlex: What were the main findings after the training?\n\nJordan: Perceived stress decreased significantly at both two and four weeks. For perceived control of time, there was a tendency toward increase at two weeks, which became a statistically significant increase by four weeks.\n\nAlex: And did the control variable of demands stay stable?\n\nJordan: Yes, self-reported demands showed no significant changes at either two or four weeks, which helped rule out threats like testing, history, or placebo effects. Trainees also reported transferring the taught strategies to their daily work at least to some extent.\n\nAlex: Did prior experience make any difference to the results?\n\nJordan: The authors found the training effect was much stronger for students with no or little prior time management experience compared to those with moderate or some experience.\n\nAlex: So what is the key takeaway from the paper?\n\nJordan: The authors conclude that time management training might be beneficial for undergraduate well-being, though they emphasize that their sample was small and more intervention studies with larger samples are necessary."
+}

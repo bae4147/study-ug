@@ -1,0 +1,18 @@
+{
+ "config": "gpt-5.4-mini@t0.7",
+ "task": "audio_default",
+ "run": 2,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.4-mini",
+  "temperature": 0.7
+ },
+ "focus": null,
+ "seconds": 2.9,
+ "targetWords": 312,
+ "draftWords": 376,
+ "finalWords": 376,
+ "expanded": false,
+ "estMinutes": 2.41,
+ "output": "Alex: Hi Jordan, what was this study actually trying to find out?\n\nJordan: It asked whether a time management training could increase perceived control of time and reduce perceived stress in undergraduate students. The authors also expected demands, meaning perceived, self-reported demands, to stay unchanged.\n\nAlex: How did they test that without a control group?\n\nJordan: They used a “non-equivalent dependent variable design,” also called an internal referencing strategy. In simple terms, they tracked variables they expected to change, and one control variable they expected not to change, across three measurement points.\n\nAlex: Who took part, and what was the training like?\n\nJordan: The sample was 48 local undergraduate students from a medium-sized German university, but the main analyses used the 23 who completed all questionnaires. The training lasted 4 h and focused on prioritizing, goal setting, strategy development, daily planning, and monitoring.\n\nAlex: What did they measure?\n\nJordan: Time management behaviour, perceived control of time, perceived stress measured with the tension scale, and demands. They measured them directly before training, 2 weeks after, and 4 weeks after.\n\nAlex: So, did the training work?\n\nJordan: Yes, according to the paper. Trainees reported significantly less stress 2 weeks after training, and 4 weeks after training they reported significantly less stress and significantly more perceived control of time.\n\nAlex: Was perceived control of time already higher at 2 weeks?\n\nJordan: Not significantly. The paper says there was only a tendency in the expected direction at that point, and the significant increase appeared at 4 weeks.\n\nAlex: What happened to demands?\n\nJordan: Demands did not change significantly at either posttest, which fits the authors’ idea that the training should affect stress reactions and time control, not external demands.\n\nAlex: Did students actually use the strategies afterward?\n\nJordan: Yes. Reported use of the taught time management strategies increased significantly between the first and third measurement points, and there was a nearly significant increase between the first and second.\n\nAlex: Any interesting pattern by prior experience?\n\nJordan: The effects looked stronger for students with no or little time management experience than for those with moderate or some experience, especially for perceived stress.\n\nAlex: What do the authors conclude from all this?\n\nJordan: They say the findings support the idea that time management training might benefit undergraduate students’ well-being, but they also stress that more intervention studies with larger samples are needed."
+}

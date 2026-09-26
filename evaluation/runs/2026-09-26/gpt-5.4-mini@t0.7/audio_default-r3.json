@@ -1,0 +1,18 @@
+{
+ "config": "gpt-5.4-mini@t0.7",
+ "task": "audio_default",
+ "run": 3,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.4-mini",
+  "temperature": 0.7
+ },
+ "focus": null,
+ "seconds": 2.2,
+ "targetWords": 312,
+ "draftWords": 348,
+ "finalWords": 348,
+ "expanded": false,
+ "estMinutes": 2.23,
+ "output": "Alex: Hi Jordan, what was this study actually trying to find out?\n\nJordan: It asked whether a time management training could increase perceived control of time and reduce perceived stress in undergraduate students. The authors also checked whether demands, meaning perceived self-reported demands, would stay unchanged as a control variable.\n\nAlex: How did they test that?\n\nJordan: They used one group of students and measured them directly before training, then 2 weeks after, and again 4 weeks after. The training lasted 4 h, and for the main analyses they used the 23 students who completed all questionnaires.\n\nAlex: What kind of students were they?\n\nJordan: The 23 undergraduates had a mean age of 23.30 years, with SD=2.80. About half were female, 52%, and they studied subjects like psychology, medicine, biology, pedagogy, physics, law, and computer science.\n\nAlex: What was in the training?\n\nJordan: It focused on prioritizing, goal setting, strategy development, daily planning, and monitoring. Students reflected on their activities, set concrete and proximal goals, planned steps and deadlines, and monitored task completion.\n\nAlex: So did it work?\n\nJordan: Yes, in the authors’ view. Perceived stress, measured with the tension scale, was significantly lower 2 weeks after training, and again 4 weeks after training. Perceived control of time showed a tendency upward at 2 weeks, then a significant increase at 4 weeks.\n\nAlex: And the control variable?\n\nJordan: Demands did not change significantly at either follow-up. That mattered because the authors used it to help rule out simple explanations like testing or history effects.\n\nAlex: Did students actually use the strategies later?\n\nJordan: They reported a significant increase in the use of the taught time management strategies from before training to 4 weeks after, and a nearly significant increase from before training to 2 weeks after.\n\nAlex: Did everyone benefit equally?\n\nJordan: No. The authors say the effects were much stronger for students with no or little prior time-management experience than for those with moderate or some experience.\n\nAlex: What do the authors conclude overall?\n\nJordan: They conclude that time management training might be beneficial for undergraduate students’ well-being, but they also stress that more intervention studies with larger samples are needed before making stronger conclusions."
+}

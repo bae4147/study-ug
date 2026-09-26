@@ -1,0 +1,18 @@
+{
+ "config": "gpt-5.4-mini",
+ "task": "audio_default",
+ "run": 2,
+ "textModel": {
+  "provider": "openai",
+  "model": "gpt-5.4-mini",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 2.4,
+ "targetWords": 312,
+ "draftWords": 369,
+ "finalWords": 369,
+ "expanded": false,
+ "estMinutes": 2.37,
+ "output": "Alex: Hi Jordan, what was this study actually trying to find out?\n\nJordan: It asked whether a time management training could increase perceived control of time and reduce perceived stress in undergraduate students. The authors also wanted to see whether those effects would still be there 4 weeks after training.\n\nAlex: How did they test that without a control group?\n\nJordan: They used what they call a “non-equivalent dependent variable design,” also described as an internal referencing strategy. So they measured two variables they expected to change—perceived stress, measured with the tension scale, and perceived control of time—and one control variable that should not change: demands, meaning perceived, self-reported demands.\n\nAlex: Who took part, and what was the training like?\n\nJordan: The sample for the main analyses was 23 undergraduate students from a medium-sized German university. The training lasted 4 h and focused on prioritizing, goal setting, strategy development, daily planning, and monitoring.\n\nAlex: And they measured people when?\n\nJordan: They collected data directly before training, then 2 weeks after, and again 4 weeks after. They also checked whether students used the taught time management strategies after training.\n\nAlex: So what happened to the training behavior itself?\n\nJordan: Reported use of the taught strategies increased significantly between the first and third measurements, t(22)=2.67, p<0.01, and there was a nearly significant increase between the first and second measurements, t(22)=1.62, p=0.060.\n\nAlex: What about the main outcomes?\n\nJordan: Two weeks after training, there was a significant overall time effect and a significant decrease in tension, but only a tendency for perceived control of time to increase. Four weeks after training, both changed significantly in the expected direction: perceived stress was lower and perceived control of time was higher.\n\nAlex: Did demands change too?\n\nJordan: No. The authors found no significant changes in demands at either follow-up, which mattered because they used it as the control variable.\n\nAlex: Did everyone benefit equally?\n\nJordan: No, the effect looked stronger for students with no or little prior time-management experience than for those with moderate or some experience.\n\nAlex: So what do the authors conclude?\n\nJordan: They conclude that time management training might be beneficial for undergraduate students’ well-being, but they also stress that this is a preliminary study with a small sample and that more intervention studies with larger samples are needed."
+}

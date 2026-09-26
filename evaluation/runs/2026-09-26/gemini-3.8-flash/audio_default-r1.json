@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.8-flash",
+ "task": "audio_default",
+ "run": 1,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 14.9,
+ "targetWords": 312,
+ "draftWords": 299,
+ "finalWords": 299,
+ "expanded": false,
+ "estMinutes": 1.92,
+ "output": "Alex: Hi Jordan, what did Häfner and colleagues set out to explore in this study?\n\nJordan: They examined whether a four-hour time management training intervention could reduce perceived stress and increase perceived control of time among undergraduate students.\n\nAlex: How was the study structured to evaluate those outcomes without a traditional control group?\n\nJordan: They used a non-equivalent dependent variable design. Along with testing the variables they expected the training to change, they tracked self-reported demands as a control variable that should not change.\n\nAlex: Frese and colleagues noted that tracking both types of variables helps rule out testing and placebo effects. Who were the participants?\n\nJordan: Forty-eight German university students took the training, with twenty-three completing all measures directly before training, two weeks after, and four weeks after. About half were female, specifically 52 percent, with a mean age of 23.30 years.\n\nAlex: What did the authors find when looking at perceived stress?\n\nJordan: Perceived stress, which was measured with the tension scale covering aspects like mental fatigue and nervousness, decreased significantly at both two and four weeks after the training.\n\nAlex: Did perceived control of time improve at those same points?\n\nJordan: At two weeks, there was only a tendency in the expected direction. However, four weeks after training, participants reported a significant increase in perceived control of time.\n\nAlex: And what happened with their reported demands and time management behaviors?\n\nJordan: Demands showed no significant changes at either follow-up. Meanwhile, trainees reported using the taught strategies at least to some extent, showing a nearly significant increase at two weeks and a significant increase at four weeks.\n\nAlex: What are the authors' overall conclusions from these results?\n\nJordan: The authors concluded time management training might be beneficial for student well-being, especially for trainees with no or little prior experience, though they emphasized larger samples are necessary to reach more robust conclusions."
+}

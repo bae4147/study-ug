@@ -1,0 +1,18 @@
+{
+ "config": "gemini-3.1-pro",
+ "task": "audio_default",
+ "run": 2,
+ "textModel": {
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.4
+ },
+ "focus": null,
+ "seconds": 44.5,
+ "targetWords": 312,
+ "draftWords": 306,
+ "finalWords": 306,
+ "expanded": false,
+ "estMinutes": 1.96,
+ "output": "Alex: Welcome back, let's dive right into today's paper about decreasing students' stress.\nJordan: This study set out to examine the effects of a time management training program on perceived control of time and perceived stress in the context of higher education.\nAlex: How exactly did they test this?\nJordan: Twenty-three undergraduate students attended a four-hour time management training intervention, and they filled out questionnaires directly before, two weeks after, and four weeks after the training.\nAlex: What exactly were those questionnaires measuring?\nJordan: They measured perceived stress using the \"tension\" scale, perceived control of time, and a control variable called \"demands\", which means perceived, self-reported demands.\nAlex: Why measure demands if it is a control variable?\nJordan: They used a \"non-equivalent dependent variable design\", where perceived stress and perceived control of time should be influenced by the training, but demands should not be changed. As Frese and colleagues noted in two thousand three, this design effectively rules out nonspecific placebo effects if the training only leads to changes in the experimental variables.\nAlex: So, what did the study find for the students who took the training?\nJordan: As expected, perceived stress decreased significantly two and four weeks after the training compared to the pretest. Perceived control of time also increased, but with a time lag, showing a moderate tendency in the expected direction at two weeks, and a significant increase four weeks after training.\nAlex: And what about the control variable, demands?\nJordan: The trainees reported no significant changes concerning demands, which supports the authors' conclusion that the training led to the decrease in perceived stress and the increase in perceived control of time.\nAlex: What are the main takeaways for students who just read this?\nJordan: The authors suggest that time management training might be beneficial for undergraduate students' well-being, though they note that more intervention studies with larger samples are necessary to contribute to more robust results."
+}
