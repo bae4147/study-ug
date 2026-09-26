@@ -172,6 +172,9 @@
    - 채점 기준: 논문의 핵심 사실 체크리스트를 먼저 만들어, 모든 후보를 같은 기준으로 채점
      (논문과 다른 주장 수, 논문에 없는 내용 수, 요청 반영도, 길이 정확도, 생성 시간, 비용)
    - 출력이 매번 달라지므로 조건마다 여러 번 생성해 비교
+   - 채점 기준표: `evaluation/fact-checklist.md` (2026-09-26 작성). 논문 핵심 사실 43개(A–H: 연구·표본·훈련·
+     측정·결과·해석·한계·인용 연구)와 판정 코드(OK / WRONG / ADDED / OVERSTATED / MISATTRIBUTED / COMPUTED),
+     지금까지 발견된 오류 13건. 기준표의 숫자 53개가 모두 논문에 있는지 기계적으로 확인함.
    - **후보 계열: OpenAI와 Gemini만** (Claude, DeepSeek 제외, 2026-09-26 결정). 근거: 임상의학 LLM 연구
      4,609편 리뷰에서 평가된 모델의 65.7%가 OpenAI, 13.1%가 Gemini(Chen et al. 2026, Nature Medicine)로
      가장 흔한 계열이 OpenAI이고, 이 연구와 가장 가까운 AI 생성 팟캐스트 연구들은 거의 모두 NotebookLM
