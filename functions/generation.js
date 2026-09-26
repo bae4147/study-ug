@@ -243,15 +243,14 @@ Generate the infographic now.`;
 // video — narrated slideshow, the shape study2 settled on
 // ---------------------------------------------------------------------------
 
-// The scene count is what the length option really controls. The labels are the
-// measured pace, not the outline's: 25–30 words of narration is read in about
-// 5.7 seconds, not the 9 the outline plans for, so the estimates used to promise
-// roughly half again the running time that came out.
-const SECONDS_PER_SCENE = 5.7;
+// The scene count is what the length option really controls. Measured on the
+// default video: ~11.3 s of narration per scene (an earlier figure of 5.7 s came
+// from an MP3 reader that halved every duration). Replaced in the prompt rework.
+const SECONDS_PER_SCENE = 11.3;
 const VIDEO_LENGTHS = {
-    short: { scenes: 11, label: "about 1 min" },
-    default: { scenes: 26, label: "2 – 3 min" },
-    long: { scenes: 45, label: "4 – 5 min" }
+    short: { scenes: 11, label: "about 2 min" },
+    default: { scenes: 26, label: "about 5 min" },
+    long: { scenes: 45, label: "about 8 min" }
 };
 
 const VISUAL_STYLE = `- Background: solid cream/off-white (#F9F7F2), clean, no patterns

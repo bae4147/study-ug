@@ -17,20 +17,27 @@ const DIR = path.join(__dirname, "..", "docs", "papers", "hafner2014");
 const SRC = process.env.VIDEO_JSON || path.join(DIR, "video.generated.json");
 const OUT = path.join(DIR, "video");
 
-// Walks MPEG audio frame headers and sums their playing time. The narration is
-// concatenated CBR mp3, so this is exact enough for a progress bar.
+// Walks MPEG audio frame headers and sums their playing time. It has to read
+// the version bits: OpenAI's speech comes back as 24 kHz MPEG-2 Layer III, whose
+// frames hold 576 samples and use their own bitrate table. A reader that assumes
+// MPEG-1 (1,152 samples, 32/44.1/48 kHz) gets exactly half the real length --
+// which is what this used to do, so every duration it wrote was halved.
 function mp3Seconds(buf) {
-    const BITRATE = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0];
-    const RATE = [44100, 48000, 32000, 0];
+    const RATES = { 3: [44100, 48000, 32000], 2: [22050, 24000, 16000], 0: [11025, 12000, 8000] };
+    const BITRATE_V1 = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
+    const BITRATE_V2 = [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160];
     let i = 0, seconds = 0;
     while (i < buf.length - 4) {
-        if (buf[i] === 0xff && (buf[i + 1] & 0xe0) === 0xe0) {
-            const bitrate = BITRATE[(buf[i + 2] >> 4) & 0xf];
-            const rate = RATE[(buf[i + 2] >> 2) & 0x3];
-            const pad = (buf[i + 2] >> 1) & 1;
-            if (bitrate && rate) {
-                seconds += 1152 / rate;
-                i += Math.floor((144000 * bitrate) / rate) + pad;
+        if (buf[i] === 0xff && (buf[i + 1] & 0xe0) === 0xe0 && ((buf[i + 1] >> 1) & 3) === 1) {   // layer III
+            const version = (buf[i + 1] >> 3) & 3;           // 3 = MPEG-1, 2 = MPEG-2, 0 = MPEG-2.5
+            const bIdx = (buf[i + 2] >> 4) & 0xf, rIdx = (buf[i + 2] >> 2) & 3, pad = (buf[i + 2] >> 1) & 1;
+            if (version !== 1 && bIdx > 0 && bIdx < 15 && rIdx < 3) {
+                const v1 = version === 3;
+                const rate = RATES[version][rIdx];
+                const kbps = (v1 ? BITRATE_V1 : BITRATE_V2)[bIdx];
+                const samples = v1 ? 1152 : 576;
+                seconds += samples / rate;
+                i += Math.floor((samples / 8) * kbps * 1000 / rate) + pad;
                 continue;
             }
         }
