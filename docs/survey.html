@@ -99,6 +99,35 @@
 
             const [isSubmitting, setIsSubmitting] = useState(false);
 
+            // Section 5, for the customising arms only. Whether they actually made
+            // their own version is read off the job records rather than asked, so
+            // the satisfaction items go only to those who used it, and the others
+            // are asked why not.
+            const canCustomize = conditionCaps(condition).customize;
+            const CUSTOM_ITEMS = [
+                { key: 'reflectedRequest', text: 'The content I customized reflected what I asked for.' },
+                { key: 'moreUseful', text: 'Customizing the content made it more useful for understanding the article.' },
+                { key: 'preferredOwn', text: 'I preferred my customized version over the original.' },
+                { key: 'worthWait', text: 'The wait for my customized content was worth it.' }
+            ];
+            const [customMade, setCustomMade] = useState(null);   // null = still checking
+            const [customAnswers, setCustomAnswers] = useState({});
+            const [customWhyNot, setCustomWhyNot] = useState('');
+            const customComplete = CUSTOM_ITEMS.every(i => customAnswers[i.key]);
+
+            useEffect(() => {
+                if (!canCustomize || !currentUser || !sessionId) return;
+                db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId)
+                    .collection('customJobs').get()
+                    .then(snap => {
+                        const made = [];
+                        snap.forEach(d => { if (d.data().status === 'done') made.push(d.id); });
+                        setCustomMade(made);
+                    })
+                    .catch(err => { console.error('Could not read customisation jobs:', err); setCustomMade([]); });
+            }, [canCustomize, currentUser, sessionId]);
+            const usedCustom = !!customMade && customMade.length > 0;
+
             const handleSubmit = async (e) => {
                 e.preventDefault();
                 if (isSubmitting) return;
@@ -115,6 +144,10 @@
                     (hadMultimodal && (infographicHelpfulness === '' || videoHelpfulness === '' || podcastHelpfulness === ''));
                 if (helpfulnessMissing) {
                     alert('Please rate how helpful each GenAI resource was for your learning.');
+                    return;
+                }
+                if (canCustomize && usedCustom && !customComplete) {
+                    alert('Please answer the questions about the content you customized.');
                     return;
                 }
 
@@ -138,6 +171,11 @@
                         video: hadMultimodal ? parseInt(videoHelpfulness) : null,
                         podcast: hadMultimodal ? parseInt(podcastHelpfulness) : null
                     },
+                    customization: canCustomize ? {
+                        made: customMade || [],
+                        ratings: usedCustom ? Object.fromEntries(CUSTOM_ITEMS.map(i => [i.key, parseInt(customAnswers[i.key])])) : null,
+                        whyNot: usedCustom ? null : (customWhyNot.trim() || null)
+                    } : null,
                     completedAt: new Date().toISOString()
                 };
 
@@ -525,6 +563,58 @@
                                         </>)}
                                     </div>
                                 </div>
+
+
+                                {/* Section 5: Customization -- customising arms only */}
+                                {canCustomize && customMade !== null && (
+                                <div className="border-b pb-6">
+                                    <h2 className="text-xl font-bold text-gray-800 mb-2">Section 5. Customized Content</h2>
+                                    {usedCustom ? (
+                                        <>
+                                            <p className="text-sm text-gray-600 mb-4">You made your own version of the {customMade.map(m => m === 'audio' ? 'audio overview' : m === 'video' ? 'video overview' : 'infographic').join(', ')}. Please rate your agreement with the following statements.</p>
+                                            <div className="space-y-8">
+                                                {CUSTOM_ITEMS.map(item => (
+                                                    <div key={item.key}>
+                                                        <label className="block text-sm font-bold text-gray-800 mb-2">{item.text} *</label>
+                                                        <div className="flex items-center justify-between mt-3">
+                                                            <span className="text-xs text-gray-500">Strongly disagree</span>
+                                                            <div className="flex space-x-1">
+                                                                {[1, 2, 3, 4, 5, 6, 7].map(value => (
+                                                                    <button
+                                                                        key={value}
+                                                                        type="button"
+                                                                        onClick={() => setCustomAnswers(prev => ({ ...prev, [item.key]: value.toString() }))}
+                                                                        className={`w-10 h-10 rounded-full text-sm font-bold transition-colors ${
+                                                                            customAnswers[item.key] === value.toString()
+                                                                                ? 'bg-blue-600 text-white'
+                                                                                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+                                                                        }`}
+                                                                    >
+                                                                        {value}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                            <span className="text-xs text-gray-500">Strongly agree</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div>
+                                            <label className="block text-sm font-bold text-gray-800 mb-2">
+                                                You did not make your own version of the video, audio or infographic. Why not? (Optional)
+                                            </label>
+                                            <textarea
+                                                value={customWhyNot}
+                                                onChange={(e) => setCustomWhyNot(e.target.value)}
+                                                rows="3"
+                                                className="w-full p-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                                )}
 
                                 {/* Submit */}
                                 <div className="flex justify-end pt-6">
