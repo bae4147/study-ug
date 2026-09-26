@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Step 2 of 2: turn the positioned lines into the text the generators read.
 
-    python3 scripts/paper/build-text.py <lines.json> functions/paper-hafner2014.txt
+    python3 scripts/paper/build-text.py <lines.json> functions/paper-hafner2014.txt docs/papers/hafner2014/paper.txt
+
+Two copies of one text: the Cloud Functions read theirs from functions/ (they
+cannot see docs/), the chatbot in the browser fetches the docs/ one. Write both
+in the same run so they cannot differ.
 
 What goes, and why:
   - running heads ("82  A. Häfner et al.", "Time management training  83"), the
@@ -171,5 +175,6 @@ assert inserted_1_2 and inserted_3_6
 
 text = '\n\n'.join(paras_out + [''] + paras).replace('\n\n\n', '\n\n')
 text = text.replace('Abstract ', '## Abstract\n\n', 1)
-open(sys.argv[2], 'w').write(text + '\n')
-print(f'{len(text):,} characters, {len(paras)} blocks -> {sys.argv[2]}')
+for out_path in sys.argv[2:]:
+    open(out_path, 'w').write(text + '\n')
+print(f'{len(text):,} characters, {len(paras)} blocks -> {", ".join(sys.argv[2:])}')

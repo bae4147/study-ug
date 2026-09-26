@@ -647,10 +647,19 @@
                         setPdfRenderedPages(pages);
                         pageRefs.current = new Array(pdf.numPages).fill(null);
 
-                        // Set paper content for LLM system prompt (same as other conditions)
-                        if (fullPdfText.trim()) {
-                            setPaperContent(fullPdfText.trim());
-                            console.log(`📄 Extracted ${fullPdfText.length} characters from PDF for LLM context`);
+                        // What the chatbot reads. It is the same cleaned text the media
+                        // generators get (no running heads or references, tables rebuilt
+                        // as tables), so every GenAI component works from one source. The
+                        // raw extraction above is only the fallback if that file is missing.
+                        let chatText = '';
+                        try {
+                            const r = await fetch('papers/hafner2014/paper.txt');
+                            if (r.ok) chatText = (await r.text()).trim();
+                        } catch (e) { /* fall back below */ }
+                        if (!chatText) chatText = fullPdfText.trim();
+                        if (chatText) {
+                            setPaperContent(chatText);
+                            console.log(`📄 Chatbot context: ${chatText.length} characters (${chatText === fullPdfText.trim() ? 'raw PDF extraction' : 'cleaned paper.txt'})`);
                         }
                     } catch (error) {
                         console.error('Error loading PDF:', error);
