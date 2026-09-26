@@ -25,6 +25,9 @@
 - 논문을 매번 업로드하지 않고, 추출한 텍스트를 함수와 함께 배포.
 - study2가 쓰던 모델 두 개가 폐기되어 교체: `gemini-2.0-flash` → `gemini-3.6-flash`(영상 구성),
   `gemini-2.5-flash-image` → `gemini-3.1-flash-image`(슬라이드).
+  **선택 근거 없음:** `gemini-3.6-flash`는 폐기 오류 메시지가 권한 모델을 그대로 쓴 것이고,
+  `gemini-3.1-flash-image`는 모델 목록에서 가장 최신 flash 이미지 모델을 고른 것. 비교는 하지 않았으며,
+  더 최신 모델(`gemini-3.8-flash`, Pro 계열 등)도 있음. 3단계 비교로 대체할 임시 선택.
 - 장면 구성 JSON이 길면 중간에 잘려 전체가 실패하던 문제 → 온전히 받은 장면까지 살려 씀.
 - 슬라이드 속 글자가 자주 틀림("SITRESS", "Burmout") → 장면 하나만 다시 그리는
   `scripts/fix-scenes.js` 추가.
