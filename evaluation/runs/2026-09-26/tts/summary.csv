@@ -1,0 +1,7 @@
+id,seconds_audio,words,wpm,generation_seconds,file,error
+podcast_tts-1,159.9,386,145,8.0,podcast_tts-1.mp3,
+podcast_gpt-4o-mini-tts,168.0,386,138,268.7,podcast_gpt-4o-mini-tts.mp3,
+podcast_gemini-3.8-flash-tts,164.0,386,141,35.2,podcast_gemini-3.8-flash-tts.wav,
+narration_tts-1-hd,63.3,144,136,4.3,narration_tts-1-hd.mp3,
+narration_gpt-4o-mini-tts,59.5,144,145,277.3,narration_gpt-4o-mini-tts.mp3,
+narration_gemini-3.8-flash-tts,61.4,144,141,15.4,narration_gemini-3.8-flash-tts.wav,

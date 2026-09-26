@@ -1,0 +1,370 @@
+{
+ "model": "gpt-5.4-mini",
+ "request": {
+  "model": "gpt-5.4-mini",
+  "temperature": 0.5,
+  "max_completion_tokens": 16384
+ },
+ "answers": [
+  {
+   "question": "What was the main finding of this study?",
+   "answer": "### Main finding\nThe study found that **time management training reduced students’ perceived stress and increased their perceived control of time**.\n\n### Key points\n- **Perceived stress decreased** after the training:\n  - significantly by **2 weeks**\n  - and still significantly by **4 weeks**\n- **Perceived control of time increased**:\n  - the increase was **not yet significant at 2 weeks**\n  - but was **significant by 4 weeks**\n- **Demands did not change**, which supports the idea that the training affected stress and control rather than general workload.\n\n### Bottom line\nThe authors concluded that **time management training can improve undergraduate students’ well-being** by helping them feel more in control of their time and less stressed.",
+   "seconds": 1.1,
+   "usage": {
+    "prompt_tokens": 9139,
+    "completion_tokens": 156,
+    "total_tokens": 9295,
+    "prompt_tokens_details": {
+     "cached_tokens": 4352,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Did perceived control of time improve two weeks after the training?",
+   "answer": "### Answer\nNot significantly. Two weeks after training, **perceived control of time showed only a moderate, non-significant increase** compared with the pretest.\n\n### Evidence\n- In **Table 5** on **page 9 (p. 89)**, the comparison of **pretest vs. posttest 1 (2 weeks)** shows:\n  - **Perceived control of time:** *F* = 3.38, **p = 0.08**\n- The authors also state on **page 9 (p. 89)** that there was **“a tendency in the expected direction”** but no significant increase yet.\n\n### Conclusion\n- **Yes, it improved slightly**\n- **No, the improvement was not statistically significant after two weeks**",
+   "seconds": 1.1,
+   "usage": {
+    "prompt_tokens": 9142,
+    "completion_tokens": 162,
+    "total_tokens": 9304,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "At which point was stress the lowest?",
+   "answer": "### Answer\n**Stress was lowest at 2 weeks after training** — **Time 2** on **page 9 (p. 89)**.\n\n- In **Table 4**, the mean **stress (tension)** score was:\n  - **Time 1:** 3.30\n  - **Time 2:** **2.96** ← lowest\n  - **Time 3:** 3.03\n\nSo the lowest reported stress occurred **2 weeks after the time management training**.",
+   "seconds": 1.1,
+   "usage": {
+    "prompt_tokens": 9138,
+    "completion_tokens": 108,
+    "total_tokens": 9246,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "How many students took part?",
+   "answer": "### Answer\n- **48 undergraduate students** took part in the study initially.\n- For the main statistical analyses, the authors used the **23 students** who completed **all questionnaires**.",
+   "seconds": 0.7,
+   "usage": {
+    "prompt_tokens": 9136,
+    "completion_tokens": 41,
+    "total_tokens": 9177,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What exactly did the training teach students to do?",
+   "answer": "### Summary\nThe training taught students a **structured time-management routine** focused on five main skills:\n\n- **Prioritizing** tasks\n- **Setting clear, challenging, proximal goals**\n- **Developing strategies** to reach those goals\n- **Planning the day** in detail\n- **Monitoring progress** on tasks\n\n### What students were taught to do\nSpecifically, students learned to:\n\n- **Reflect on their activities**\n  - List academic and extracurricular tasks\n  - Decide which ones were most important for their study goals\n\n- **Set concrete goals**\n  - Define what they wanted to achieve\n  - Make goals **specific, challenging, and close in time**\n  - Set deadlines\n\n- **Plan how to achieve goals**\n  - Break goals into steps\n  - Set priorities among steps\n  - Think about possible obstacles and how to overcome them\n\n- **Create daily schedules**\n  - Decide what to do and when\n  - Estimate how much time tasks would take\n  - Choose where and when to work\n  - Reduce distractions\n\n- **Monitor task completion**\n  - Check daily what had been finished\n  - Identify what still needed to be done\n\n### In short\nThe training was basically about **helping students organize their work, set priorities, plan realistically, and keep track of progress**.",
+   "seconds": 1.4,
+   "usage": {
+    "prompt_tokens": 9140,
+    "completion_tokens": 274,
+    "total_tokens": 9414,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Why did the researchers measure demands?",
+   "answer": "### Summary\nThe researchers measured **demands** as a **control variable** in their non-equivalent dependent variable design.\n\n### Why they did this\n- **Demands were not expected to change** because of the time management training.\n- By comparing demands with the other outcomes, they could check whether the training’s effects were **specific** to:\n  - **perceived stress** and\n  - **perceived control of time**\n- If **demands stayed the same** while the other variables changed, that would support the conclusion that the training caused the changes rather than some general effect like:\n  - testing effects,\n  - placebo/Hawthorne effects, or\n  - outside events.\n\n### In short\nThey measured demands to serve as a **comparison variable** and help show that the training affected **stress and control of time**, not students’ external workload or duties.\n\n### Where this is discussed\n- **Page 5 (p. 85)** in the **Design** section, where they explain why demands was included.",
+   "seconds": 1.7,
+   "usage": {
+    "prompt_tokens": 9137,
+    "completion_tokens": 214,
+    "total_tokens": 9351,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Did the study have a control group?",
+   "answer": "### Answer\nNo. The study **did not include a separate control group**.\n\n### Why\n- The authors used a **“non-equivalent dependent variable design”** / **internal referencing strategy**.\n- They trained **one single group** of students and compared:\n  - **intended outcome variables**: perceived stress and perceived control of time\n  - **control variable**: demands, which was expected **not** to change\n\n### Where this is stated\n- **Page 5 (p. 85)**: the authors explain that the design “does not require a control group or a pseudotraining group.”\n- **Page 4–5 (pp. 84–85)**: they describe training one single group and using demands as the comparison variable.\n\n### Note\n- So the study had **no control group**, but it did include a **control variable** to help rule out alternative explanations.",
+   "seconds": 1.7,
+   "usage": {
+    "prompt_tokens": 9138,
+    "completion_tokens": 190,
+    "total_tokens": 9328,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What are the main limitations of this study?",
+   "answer": "### Main limitations\n\n- **Small sample size**\n  - Only **23 students** were included in the main analyses, which limits statistical power and makes the results less robust.\n\n- **High dropout rate**\n  - Of the 48 initial participants, only 23 completed all measurements.\n  - This raises concerns about **attrition bias**, even though the authors found no baseline differences between completers and dropouts.\n\n- **No control group**\n  - The study used a **single-group pretest–posttest design** rather than a randomized control group.\n  - This makes it harder to rule out alternative explanations such as **history effects, testing effects, or placebo effects**.\n\n- **Short follow-up period**\n  - Effects were measured only **2 and 4 weeks after training**.\n  - So the study does not show whether the benefits are **long-lasting**.\n\n- **Limited generalizability**\n  - The sample came from **one German university** and was relatively small and specific.\n  - Results may not generalize well to other universities, countries, or student populations.\n\n- **Self-report measures**\n  - All main outcomes were based on **self-reported questionnaires**, which can be affected by response bias or social desirability.\n\n- **Possible confounding from prior experience**\n  - The training seemed to work better for students with **little or no prior time-management experience**.\n  - This suggests the effects may not apply equally to all students.\n\n- **Intervention not compared with alternatives**\n  - The study did not compare time management training with other stress-reduction interventions, so its relative effectiveness is unclear.\n\n### Bottom line\nThe study provides promising preliminary evidence, but its conclusions are limited by the **small, non-randomized sample, lack of a control group, short follow-up, and reliance on self-report data**.",
+   "seconds": 2,
+   "usage": {
+    "prompt_tokens": 9139,
+    "completion_tokens": 377,
+    "total_tokens": 9516,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Did the training improve students' grades?",
+   "answer": "### Short answer\n**No direct evidence was provided that the training improved students’ grades.**\n\n### Why\n- The study measured:\n  - **perceived stress**\n  - **perceived control of time**\n  - **time management behavior**\n  - **demands**\n- It **did not measure grades, GPA, or exam performance** as outcomes.\n\n### What the authors say\n- In the discussion, they note that **future research should examine performance outcomes**, including grades.\n- So, while the training improved **stress** and **perceived control of time**, the paper **does not show that it improved academic grades**.\n\n### Bottom line\n- **Grades:** not tested\n- **Academic performance:** suggested as a possible future effect, but **not demonstrated in this study**",
+   "seconds": 1,
+   "usage": {
+    "prompt_tokens": 9138,
+    "completion_tokens": 163,
+    "total_tokens": 9301,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "How was stress measured?",
+   "answer": "### Summary\nStress was measured using the **“tension” scale** of the **Perceived Stress Questionnaire**.\n\n### Key Points\n- The scale was taken from **Fliege et al. (2001, 2005)** and **Levenstein et al. (1993)**.\n- It consisted of **5 items**.\n- It assessed aspects such as:\n  - **mental fatigue**\n  - **difficulty relaxing**\n  - **feelings of nervousness**\n- Responses were rated on a **1–5 scale**:\n  - **1 = never**\n  - **5 = always**\n- The authors note that they used a **minor modification** of the original scale:\n  - original: **1 = hardly ever** to **4 = usually**\n  - study version: **1 = never** to **5 = always**\n\n### Where in the paper\n- **Page 8 (p. 88)**, under **Measures → Perceived stress (tension)**",
+   "seconds": 1.1,
+   "usage": {
+    "prompt_tokens": 9135,
+    "completion_tokens": 206,
+    "total_tokens": 9341,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Who benefited most from the training?",
+   "answer": "### Summary\nThe students who benefited **most** from the time management training were those with **no or little prior experience** using time management strategies.\n\n### Evidence\n- The paper reports that training effects were **stronger for students with low prior experience** than for those with moderate or some experience.\n- This was especially clear for **perceived stress**:\n  - At 4 weeks after training, effect sizes were larger for the **no/little experience** group than for the **moderate/some experience** group.\n- The same pattern appeared for **perceived control of time**, though the difference was less dramatic.\n\n### Bottom line\n- **Beginners in time management benefited most**, suggesting the training was especially useful for students who had not already developed these skills.",
+   "seconds": 1.4,
+   "usage": {
+    "prompt_tokens": 9137,
+    "completion_tokens": 159,
+    "total_tokens": 9296,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What percentage of the students had little or no experience with time management?",
+   "answer": "### Answer\n**60.8%** of the students had **little or no experience** with time management.\n\n### Calculation\n- **No experience:** 30.4%\n- **Little experience:** 30.4%\n- **Total:** **60.8%**",
+   "seconds": 0.8,
+   "usage": {
+    "prompt_tokens": 9144,
+    "completion_tokens": 59,
+    "total_tokens": 9203,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What does 'non-equivalent dependent variable design' mean in simple terms?",
+   "answer": "### Summary\nA **non-equivalent dependent variable design** is a way to test whether an intervention really caused a change **without using a separate control group**.\n\n### Simple meaning\n- You measure **one or more variables you expect to change** because of the intervention.\n- You also measure **one similar variable you expect not to change**.\n- If the “target” variables change, but the control variable does **not**, that supports the idea that the intervention caused the effect.\n\n### In this paper\n- **Expected to change:**  \n  - **Perceived stress**\n  - **Perceived control of time**\n- **Expected not to change:**  \n  - **Demands**\n\nSo the logic is:\n- If training works, stress should go **down**\n- Control of time should go **up**\n- Demands should stay **about the same**\n\n### Why use it?\nIt helps rule out simple explanations like:\n- people just getting used to the questionnaire\n- time passing naturally\n- general placebo/Hawthorne effects\n\n### In one sentence\nIt means **comparing variables that should be affected by the training with a similar variable that should not be affected, to see whether the training likely caused the change**.",
+   "seconds": 1.3,
+   "usage": {
+    "prompt_tokens": 9145,
+    "completion_tokens": 252,
+    "total_tokens": 9397,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "On which page can I find the results for perceived control of time?",
+   "answer": "### Answer\nThe **results for perceived control of time** are reported on **page 9 (p. 89)**, in **Table 5**.\n\n- For the **2-week posttest**, see the section beginning on **page 8–9 (pp. 88–89)**.\n- For the **4-week follow-up**, see **page 9 (p. 89)**.",
+   "seconds": 0.9,
+   "usage": {
+    "prompt_tokens": 9144,
+    "completion_tokens": 86,
+    "total_tokens": 9230,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Can I conclude that time management training reduces stress for all students?",
+   "answer": "### Short answer\n**No.** You can only conclude that **this specific time management training reduced perceived stress in this sample of undergraduate students**.\n\n### Why not “all students”?\n- The study used **23 undergraduates** from one German university.\n- It was a **small, non-random, single-group intervention** study.\n- There was **no control group**, so causal claims are limited, even though the design included a control variable.\n- The authors themselves say **more intervention studies with larger samples are needed**.\n\n### What the study does support\n- **Perceived stress decreased** after training in this sample.\n- **Perceived control of time increased** by 4 weeks after training.\n- **Demands did not change**, which supports the interpretation that the training affected stress-related perceptions rather than general workload.\n\n### Best conclusion\nYou can say:\n\n> **Time management training may reduce perceived stress for some undergraduate students, especially those with little prior time-management experience, but the evidence is not strong enough to generalize this to all students.**\n\nIf you want, I can help you phrase this as a one-sentence conclusion for an essay or exam answer.",
+   "seconds": 1.4,
+   "usage": {
+    "prompt_tokens": 9143,
+    "completion_tokens": 241,
+    "total_tokens": 9384,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What did Pierceall and Keim find?",
+   "answer": "### Summary\nPierceall and Keim (2007) found that **most community college students reported at least moderate stress**.\n\n### Key Points\n- **75%** of the 212 students reported **moderate stress or higher**\n- **13%** reported **high stress**\n- Only **12%** reported **low stress**\n\nThe paper uses this finding to support the idea that **student stress is a widespread concern**.",
+   "seconds": 0.7,
+   "usage": {
+    "prompt_tokens": 9139,
+    "completion_tokens": 92,
+    "total_tokens": 9231,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What was the effect size for stress at four weeks?",
+   "answer": "### Answer\nThe effect size for **stress (tension)** at **four weeks after training** was **partial η² = 0.21**.\n\n- You can find this in **Table 5 on page 9 (p. 89)**, under **“Pretest vs. posttest 2 (4 weeks)”** for **Stress (tension)**.",
+   "seconds": 0.7,
+   "usage": {
+    "prompt_tokens": 9141,
+    "completion_tokens": 80,
+    "total_tokens": 9221,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Did the students actually use the strategies after the training?",
+   "answer": "### Yes\nThe paper reports that the students **did use the taught time management strategies after the training**.\n\n### Evidence\n- The authors checked transfer with a questionnaire on time management behavior.\n- They found a **significant increase** in reported use of the strategies from **before training to 4 weeks after training**:\n  - **t(22) = 2.67, p < 0.01** (one-tailed)\n- There was also a **near-significant increase** from **before training to 2 weeks after training**:\n  - **t(22) = 1.62, p = 0.060** (one-tailed)\n\n### Interpretation\nThis suggests that students **partly transferred the training content into their daily study behavior**, especially by 4 weeks after the intervention.",
+   "seconds": 1.3,
+   "usage": {
+    "prompt_tokens": 9141,
+    "completion_tokens": 170,
+    "total_tokens": 9311,
+    "prompt_tokens_details": {
+     "cached_tokens": 8960,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  }
+ ]
+}
