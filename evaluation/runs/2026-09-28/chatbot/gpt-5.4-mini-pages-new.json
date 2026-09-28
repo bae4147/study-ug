@@ -1,0 +1,252 @@
+{
+ "model": "gpt-5.4-mini",
+ "set": "pages",
+ "label": "new",
+ "request": {
+  "model": "gpt-5.4-mini",
+  "temperature": 0.5,
+  "max_completion_tokens": 16384
+ },
+ "answers": [
+  {
+   "question": "On which page is the stress (tension) measure described?",
+   "answer": "The **stress (tension)** measure is described on **page 7 (p. 87)**, under the heading **“Perceived stress (tension)”**.",
+   "seconds": 1.4,
+   "usage": {
+    "prompt_tokens": 9841,
+    "completion_tokens": 39,
+    "total_tokens": 9880,
+    "prompt_tokens_details": {
+     "cached_tokens": 2816,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Where does the paper say the design does not require a control group?",
+   "answer": "### Location in the paper\nThe paper says this in the **Method → Design** section on **page 4 (p. 84)**, in the paragraph that begins:\n\n> “Frese et al. (2003) discussed the advantages of this research strategy:”\n\nThe specific sentence is in the quoted passage that starts on **page 4 (p. 84)** and continues onto **page 5 (p. 85)**:\n\n> “The design does not require a control group or a pseudotraining group ...”\n\n### Exact reference\n- **Viewer page 4 (p. 84)**, continuing to **viewer page 5 (p. 85)**\n\n",
+   "seconds": 2.2,
+   "usage": {
+    "prompt_tokens": 9842,
+    "completion_tokens": 143,
+    "total_tokens": 9985,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Which page describes the parts of the training?",
+   "answer": "### Answer\nThe **parts of the time management training** are described on **page 5–6 (pp. 85–86)**, under **“Time management training”**.\n\n- The overview of the training’s main components starts on **page 5 (p. 85)**.\n- The detailed step-by-step description of the training activities continues on **pages 5–6 (pp. 85–86)**.",
+   "seconds": 1.9,
+   "usage": {
+    "prompt_tokens": 9837,
+    "completion_tokens": 92,
+    "total_tokens": 9929,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "On which page are the participants' age and gender reported?",
+   "answer": "The participants’ **age and gender** are reported on **page 6 (p. 86)**, in the **“Sample and procedure”** section.",
+   "seconds": 1.5,
+   "usage": {
+    "prompt_tokens": 9840,
+    "completion_tokens": 36,
+    "total_tokens": 9876,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Where do the authors say the study should be seen as preliminary?",
+   "answer": "### Answer\nThe authors say the study should be seen as **preliminary** on **page 11 (p. 91)**, in the discussion section.\n\nThey write:\n\n> “With respect to our small sample size, our study should be seen as a preliminary study that shows some effect of time management training...”",
+   "seconds": 0.8,
+   "usage": {
+    "prompt_tokens": 9841,
+    "completion_tokens": 67,
+    "total_tokens": 9908,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Where do the authors give practical advice for students?",
+   "answer": "### Practical advice for students\nThe authors give practical advice in the **Discussion** section on **page 11 (p. 91)**.\n\nThey say students should:\n- **prioritize tasks**\n- **set clear, challenging, proximal goals with deadlines**\n- **plan and schedule their work day**\n- **monitor goal progress**\n\nThis appears in the final paragraph of the Discussion, where they suggest these strategies as advice for students to increase perceived control of time and decrease stress.",
+   "seconds": 1.1,
+   "usage": {
+    "prompt_tokens": 9838,
+    "completion_tokens": 99,
+    "total_tokens": 9937,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Where is the Pierceall and Keim finding about stress levels?",
+   "answer": "The **Pierceall and Keim** finding appears in the **Introduction on page 1 (p. 81)**.\n\n- It is in the paragraph that says: **“In a recent study, 75 % of a sample of 212 community college students reported that they perceive at least moderate stress…”**\n- A second mention appears on **page 2 (p. 82)** in the paragraph beginning **“Heightened levels of perceived stress are discussed as reasons…”** where it cites Pierceall and Keim (2007) again.\n\nIf you mean the specific stress-level percentages, use **page 1 (p. 81)**.",
+   "seconds": 1.2,
+   "usage": {
+    "prompt_tokens": 9841,
+    "completion_tokens": 136,
+    "total_tokens": 9977,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "On which page is Table 2?",
+   "answer": "### Answer\n- **Table 2** is on **page 7 of 14** in the PDF viewer, which is **printed p. 87**.",
+   "seconds": 0.8,
+   "usage": {
+    "prompt_tokens": 9836,
+    "completion_tokens": 37,
+    "total_tokens": 9873,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What is on page 88?",
+   "answer": "### Page 88 (viewer page 8)\n\nPage 88 contains the **Measures** section and the start of the **Results** section.\n\n### Main content on page 88\n- **Measures**\n  - **Time management behaviour**  \n    - 18-item scale\n    - Measures behaviors such as prioritizing, setting clear goals, and monitoring\n    - Response scale: 1 = nearly never to 5 = nearly always\n  - **Perceived stress (tension)**  \n    - Measured with the **tension** scale of the perceived stress questionnaire\n    - 5 items\n    - Covers mental fatigue, trouble relaxing, and nervousness\n    - Response scale modified to 1 = never to 5 = always\n  - **Perceived control of time**  \n    - Adapted from the Time Management Behavior Scale\n    - 10 items\n    - Covers feeling in control of time, estimating task duration, and avoiding procrastination\n    - Response scale: 1 = nearly never to 5 = nearly always\n  - **Demands**  \n    - Control variable\n    - 5 items\n    - Covers workload and external duties\n    - Response scale modified to 1 = never to 5 = always\n\n- **Results**\n  - Reports **correlations** and **Cronbach’s alpha** values in **Table 3**\n  - Reports **means and standard deviations** across the three measurement points in **Table 4**\n  - Notes that there were **no significant differences** between dropouts and completers on study or demographic variables\n  - Reports that trainees showed a **significant increase in use of the taught time management strategies** after training\n  - Begins the repeated-measures MANOVA results showing:\n    - a significant overall time effect\n    - a significant effect for **perceived stress**\n\n### Printed page\n- **p. 88**",
+   "seconds": 2.7,
+   "usage": {
+    "prompt_tokens": 9835,
+    "completion_tokens": 392,
+    "total_tokens": 10227,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "What does page 3 say?",
+   "answer": "### Page 3 (p. 83) says\n\n- The study has **two purposes**:\n  - to extend research on the effects of **time management training** on **perceived control of time** and **perceived stress** in students\n  - to examine whether the effects are **stable over time**, using **two follow-up measurements after training**\n\n- It explains the idea of **effective time management** as involving:\n  - time assessment\n  - goal setting\n  - planning\n  - monitoring\n\n- It argues that time management should help students:\n  - clarify goals\n  - reduce goal conflicts\n  - develop strategies\n  - anticipate obstacles\n  - increase **perceived control of time**\n\n- It reviews prior research showing that **perceived control of time** is related to **lower stress**, and describes it as:\n  - feeling in control of one’s time\n  - meeting deadlines\n  - procrastinating less\n  - following one’s plans\n\n- It notes that research on the link between **time management behavior** and **stress** has been mixed:\n  - some studies found relationships with anxiety or hopelessness\n  - others found no significant relationship with distress or tension\n\n- It also mentions earlier work on **time management training**:\n  - some studies found no effect\n  - a recent study by Häfner et al. (2014) found positive effects on perceived control of time and perceived stress\n\n- The page ends by saying that evidence is still limited, and the authors state they found **no intervention study showing a decrease in perceived stress after time management training with students**.\n\nIf you want, I can also give you **a plain-language paraphrase of page 3** or **a sentence-by-sentence summary**.",
+   "seconds": 2.9,
+   "usage": {
+    "prompt_tokens": 9835,
+    "completion_tokens": 365,
+    "total_tokens": 10200,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Where can I see that stress was lowest two weeks after the training?",
+   "answer": "### Answer\nYou can see that in **Table 4 on page 9 (p. 89)**.\n\n- In the row **“Stress (tension)”**, the mean score is:\n  - **Time 1:** 3.30\n  - **Time 2 (2 weeks after training):** **2.96**\n  - **Time 3:** 3.03\n\nSo the **lowest stress score is at Time 2**, two weeks after training.\n\nYou can also see the statistical comparison in **Table 5 on page 9 (p. 89)**, where the **pretest vs. posttest 1 (2 weeks)** shows a significant decrease in stress.",
+   "seconds": 1.3,
+   "usage": {
+    "prompt_tokens": 9842,
+    "completion_tokens": 147,
+    "total_tokens": 9989,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  },
+  {
+   "question": "Where is the result that perceived control of time only showed a tendency at two weeks?",
+   "answer": "### Location in the paper\nThe result that **perceived control of time only showed a tendency at two weeks** is in the **Results** section on **page 8 (p. 88)**, specifically in the paragraph beginning:\n\n- **“In a next step, we conducted a repeated-measurement MANOVA…”**\n\nIt is stated in the sentence:\n\n- **“Trainees reported significantly less stress 2 weeks after training compared to the pretest. We also found a tendency in the expected direction concerning perceived control of time.”**\n\n### Related table\nThis is also reflected in **Table 5** on **page 9 (p. 89)**, where for **Pretest vs. posttest 1 (2 weeks)** the effect for **Perceived control of time** is:\n\n- **F = 3.38, p = 0.08**\n\nThis is the statistical basis for the “tendency” wording.",
+   "seconds": 1.7,
+   "usage": {
+    "prompt_tokens": 9845,
+    "completion_tokens": 196,
+    "total_tokens": 10041,
+    "prompt_tokens_details": {
+     "cached_tokens": 9472,
+     "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 0,
+     "audio_tokens": 0,
+     "accepted_prediction_tokens": 0,
+     "rejected_prediction_tokens": 0
+    }
+   }
+  }
+ ]
+}

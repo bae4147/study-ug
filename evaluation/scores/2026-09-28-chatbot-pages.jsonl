@@ -1,0 +1,7 @@
+{"answer_key": {"1": "7 (p.87)", "2": "4 (p.84); quote runs onto 5", "3": "5-6 (pp.85-86)", "4": "6 (p.86)", "5": "11 (p.91)", "6": "11 (p.91)", "7": "1 (p.81); coping figures on 2", "8": "7 (p.87)", "9": "viewer 8: control of time and demands measures, start of Results", "10": "viewer 3: aims, definition, control of time as mediator, mixed correlations", "11": "Table 4, 9 (p.89)", "12": "text 8-9 (pp.88-89); Table 5 on 9"}, "note": "old = paper.txt/prompt before paragraph page tags (commit 7e4abb8); new = with tags. Q9-Q10 content checked for 'new' only; totals below use Q1-8, Q11-12."}
+{"model": "gpt-4o-mini", "text": "old", "wrong": {"1": "said 8", "2": "said 5", "3": "said 6 only", "4": "said 7", "7": "said 2", "12": "said 10"}, "wrong_of_10": 6}
+{"model": "gpt-5.4-mini", "text": "old", "wrong": {"1": "said 8", "2": "said 5", "3": "said 6 only", "4": "said 7", "6": "added page 14", "7": "said 2"}, "wrong_of_10": 6}
+{"model": "gpt-5.5", "text": "old", "wrong": {}, "wrong_of_10": 0}
+{"model": "gpt-4o-mini", "text": "new", "wrong": {"7": "said 2", "9": "put time management behaviour and tension (page 7) on page 88"}, "wrong_of_10": 1}
+{"model": "gpt-5.4-mini", "text": "new", "wrong": {"9": "put time management behaviour and tension (page 7) on page 88"}, "wrong_of_10": 0}
+{"model": "gpt-5.5", "text": "new", "wrong": {}, "wrong_of_10": 0}

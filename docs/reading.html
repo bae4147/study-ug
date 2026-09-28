@@ -1899,7 +1899,7 @@
                     // The paper text carries page markers. Readers look at the PDF viewer
                     // and may give its page number (1-14) or the journal number printed
                     // on the page (81-94); the model needs to know both exist.
-                    const paperForPrompt = `How to read the page markers: markers such as "[Page 3 of 14 | printed p. 83]" show where each page of the PDF begins. The reader sees the paper in a PDF viewer, so when they mention a page number they may mean the viewer's page (1-14) or the journal page number printed on the page (81-94). Numbers from 1 to 14 are almost always viewer pages; 81 to 94 are printed pages. If it is unclear which they mean, say which page you are taking it to be. When you point the reader to a place in the paper, give the viewer page, and the printed page in brackets, e.g. "page 9 (p. 89)".
+                    const paperForPrompt = `How to read the page markers: markers such as "[Page 3 of 14 | printed p. 83]" show where each page of the PDF begins, and each paragraph and heading opens with the page it is on, e.g. "{Page 7 | printed p. 87}" (a paragraph that runs over two pages names both). To say where something is, use the tag of the paragraph it is in. The reader sees the paper in a PDF viewer, so when they mention a page number they may mean the viewer's page (1-14) or the journal page number printed on the page (81-94). Numbers from 1 to 14 are almost always viewer pages; 81 to 94 are printed pages. If it is unclear which they mean, say which page you are taking it to be. When you point the reader to a place in the paper, give the viewer page, and the printed page in brackets, e.g. "page 9 (p. 89)".
 
 ${paperContent.replace(/<[^>]*>/g, '')}`;
 

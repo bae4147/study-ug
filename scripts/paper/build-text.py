@@ -183,8 +183,10 @@ def build(pages):
         head += ['', f'Page markers such as {marker(3)} show where each page of the PDF begins: '
                      f'"Page N of {NPAGES}" is the page number in the PDF viewer, and "printed p." is the '
                      f'journal page number printed on that page ({1 + PRINTED_OFFSET}–{NPAGES + PRINTED_OFFSET}). '
-                     'Tables are placed at the end of the section that discusses them; the page each '
-                     'table appears on is given in its caption.']
+                     'Each paragraph and heading also opens with the page it is on, e.g. '
+                     f'{{Page 7 | printed p. {7 + PRINTED_OFFSET}}}; a paragraph that runs over two pages names both, '
+                     'and the marker inside it shows where the page turns. Tables are placed at the end of the '
+                     'section that discusses them; the page each table appears on is given in its caption.']
     done12 = done36 = False
     page = None
     prev_indented, prev_text = False, ''
@@ -218,8 +220,43 @@ def build(pages):
         prev_indented, prev_text = indented, t
     flush()
     assert done12 and done36
+    if pages:
+        paras = tag_pages(paras)
     text = '\n\n'.join(head + [''] + paras).replace('\n\n\n', '\n\n')
     return text.replace('Abstract ', '## Abstract\n\n', 1) + '\n'
+
+# Every paragraph and heading also opens with the page(s) it is on, "{Page 7 |
+# printed p. 87}". The markers alone sit where the page turns, often mid-sentence,
+# and a model asked where something is had to walk back to the last marker and
+# often took the one just after the text instead (a measure described on page 7
+# was put on page 8, the page whose marker follows it). A paragraph that runs
+# over the turn names both pages; the marker inside it still shows where.
+def ptag(a, b):
+    if a == b:
+        return f'{{Page {a} | printed p. {a + PRINTED_OFFSET}}}'
+    return f'{{Pages {a}-{b} | printed pp. {a + PRINTED_OFFSET}-{b + PRINTED_OFFSET}}}'
+
+def tag_pages(paras):
+    out, cur = [], 1
+    for p in paras:
+        found = [int(n) for n in re.findall(r'\[Page (\d+) of', p)]
+        if p.startswith('**Table') or p.startswith('|') or re.fullmatch(r'\[Page \d+ of \d+ \| printed p\. \d+\]', p.strip()):
+            cur = found[-1] if found else cur          # captions carry their own page
+            out.append(p); continue
+        opens = p.startswith('[Page ')
+        first = found[0] if opens else cur
+        last = found[-1] if found else cur
+        cur = last
+        tag = ptag(first, last)
+        if opens and first == last:
+            out.append(p)                              # starts with its own marker already
+        elif p.startswith('#'):
+            out.append(f'{p} {tag}')
+        elif p.startswith('> '):
+            out.append(f'> {tag} {p[2:]}')
+        else:
+            out.append(f'{tag} {p}')
+    return out
 
 plain, paged = build(False), build(True)
 open(sys.argv[2], 'w').write(plain)

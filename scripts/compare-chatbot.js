@@ -3,9 +3,12 @@
 // the exact system prompt the chat-only arm uses in docs/reading.html, for
 // scoring against evaluation/fact-checklist.md and for response time.
 //
-//   OPENAI_API_KEY=... node scripts/compare-chatbot.js
+//   OPENAI_API_KEY=... node scripts/compare-chatbot.js [general|pages] [label]
 //
-// Output: evaluation/runs/<date>/chatbot/<model>.json
+// "pages" asks only where things are in the paper. READING_FILE and PAPER_FILE
+// point the test at another version of the prompt or the paper text (e.g. the
+// previous commit's), and the label keeps its output apart.
+// Output: evaluation/runs/<date>/chatbot/<model>[-<set>][-<label>].json
 
 const fs = require("fs");
 const path = require("path");
@@ -17,12 +20,14 @@ const OUT = path.join(ROOT, "evaluation", "runs", new Date().toISOString().slice
 fs.mkdirSync(OUT, { recursive: true });
 
 // Rebuild the prompt from reading.html itself so the test cannot drift from it.
-const html = fs.readFileSync(path.join(ROOT, "docs", "reading.html"), "utf8");
+const SET = process.argv[2] || "general";
+const LABEL = process.argv[3] || "";
+const html = fs.readFileSync(process.env.READING_FILE || path.join(ROOT, "docs", "reading.html"), "utf8");
 const grab = (name) => {
     const start = html.indexOf(`const ${name} = \``) + `const ${name} = \``.length;
     return html.slice(start, html.indexOf("`;", start));
 };
-const paper = fs.readFileSync(path.join(ROOT, "docs", "papers", "hafner2014", "paper.txt"), "utf8").replace(/<[^>]*>/g, "");
+const paper = fs.readFileSync(process.env.PAPER_FILE || path.join(ROOT, "docs", "papers", "hafner2014", "paper.txt"), "utf8").replace(/<[^>]*>/g, "");
 const paperForPrompt = grab("paperForPrompt").replace("${paperContent.replace(/<[^>]*>/g, '')}", paper);
 const system = grab("controlSystemPrompt").replace("${paperForPrompt}", paperForPrompt);
 if (system.includes("${")) throw new Error("unfilled placeholder in the system prompt");
@@ -48,6 +53,23 @@ const QUESTIONS = [
     "What was the effect size for stress at four weeks?",
     "Did the students actually use the strategies after the training?"
 ];
+
+// Where-is-it questions; the answer key is in evaluation/scores (viewer page, printed page).
+const PAGE_QUESTIONS = [
+    "On which page is the stress (tension) measure described?",
+    "Where does the paper say the design does not require a control group?",
+    "Which page describes the parts of the training?",
+    "On which page are the participants' age and gender reported?",
+    "Where do the authors say the study should be seen as preliminary?",
+    "Where do the authors give practical advice for students?",
+    "Where is the Pierceall and Keim finding about stress levels?",
+    "On which page is Table 2?",
+    "What is on page 88?",
+    "What does page 3 say?",
+    "Where can I see that stress was lowest two weeks after the training?",
+    "Where is the result that perceived control of time only showed a tendency at two weeks?"
+];
+const ASK = SET === "pages" ? PAGE_QUESTIONS : QUESTIONS;
 
 const MODELS = [
     { id: "gpt-4o-mini", body: { model: "gpt-4o-mini", temperature: 0.5, max_tokens: 16384 } },   // production today
@@ -76,14 +98,14 @@ async function ask(m, q) {
 
 (async () => {
     for (const m of MODELS) {
-        const file = path.join(OUT, `${m.id}.json`);
+        const file = path.join(OUT, [m.id, SET === "general" ? "" : SET, LABEL].filter(Boolean).join("-") + ".json");
         if (fs.existsSync(file)) continue;
         const answers = [];
         let next = 0;
         await Promise.all(Array.from({ length: 4 }, async () => {
-            while (next < QUESTIONS.length) { const i = next++; answers[i] = await ask(m, QUESTIONS[i]); }
+            while (next < ASK.length) { const i = next++; answers[i] = await ask(m, ASK[i]); }
         }));
-        fs.writeFileSync(file, JSON.stringify({ model: m.id, request: m.body, answers }, null, 1));
+        fs.writeFileSync(file, JSON.stringify({ model: m.id, set: SET, label: LABEL || null, request: m.body, answers }, null, 1));
         const ok = answers.filter(a => !a.error);
         const secs = ok.map(a => a.seconds).sort((a, b) => a - b);
         console.log(`${m.id.padEnd(14)} ${ok.length}/${answers.length} answered, median ${secs[Math.floor(secs.length / 2)]}s, max ${secs[secs.length - 1]}s`
