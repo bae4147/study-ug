@@ -15,7 +15,7 @@ const OPENAI = "https://api.openai.com/v1";
 // is assessed later, the models behind it have to be known, and they change.
 const MODELS = {
     audio: { script: "gpt-4o", speech: "tts-1" },
-    infographic: { image: "gemini-3-pro-image-preview" },
+    infographic: { image: "gemini-3-pro-image" },
     video: { outline: "gemini-3.6-flash", slides: "gemini-3.1-flash-image", narration: "tts-1-hd" }
 };
 const GEMINI = "https://generativelanguage.googleapis.com/v1beta/models";
