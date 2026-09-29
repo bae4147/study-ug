@@ -1466,9 +1466,12 @@
                 }
             };
 
-            // Slideshow player controls
+            // Slideshow player controls. Everything here goes by the slideshow on
+            // screen (activeSlideshowRef): the reader's own video can have a
+            // different number of scenes from the default one.
+            const activeScenes = () => activeSlideshowRef.current?.scenes || [];
             const playSlideshow = () => {
-                if (!videoSlideshow || videoSlideshow.scenes.length === 0) return;
+                if (activeScenes().length === 0) return;
                 setSlideshowPlaying(true);
                 setCurrentSceneIndex(0);
                 playCurrentScene(0);
@@ -1490,17 +1493,17 @@
                 return time;
             };
 
-            // Calculate total duration when videoSlideshow changes
-            // Kept in a ref as well, because getSceneStartTime is called from the
-            // render body above where the active slideshow is worked out.
+            // The slideshow on screen, kept in a ref because getSceneStartTime is
+            // called from the render body above where it is worked out. Its total
+            // length is set by an effect further down, below customJobs and
+            // showingCustom: in-browser Babel turns const into var, so an effect
+            // placed here read both as undefined in its dependency list and never
+            // re-ran -- the timeline kept the default video's length after the
+            // reader switched to their own.
             const activeSlideshowRef = useRef(null);
-            useEffect(() => {
-                const list = activeSlideshowRef.current?.scenes;
-                if (list) setVideoDuration(list.reduce((sum, sc) => sum + (sc.duration || 0), 0));
-            }, [videoSlideshow, customJobs, showingCustom]);
 
             const playCurrentScene = (index) => {
-                if (!videoSlideshow || index >= videoSlideshow.scenes.length) {
+                if (index >= activeScenes().length) {
                     setSlideshowPlaying(false);
                     setVideoCurrentTime(0);
                     setCurrentSceneIndex(0);
@@ -1513,7 +1516,7 @@
             const handleSceneAudioEnded = () => {
                 if (!slideshowPlaying) return;
                 const nextIndex = currentSceneIndex + 1;
-                if (nextIndex < videoSlideshow.scenes.length) {
+                if (nextIndex < activeScenes().length) {
                     playCurrentScene(nextIndex);
                 } else {
                     setSlideshowPlaying(false);
@@ -1570,6 +1573,14 @@
                 }, err => console.error('custom job watch failed:', err));
                 return () => unsub();
             }, [caps.customize, currentUser, sessionId]);
+
+            // Total length of the slideshow on screen, redone when the default loads,
+            // a custom one arrives, or the reader flips between them. Must sit below
+            // the customJobs / showingCustom declarations (see activeSlideshowRef).
+            useEffect(() => {
+                const list = activeSlideshowRef.current?.scenes;
+                if (list) setVideoDuration(list.reduce((sum, sc) => sum + (sc.duration || 0), 0));
+            }, [videoSlideshow, customJobs, showingCustom]);
 
             const startCustom = async (modality) => {
                 if (customBusy[modality]) return;
@@ -1632,20 +1643,21 @@
 
             // Seek to specific time
             const seekToTime = (timeInSeconds) => {
-                if (!videoSlideshow) return;
+                const scenes = activeScenes();
+                if (scenes.length === 0) return;
 
                 // Find which scene this time falls into
                 let accumulatedTime = 0;
                 let targetSceneIndex = 0;
 
-                for (let i = 0; i < videoSlideshow.scenes.length; i++) {
-                    const sceneDuration = videoSlideshow.scenes[i]?.duration || 10;
+                for (let i = 0; i < scenes.length; i++) {
+                    const sceneDuration = scenes[i]?.duration || 10;
                     if (accumulatedTime + sceneDuration > timeInSeconds) {
                         targetSceneIndex = i;
                         break;
                     }
                     accumulatedTime += sceneDuration;
-                    if (i === videoSlideshow.scenes.length - 1) {
+                    if (i === scenes.length - 1) {
                         targetSceneIndex = i;
                     }
                 }
@@ -1657,7 +1669,7 @@
                     if (slideshowAudioRef.current && slideshowPlaying) {
                         const sceneStartTime = getSceneStartTime(targetSceneIndex);
                         const timeWithinScene = timeInSeconds - sceneStartTime;
-                        slideshowAudioRef.current.src = videoSlideshow.scenes[targetSceneIndex]?.audioUrl;
+                        slideshowAudioRef.current.src = scenes[targetSceneIndex]?.audioUrl;
                         slideshowAudioRef.current.currentTime = Math.max(0, timeWithinScene);
                         slideshowAudioRef.current.play().catch(e => console.log('Audio play failed:', e));
                     }
