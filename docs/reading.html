@@ -2679,7 +2679,11 @@ Respond in JSON only:
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                model: 'gpt-4o-mini',
+                                // Same model as the chatbot (step 4, GENERATION.md). The
+                                // limit counts its reasoning too, so it is well above
+                                // the few hundred tokens the JSON itself needs.
+                                model: 'gpt-5.5',
+                                reasoning_effort: 'low',
                                 messages: [
                                     {
                                         role: 'system',
@@ -2687,8 +2691,7 @@ Respond in JSON only:
                                     },
                                     { role: 'user', content: queryText }
                                 ],
-                                max_tokens: 500,
-                                temperature: 0
+                                max_tokens: 2000
                             })
                         });
                     }

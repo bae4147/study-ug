@@ -105,8 +105,9 @@ async function fetchWithRetry(url, options, maxRetries = 3, baseDelayMs = 5000) 
 }
 
 // OpenAI Chat Completion Proxy
-// Models the pages may ask chatCompletion for. The chatbot answers with gpt-5.5
-// (chosen in step 4, see GENERATION.md); the small helper calls still use gpt-4o-mini.
+// Models the pages may ask chatCompletion for. The chatbot and the CIMO context
+// extraction use gpt-5.5 (step 4, GENERATION.md); gpt-4o-mini is left for the
+// Socratic helper, which none of the current conditions shows.
 const CHAT_MODELS = new Set(["gpt-5.5", "gpt-4o-mini"]);
 
 exports.chatCompletion = onRequest(

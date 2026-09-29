@@ -14,9 +14,9 @@ const OPENAI = "https://api.openai.com/v1";
 // Recorded with every generated piece. When the accuracy of what participants saw
 // is assessed later, the models behind it have to be known, and they change.
 const MODELS = {
-    audio: { script: "gpt-4o", speech: "tts-1" },
+    audio: { script: "gpt-5.5", speech: "tts-1" },
     infographic: { image: "gemini-3-pro-image" },
-    video: { outline: "gemini-3.6-flash", slides: "gemini-3.1-flash-image", narration: "tts-1-hd" }
+    video: { outline: "gemini-3.1-pro-preview", slides: "gemini-3-pro-image", narration: "tts-1-hd" }
 };
 const GEMINI = "https://generativelanguage.googleapis.com/v1beta/models";
 
@@ -164,9 +164,11 @@ async function mapPool(items, limit, fn) {
 // the prompts. `textModel` = { provider: "openai" | "gemini", model, temperature }.
 // A temperature of null sends none, which is what models that accept only their
 // default (gpt-5.5) need.
+// Chosen in step 3/4 of GENERATION.md: no flagged claims in any of their runs.
+// gpt-5.5 accepts only its default temperature, so none is sent.
 const DEFAULT_TEXT_MODELS = {
-    audio: { provider: "openai", model: "gpt-4o", temperature: TEMPERATURE },
-    video: { provider: "gemini", model: "gemini-3.6-flash", temperature: TEMPERATURE }
+    audio: { provider: "openai", model: MODELS.audio.script, temperature: null },
+    video: { provider: "gemini", model: MODELS.video.outline, temperature: TEMPERATURE }
 };
 
 async function completeText({ keys, textModel, system, turns, json = false, maxTokens = 16000 }) {
@@ -452,13 +454,13 @@ Layout: ${scene.layout_description || scene.layoutDescription || "centred compos
 ${scene.visual_prompt || scene.visualPrompt || ""}`;
 
     const res = await fetchWithRetry(
-        `${GEMINI}/gemini-3.1-flash-image:generateContent?key=${keys.gemini}`,
+        `${GEMINI}/${MODELS.video.slides}:generateContent?key=${keys.gemini}`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: imagePrompt }] }],
-                generationConfig: { responseModalities: ["image", "text"] }
+                generationConfig: { responseModalities: ["image", "text"], imageConfig: { aspectRatio: "16:9" } }
             })
         },
         3, 5000
