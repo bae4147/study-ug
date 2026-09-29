@@ -13,12 +13,63 @@ const OPENAI = "https://api.openai.com/v1";
 
 // Recorded with every generated piece. When the accuracy of what participants saw
 // is assessed later, the models behind it have to be known, and they change.
+// Chosen in steps 3-4 of GENERATION.md. gpt-5.5 is pinned to its dated snapshot:
+// the bare alias can be moved to a newer model by OpenAI mid-study, the snapshot
+// cannot (it can only be retired, with notice -- see FALLBACKS).
+const GPT = "gpt-5.5-2026-04-23";
 const MODELS = {
-    audio: { script: "gpt-5.5", speech: "tts-1" },
+    audio: { script: GPT, speech: "tts-1" },
     infographic: { image: "gemini-3-pro-image" },
-    video: { outline: "gemini-3.1-pro-preview", slides: "gemini-3-pro-image", narration: "tts-1-hd" }
+    video: { outline: GPT, slides: "gemini-3-pro-image", narration: "tts-1-hd" }
 };
 const GEMINI = "https://generativelanguage.googleapis.com/v1beta/models";
+
+// ---- keeping the study running when a model is retired ------------------------
+// Providers retire models, sometimes on short notice (gemini-2.0-flash went
+// during this project). A retired model must not stop the study, so every call
+// goes through callModel(): when the provider answers that the model does not
+// exist, the next model on its line below is used instead, for this call and
+// every later one in this instance. The switch is logged as an error (it shows
+// in the function logs, and the daily check in index.js mails it), and
+// modelsInUse() reports the model that actually answered, so records stay true.
+// Each line lists the closest stand-ins first, GA models only. Checked against
+// both providers' deprecation pages on 2026-09-28: none of the models in use or
+// on these lines has a shutdown date. (gemini-3-pro-image-preview, which the
+// infographic used before, was due to shut down on 2026-06-25 and is left out.)
+const FALLBACKS = {
+    [GPT]: ["gpt-5.5", "gpt-5.4"],
+    "gemini-3-pro-image": ["gemini-3.1-flash-image"],
+    "tts-1": ["tts-1-hd", "gpt-4o-mini-tts"],
+    "tts-1-hd": ["tts-1", "gpt-4o-mini-tts"]
+};
+const switched = {};                               // model -> stand-in now answering for it
+const currentModel = (m) => switched[m] || m;
+
+// "This model is gone", as opposed to any other refusal (a bad request, a
+// safety block), which must not be papered over by trying another model.
+function modelGone(status, body) {
+    if (![400, 404, 410].includes(status)) return false;
+    return /model_not_found|does not exist|is not found|not found for api version|not supported for generatecontent|deprecated|decommissioned|no longer (available|supported)|has been (retired|shut down)/i.test(body);
+}
+
+// attempt(modelName) makes the request and returns the Response.
+async function callModel(primary, attempt) {
+    const line = [primary, ...(FALLBACKS[primary] || [])];
+    for (let i = Math.max(0, line.indexOf(currentModel(primary))); i < line.length; i++) {
+        const model = line[i];
+        const res = await attempt(model);
+        if (res.ok || i === line.length - 1) return { res, model };
+        const body = await res.clone().text();
+        if (!modelGone(res.status, body)) return { res, model };
+        console.error(`MODEL UNAVAILABLE: ${model} (${res.status}); using ${line[i + 1]} instead. ${body.slice(0, 300)}`);
+        switched[primary] = line[i + 1];
+    }
+}
+
+// The models behind a modality as they actually answered in this instance.
+function modelsInUse(modality) {
+    return Object.fromEntries(Object.entries(MODELS[modality] || {}).map(([k, m]) => [k, currentModel(m)]));
+}
 
 // The paper is fixed for this study, so it ships with the functions instead of
 // being uploaded on every call. It is passed WHOLE to every step: Study 2 cut it
@@ -168,7 +219,7 @@ async function mapPool(items, limit, fn) {
 // gpt-5.5 accepts only its default temperature, so none is sent.
 const DEFAULT_TEXT_MODELS = {
     audio: { provider: "openai", model: MODELS.audio.script, temperature: null },
-    video: { provider: "gemini", model: MODELS.video.outline, temperature: TEMPERATURE }
+    video: { provider: "openai", model: MODELS.video.outline, temperature: null }
 };
 
 async function completeText({ keys, textModel, system, turns, json = false, maxTokens = 16000 }) {
@@ -176,18 +227,17 @@ async function completeText({ keys, textModel, system, turns, json = false, maxT
     const t = textModel;
     if (t.provider === "openai") {
         const body = {
-            model: t.model,
             messages: [{ role: "system", content: system }, ...turns],
             max_completion_tokens: maxTokens
         };
         if (t.temperature !== null && t.temperature !== undefined) body.temperature = t.temperature;
         if (json) body.response_format = { type: "json_object" };
-        const res = await fetchWithRetry(`${OPENAI}/chat/completions`, {
+        const { res, model } = await callModel(t.model, (m) => fetchWithRetry(`${OPENAI}/chat/completions`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
-            body: JSON.stringify(body)
-        });
-        if (!res.ok) throw new Error(`${t.model}: ${await res.text()}`);
+            body: JSON.stringify({ model: m, ...body })
+        }));
+        if (!res.ok) throw new Error(`${model}: ${await res.text()}`);
         const data = await res.json();
         return { text: data.choices?.[0]?.message?.content || "", usage: data.usage || null };
     }
@@ -195,7 +245,7 @@ async function completeText({ keys, textModel, system, turns, json = false, maxT
         const generationConfig = { maxOutputTokens: maxTokens };
         if (t.temperature !== null && t.temperature !== undefined) generationConfig.temperature = t.temperature;
         if (json) generationConfig.response_mime_type = "application/json";
-        const res = await fetchWithRetry(`${GEMINI}/${t.model}:generateContent?key=${keys.gemini}`, {
+        const { res, model } = await callModel(t.model, (m) => fetchWithRetry(`${GEMINI}/${m}:generateContent?key=${keys.gemini}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -203,8 +253,8 @@ async function completeText({ keys, textModel, system, turns, json = false, maxT
                 contents: turns.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
                 generationConfig
             })
-        });
-        if (!res.ok) throw new Error(`${t.model}: ${await res.text()}`);
+        }));
+        if (!res.ok) throw new Error(`${model}: ${await res.text()}`);
         const data = await res.json();
         const parts = data.candidates?.[0]?.content?.parts || [];
         return { text: parts.filter(p => typeof p.text === "string" && !p.thought).map(p => p.text).join(""), usage: data.usageMetadata || null };
@@ -297,17 +347,17 @@ Write the script now.`;
     let spoken = 0;
     const parts = await mapPool(segments, 6, async (segment) => {
         checkAborted(isAborted);
-        const res = await fetchWithRetry(`${OPENAI}/audio/speech`, {
+        const { res } = await callModel(MODELS.audio.speech, (m) => fetchWithRetry(`${OPENAI}/audio/speech`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
             body: JSON.stringify({
-                model: "tts-1",
+                model: m,
                 input: segment.text.substring(0, 4000),
                 voice: segment.voice,
                 speed: SPEECH_SPEED,
                 response_format: "mp3"
             })
-        });
+        }));
         onProgress({ step: "voices", done: ++spoken, total: segments.length });
         if (!res.ok) return null;         // one lost line is better than no podcast
         return Buffer.from(await res.arrayBuffer());
@@ -358,8 +408,8 @@ Generate the infographic now.`;
 }
 
 async function drawGemini({ keys, model, prompt }) {
-    const res = await fetchWithRetry(
-        `${GEMINI}/${model}:generateContent?key=${keys.gemini}`,
+    const { res } = await callModel(model, (m) => fetchWithRetry(
+        `${GEMINI}/${m}:generateContent?key=${keys.gemini}`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -368,7 +418,7 @@ async function drawGemini({ keys, model, prompt }) {
                 generationConfig: { responseModalities: ["image", "text"] }
             })
         }
-    );
+    ));
     if (!res.ok) throw new Error(`infographic: ${await res.text()}`);
 
     const parts = (await res.json()).candidates?.[0]?.content?.parts || [];
@@ -453,8 +503,8 @@ Layout: ${scene.layout_description || scene.layoutDescription || "centred compos
 
 ${scene.visual_prompt || scene.visualPrompt || ""}`;
 
-    const res = await fetchWithRetry(
-        `${GEMINI}/${MODELS.video.slides}:generateContent?key=${keys.gemini}`,
+    const { res } = await callModel(MODELS.video.slides, (m) => fetchWithRetry(
+        `${GEMINI}/${m}:generateContent?key=${keys.gemini}`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -464,7 +514,7 @@ ${scene.visual_prompt || scene.visualPrompt || ""}`;
             })
         },
         3, 5000
-    );
+    ));
     if (!res.ok) return null;
     const parts = (await res.json()).candidates?.[0]?.content?.parts || [];
     const img = parts.find(p => p.inlineData?.mimeType?.startsWith("image/"));
@@ -554,17 +604,17 @@ async function generateVideo({ keys, focus = null, length = "default", textModel
     let narrated = 0;
     const voiced = await mapPool(drawn, 6, async (scene) => {
         checkAborted(isAborted);
-        const res = await fetchWithRetry(`${OPENAI}/audio/speech`, {
+        const { res } = await callModel(MODELS.video.narration, (m) => fetchWithRetry(`${OPENAI}/audio/speech`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${keys.openai}` },
             body: JSON.stringify({
-                model: "tts-1-hd",
+                model: m,
                 input: scene.narration,
                 voice: "shimmer",
                 speed: SPEECH_SPEED,
                 response_format: "mp3"
             })
-        });
+        }));
         onProgress({ step: "narration", done: ++narrated, total: drawn.length });
         if (!res.ok) return null;
         return { ...scene, audioBase64: Buffer.from(await res.arrayBuffer()).toString("base64") };
@@ -585,6 +635,9 @@ async function generateVideo({ keys, focus = null, length = "default", textModel
 
 module.exports = {
     MODELS,
+    FALLBACKS,
+    modelsInUse,
+    modelGone,
     DEFAULT_TEXT_MODELS,
     completeText,
     SOURCE_RULES,

@@ -67,6 +67,11 @@
 
         const MIN_CHARS = 30;
 
+        // Key takeaways, carried over from Study 2's post-task (its Q2), where it asked
+        // about the workplace; here it asks about the participant's own studies. As
+        // there, one box to start, more on demand, at least one answer.
+        const TAKEAWAY_QUESTION = 'What are the key takeaways from this article that you could realistically apply or try in your own studies? Briefly explain your approach.';
+
         function PostTask() {
             // Auth state
             const [currentUser, setCurrentUser] = useState(null);
@@ -80,6 +85,7 @@
             const mode = urlParams.get('mode');
 
             const [responses, setResponses] = useState({});
+            const [takeaways, setTakeaways] = useState(['']);
             const [isSubmitting, setIsSubmitting] = useState(false);
 
             // Auth guard
@@ -108,6 +114,11 @@
                     alert(`Please write a little more for question ${tooShortIdx + 1} (at least ${MIN_CHARS} characters).`);
                     return;
                 }
+                const filledTakeaways = takeaways.map(t => t.trim()).filter(Boolean);
+                if (filledTakeaways.length === 0) {
+                    alert(`Please enter at least one takeaway for question ${REFLECTION_ITEMS.length + 1}.`);
+                    return;
+                }
 
                 setIsSubmitting(true);
 
@@ -116,6 +127,7 @@
                 );
                 const postTaskData = {
                     reflection,
+                    takeaways: filledTakeaways,
                     completedAt: new Date().toISOString()
                 };
 
@@ -204,6 +216,51 @@
                                         </div>
                                     );
                                 })}
+
+                                <div>
+                                    <div className="flex items-start space-x-3 mb-2">
+                                        <span className="flex-shrink-0 w-7 h-7 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            {REFLECTION_ITEMS.length + 1}
+                                        </span>
+                                        <label className="block flex-1 text-base font-bold text-gray-800">
+                                            {TAKEAWAY_QUESTION} *
+                                        </label>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {takeaways.map((t, index) => (
+                                            <div key={index} className="flex items-start space-x-2">
+                                                <span className="text-sm font-medium text-gray-500 w-5 pt-2">{index + 1}.</span>
+                                                <textarea
+                                                    value={t}
+                                                    onChange={(e) => setTakeaways(prev => prev.map((v, i) => i === index ? e.target.value : v))}
+                                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                                                    placeholder={`Takeaway ${index + 1}`}
+                                                    rows={3}
+                                                />
+                                                {takeaways.length > 1 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setTakeaways(prev => prev.filter((_, i) => i !== index))}
+                                                        className="text-gray-400 hover:text-red-500 pt-2"
+                                                        title="Remove"
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+                                        <div className="flex items-start space-x-2">
+                                            <span className="w-5"></span>
+                                            <button
+                                                type="button"
+                                                onClick={() => setTakeaways(prev => [...prev, ''])}
+                                                className="px-4 py-2 border-2 border-teal-500 text-teal-600 hover:bg-teal-50 rounded-lg text-sm font-medium"
+                                            >
+                                                + Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className="flex justify-end pt-4 border-t">
                                     <button

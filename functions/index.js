@@ -3,6 +3,10 @@ const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const { onSchedule } = require("firebase-functions/v2/scheduler");
+// Model names, fallbacks and the "model is gone" test live with the generators;
+// the chat proxy and the daily model check below use the same ones.
+const generation = require("./generation");
 
 
 // Initialize Firebase Admin
@@ -105,10 +109,17 @@ async function fetchWithRetry(url, options, maxRetries = 3, baseDelayMs = 5000) 
 }
 
 // OpenAI Chat Completion Proxy
-// Models the pages may ask chatCompletion for. The chatbot and the CIMO context
-// extraction use gpt-5.5 (step 4, GENERATION.md); gpt-4o-mini is left for the
-// Socratic helper, which none of the current conditions shows.
-const CHAT_MODELS = new Set(["gpt-5.5", "gpt-4o-mini"]);
+// Models the pages may ask chatCompletion for, and what is actually called for
+// each. The chatbot and the CIMO context extraction ask for gpt-5.5 (step 4,
+// GENERATION.md), which is served by its dated snapshot so it cannot change under
+// the study; if that is retired, the next model on the line answers instead (see
+// callModel in generation.js). gpt-4o-mini is left for the Socratic helper, which
+// none of the current conditions shows.
+const CHAT_MODELS = {
+  "gpt-5.5": [generation.MODELS.audio.script, "gpt-5.5", "gpt-5.4"],
+  "gpt-4o-mini": ["gpt-4o-mini"]
+};
+const chatSwitched = {};                            // requested name -> index on its line now answering
 
 exports.chatCompletion = onRequest(
   {
@@ -139,7 +150,8 @@ exports.chatCompletion = onRequest(
         return;
       }
       // The endpoint is public, so only the models the pages use are passed on.
-      if (!CHAT_MODELS.has(model)) {
+      const line = CHAT_MODELS[model];
+      if (!line) {
         res.status(400).json({ error: `model not allowed: ${model}` });
         return;
       }
@@ -150,18 +162,22 @@ exports.chatCompletion = onRequest(
         ? { max_completion_tokens: max_tokens, ...(model === "gpt-5.5" ? {} : { temperature }), ...(reasoning_effort ? { reasoning_effort } : {}) }
         : { max_tokens, temperature };
 
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${openaiApiKey.value()}`
-        },
-        body: JSON.stringify({
-          model,
-          messages,
-          ...params
-        })
-      });
+      let response;
+      for (let i = chatSwitched[model] || 0; i < line.length; i++) {
+        response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${openaiApiKey.value()}`
+          },
+          body: JSON.stringify({ model: line[i], messages, ...params })
+        });
+        if (response.ok || i === line.length - 1) break;
+        const body = await response.clone().text();
+        if (!generation.modelGone(response.status, body)) break;
+        console.error(`MODEL UNAVAILABLE: ${line[i]} (${response.status}); chat now uses ${line[i + 1]}. ${body.slice(0, 300)}`);
+        chatSwitched[model] = i + 1;
+      }
 
       if (!response.ok) {
         const error = await response.text();
@@ -613,7 +629,7 @@ exports.generateCustom = onRequest(
         uid, sessionId, condition, modality,
         focus: String(focus || "").slice(0, gen.MAX_FOCUS_CHARS) || null,
         setting: modality === "infographic" ? detail : length,
-        models: gen.MODELS[modality],
+        models: gen.modelsInUse(modality),
         startedAt: new Date(startedAt).toISOString(),
         finishedAt: new Date().toISOString(),
         ...extra
@@ -674,5 +690,64 @@ exports.generateCustom = onRequest(
       }
       if (!res.headersSent) res.status(500).json({ error: "Generation failed" });
     }
+  }
+);
+
+// ---------------------------------------------------------------------------
+// Daily model check
+// ---------------------------------------------------------------------------
+//
+// The fallbacks keep the study running when a model is retired; this makes sure
+// someone hears about it. Once a day every model the study uses -- and every
+// stand-in -- is looked up with the provider (a free metadata request, no
+// generation). If any has gone, ADMIN_EMAIL gets a message saying which, so the
+// replacement can be chosen deliberately instead of by the fallback line.
+// Only a clear "not found" counts; a timeout or a 5xx is logged and retried the
+// next day, so a provider hiccup does not send an alarm.
+exports.modelHealthCheck = onSchedule(
+  {
+    schedule: "every day 09:00",
+    timeZone: "America/New_York",
+    secrets: [openaiApiKey, geminiApiKey, gmailUser, gmailAppPassword],
+    timeoutSeconds: 120
+  },
+  async () => {
+    const inUse = new Set([
+      ...Object.values(generation.MODELS).flatMap(m => Object.values(m)),
+      ...Object.values(CHAT_MODELS).map(line => line[0])
+    ]);
+    const all = new Set([
+      ...inUse,
+      ...Object.values(generation.FALLBACKS).flat(),
+      ...Object.values(CHAT_MODELS).flat()
+    ]);
+
+    const lookup = async (m) => {
+      const gemini = m.startsWith("gemini");
+      const url = gemini
+        ? `https://generativelanguage.googleapis.com/v1beta/models/${m}?key=${geminiApiKey.value()}`
+        : `https://api.openai.com/v1/models/${m}`;
+      const r = await fetch(url, gemini ? {} : { headers: { Authorization: `Bearer ${openaiApiKey.value()}` } });
+      return r.status;
+    };
+
+    const status = {};
+    for (const m of all) {
+      try { status[m] = await lookup(m); } catch (e) { status[m] = `error: ${e.message}`; }
+    }
+    console.log("model check:", JSON.stringify(status));
+
+    const gone = [...all].filter(m => status[m] === 404 || status[m] === 410);
+    if (gone.length === 0) return;
+
+    const goneInUse = gone.filter(m => inUse.has(m));
+    const lines = gone.map(m => {
+      const standsIn = Object.entries(generation.FALLBACKS).find(([, l]) => l.includes(m));
+      return `${m}: ${inUse.has(m) ? "IN USE -- the fallback line is now answering in its place" : `stand-in${standsIn ? ` for ${standsIn[0]}` : ""}`}`;
+    });
+    await sendErrorNotification(
+      goneInUse.length ? `A model the study uses is no longer available (${goneInUse.join(", ")})` : `A stand-in model is no longer available (${gone.join(", ")})`,
+      `${lines.join("\n")}\n\nFallback lines (functions/generation.js FALLBACKS):\n${JSON.stringify(generation.FALLBACKS, null, 2)}\n\nAll lookups:\n${JSON.stringify(status, null, 2)}`
+    );
   }
 );
