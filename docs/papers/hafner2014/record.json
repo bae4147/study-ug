@@ -1,18 +1,18 @@
 {
   "what": "Default media every multimodal arm sees, for Häfner, Stock & Oberst (2014).",
-  "generatedBy": "functions/generation.js via scripts/generate-defaults.js; slides 4, 5, 9, 19 redrawn with scripts/fix-scenes.js",
+  "generatedBy": "functions/generation.js via scripts/generate-defaults.js: several drafts of each scored against evaluation/fact-checklist.md and the best voiced/drawn (evaluation/defaults/2026-09-29/README.md). Slides 14, 15, 22, 25 redrawn with scripts/fix-scenes.js after review.",
   "focus": null,
   "models": {
     "audio": {
-      "script": "gpt-4o",
+      "script": "gpt-5.5-2026-04-23",
       "speech": "tts-1"
     },
     "infographic": {
-      "image": "gemini-3-pro-image-preview"
+      "image": "gemini-3-pro-image"
     },
     "video": {
-      "outline": "gemini-3.6-flash",
-      "slides": "gemini-3.1-flash-image",
+      "outline": "gpt-5.5-2026-04-23",
+      "slides": "gemini-3-pro-image",
       "narration": "tts-1-hd"
     }
   },
@@ -20,7 +20,8 @@
     "audio": "audio.mp3",
     "audioScript": "audio.script.txt",
     "infographic": "infographic.jpg",
-    "video": "video.json (narration and, where kept, slide text per scene) + video/sceneNN.{png,mp3}"
+    "video": "video.json (narration and slide text per scene) + video/sceneNN.{png,mp3}"
   },
-  "generatedOn": "2026-09-24"
+  "generatedOn": "2026-09-29",
+  "previous": "the 2026-09-24 defaults (gpt-4o / gemini-3.6-flash / gemini-3.1-flash-image) are in git history"
 }

@@ -1,0 +1,43 @@
+Alex: Hi Jordan, what was this study trying to find out?
+
+Jordan: Häfner, Stock, and Oberst wanted to know whether a 4-hour time management training could increase undergraduate students’ perceived control of time and reduce perceived stress, measured with the “tension” scale.
+
+Alex: And “demands” in this paper means perceived, self-reported demands, right?
+
+Jordan: Exactly. Demands covered things like amount of work and external duties, and the authors expected demands not to change, because the training was meant to change how students handled time, not the external situation.
+
+Alex: Who took part, and what did they actually do?
+
+Jordan: The main analyses used 23 undergraduate students from a medium-sized German university who completed questionnaires directly before training, 2 weeks after, and 4 weeks after. The training covered prioritizing, goal setting, strategy development, daily planning, and monitoring task completion.
+
+Alex: The design did not have a separate control group, so how did they argue the results were due to the training?
+
+Jordan: They used a “non-equivalent dependent variable design,” meaning they tracked outcomes expected to change, tension and perceived control of time, alongside demands, which should not change. If only the intended variables changed, that supported the training interpretation.
+
+Alex: So what happened with time management behaviour itself?
+
+Jordan: Students reported a significant increase in use of time management strategies from before training to 4 weeks after, t(22)=2.67, p<0.01 one-tailed. The increase at 2 weeks was nearly significant, t(22)=1.62, p=0.060 one-tailed.
+
+Alex: What about stress?
+
+Jordan: Trainees reported significantly less tension 2 weeks after training, F(1,22)=8.22, p<0.01, and also 4 weeks after training, F(1,22)=5.75, p=0.03.
+
+Alex: And perceived control of time?
+
+Jordan: At 2 weeks, there was only a tendency in the expected direction, F(1,22)=3.38, p=0.08. At 4 weeks, the increase was significant, F(1,22)=11.62, p<0.01.
+
+Alex: Did demands change?
+
+Jordan: No significant changes were found for demands at 2 weeks, t(22)=1.68, p=0.107, or 4 weeks, t(22)=1.19, p=0.251.
+
+Alex: What did the authors make of that?
+
+Jordan: They concluded the pattern supports that the training led to decreased perceived stress and increased perceived control of time, while noting trainees transferred the content to daily work at least to some extent.
+
+Alex: Any big cautions?
+
+Jordan: Yes: the sample was small, about half left before the second measurement, and the authors say this should be seen as a preliminary study needing larger samples and stronger designs, including control or pseudo-training groups.
+
+Alex: So the takeaway?
+
+Jordan: In this study, a short, focused time management training was followed by lower tension, later higher perceived control of time, unchanged perceived demands, and some increased use of the taught strategies.

@@ -118,9 +118,68 @@
             // that account onward before the link had a chance to swap users. Hold
             // the handler until the swap has finished.
             const linkSignInPendingRef = useRef(false);
+            // Routing a signed-in user onward happens once. Both the link's own
+            // completion and onAuthStateChanged may try; the second must not start
+            // another session.
+            const proceededRef = useRef(false);
 
             // Check for email link sign-in and auth state
             useEffect(() => {
+                const proceed = async (user) => {
+                    if (proceededRef.current) return;
+                    proceededRef.current = true;
+                    setCurrentUser(user);
+                    // Nothing to collect at sign-in: the verified email is the
+                    // identity. Register on first visit, then go straight to the study.
+                    try {
+                        // One run per person. Whoever already finished is shown the
+                        // door here rather than at the study pages, because this is
+                        // the only place a new session is ever created. Whoever is
+                        // part-way through is returned to their own session instead
+                        // of being handed a second, empty one.
+                        const state = await STUDY_FLOW.readSessions(db, user.uid);
+                        const isTester = STUDY_FLOW.isTestAccount(user.email);
+                        if (!isTester && state.finished) {
+                            setAlreadyDone(true);
+                            setLoading(false);
+                            setCheckingAuth(false);
+                            return;
+                        }
+                        if (state.open) {
+                            const url = STUDY_FLOW.urlFor(user.uid, state.open);
+                            if (url) {
+                                STUDY_FLOW.remember(state.open.id);
+                                window.location.replace(url);
+                                return;
+                            }
+                        }
+
+                        const userRef = db.collection('users').doc(user.uid);
+                        const userDoc = await userRef.get();
+                        let condition;
+                        if (userDoc.exists && userDoc.data().condition) {
+                            condition = userDoc.data().condition;
+                            await userRef.set({ lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+                        } else {
+                            condition = await getNextCondition(user.email);
+                            await userRef.set({
+                                email: user.email,
+                                condition,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+                            }, { merge: true });
+                            console.log('Assigned condition:', condition);
+                        }
+                        await startSession(user.uid, condition);
+                    } catch (err) {
+                        console.error('Error starting session:', err);
+                        proceededRef.current = false;          // let a retry through
+                        setError('Could not start your session. Please try again.');
+                        setLoading(false);
+                        setCheckingAuth(false);
+                    }
+                };
+
                 // Check if this is a sign-in with email link
                 if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
                     linkSignInPendingRef.current = true;
@@ -139,9 +198,13 @@
                                 window.localStorage.removeItem('emailForSignIn');
                                 // Clear URL parameters
                                 window.history.replaceState({}, document.title, window.location.pathname);
-                                // The swap is done; onAuthStateChanged may act now, and
-                                // fires again for the new user of its own accord.
+                                // The swap is done. Go on from here rather than wait for
+                                // onAuthStateChanged: it usually fires for the new user
+                                // while the flag above was still set, was ignored, and
+                                // does not fire again -- which left the page on "Signing
+                                // you in..." until the participant tried a second time.
                                 linkSignInPendingRef.current = false;
+                                proceed(result.user);
                             })
                             .catch((error) => {
                                 console.error('Error signing in with email link:', error);
@@ -157,59 +220,9 @@
                     // Don't return - still need to set up onAuthStateChanged listener
                 }
 
-                const unsubscribe = auth.onAuthStateChanged(async (user) => {
+                const unsubscribe = auth.onAuthStateChanged((user) => {
                     if (linkSignInPendingRef.current) return;
-                    if (user) {
-                        setCurrentUser(user);
-                        // Check if user has profile in Firestore
-                        // Nothing to collect at sign-in: the verified email is the
-                        // identity. Register on first visit, then go straight to the study.
-                        try {
-                            // One run per person. Whoever already finished is shown the
-                            // door here rather than at the study pages, because this is
-                            // the only place a new session is ever created. Whoever is
-                            // part-way through is returned to their own session instead
-                            // of being handed a second, empty one.
-                            const state = await STUDY_FLOW.readSessions(db, user.uid);
-                            const isTester = STUDY_FLOW.isTestAccount(user.email);
-                            if (!isTester && state.finished) {
-                                setAlreadyDone(true);
-                                setLoading(false);
-                                setCheckingAuth(false);
-                                return;
-                            }
-                            if (state.open) {
-                                const url = STUDY_FLOW.urlFor(user.uid, state.open);
-                                if (url) {
-                                    STUDY_FLOW.remember(state.open.id);
-                                    window.location.replace(url);
-                                    return;
-                                }
-                            }
-
-                            const userRef = db.collection('users').doc(user.uid);
-                            const userDoc = await userRef.get();
-                            let condition;
-                            if (userDoc.exists && userDoc.data().condition) {
-                                condition = userDoc.data().condition;
-                                await userRef.set({ lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-                            } else {
-                                condition = await getNextCondition(user.email);
-                                await userRef.set({
-                                    email: user.email,
-                                    condition,
-                                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                    lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
-                                }, { merge: true });
-                                console.log('Assigned condition:', condition);
-                            }
-                            await startSession(user.uid, condition);
-                            return;
-                        } catch (err) {
-                            console.error('Error starting session:', err);
-                            setError('Could not start your session. Please try again.');
-                        }
-                    }
+                    if (user) { proceed(user); return; }
                     setLoading(false);
                     setCheckingAuth(false);
                 });

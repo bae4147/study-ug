@@ -1,0 +1,39 @@
+Alex: Let's unpack Häfner, Stock and Oberst's time management training study.
+
+Jordan: The question was whether time management training could raise undergraduates' perceived control of time and reduce perceived stress, measured with the "tension" scale.
+
+Alex: Who took part, and how was it set up?
+
+Jordan: Forty-eight local undergraduates started; the main analyses used the 23 who completed questionnaires directly before training, 2 weeks after and 4 weeks after.
+
+Alex: What was the training?
+
+Jordan: It lasted for 4 h and focused on prioritizing, goal setting, strategy development, daily planning and monitoring. Students set concrete challenging proximal goals with deadlines, planned steps, considered obstacles and monitored completed tasks.
+
+Alex: Without a separate control group, how did they check the effect?
+
+Jordan: They used a "non-equivalent dependent variable design": track variables expected to change, perceived control of time and tension, alongside demands, which should not change.
+
+Alex: And "demands" means?
+
+Jordan: Perceived, self-reported demands: the amount of work and external duties students said they faced. The training aimed to help students handle demands, not change them.
+
+Alex: What did they find after 2 weeks?
+
+Jordan: Stress on the tension scale decreased significantly, from a mean of 3.30 to 2.96. Perceived control of time increased from 2.75 to 2.89, but only as a tendency in the expected direction.
+
+Alex: And after 4 weeks?
+
+Jordan: Compared with before training, stress was significantly lower, with a mean of 3.03, and perceived control of time was significantly higher, with a mean of 3.05. Demands showed no significant change at either follow-up.
+
+Alex: Did students actually use the strategies?
+
+Jordan: The authors report a nearly significant increase in time management behaviour after 2 weeks and a significant increase after 4 weeks, suggesting transfer to daily work at least to some extent.
+
+Alex: What are the main cautions?
+
+Jordan: The study was preliminary: the sample was small, about half left before the second measurement, and there was no experimental control group or pseudo-training group.
+
+Alex: So the key takeaway?
+
+Jordan: In this sample, training was followed by lower tension, later higher perceived control of time, and no significant change in perceived demands.

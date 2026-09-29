@@ -1,0 +1,27 @@
+Alex: Hi Jordan, can a short time management training actually reduce students’ stress?
+
+Jordan: That was the study’s question. Häfner, Stock, and Oberst tested whether training would increase perceived control of time and reduce perceived stress, measured with the tension scale, in undergraduate students.
+
+Alex: Who took part, and what did the training involve?
+
+Jordan: The main analyses used 23 undergraduate students from a medium-sized German university who completed all questionnaires. The training lasted 4 h and focused on prioritizing, goal setting, strategy development, daily planning, and monitoring task completion.
+
+Alex: When were they measured?
+
+Jordan: Directly before training, 2 weeks after, and 4 weeks after. Students reported time management behaviour, perceived control of time, tension, and demands, meaning perceived, self-reported demands like workload and external duties.
+
+Alex: The design confused me. There was no control group, right?
+
+Jordan: Right. They used a “non-equivalent dependent variable design”: they tracked variables expected to change, tension and perceived control of time, plus demands, which were not expected to change.
+
+Alex: So what happened after the training?
+
+Jordan: Time management behaviour increased. The increase from before training to 4 weeks after was significant, while the increase at 2 weeks was nearly significant, suggesting transfer to daily work at least to some extent.
+
+Alex: And the main outcomes?
+
+Jordan: Tension decreased significantly at both follow-ups: the means were 3.30 before training, 2.96 after 2 weeks, and 3.03 after 4 weeks. Perceived control of time showed only a tendency at 2 weeks, but a significant increase by 4 weeks, from 2.75 to 3.05.
+
+Alex: Did demands change too?
+
+Jordan: No significant changes were found for demands at either follow-up, which supported the authors’ interpretation that the training affected the intended variables. But they call it preliminary: the sample was small, about half dropped out before the second measurement, and future studies need larger samples and stronger comparison designs.

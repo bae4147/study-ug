@@ -1,0 +1,27 @@
+Alex: Hi Jordan—what did this study set out to test?
+
+Jordan: Häfner, Stock, and Oberst asked whether a 4 h time management training program could increase perceived control of time and decrease perceived stress, measured with the “tension” scale, among undergraduate students.
+
+Alex: Who was in the study?
+
+Jordan: The sample began with 48 local undergraduates at a medium-sized German university. The main analyses used the 23 students who completed questionnaires directly before training, 2 weeks after, and 4 weeks after; their mean age was 23.30 years, and 52 % were female.
+
+Alex: What did the training actually teach?
+
+Jordan: It focused on prioritizing, goal setting, strategy development, daily planning, and monitoring. Students reflected on academic and extracurricular activities, set concrete, challenging, proximal goals with deadlines, planned steps and obstacles, scheduled study tasks, and monitored task completion.
+
+Alex: There was no separate control group, so how did the design work?
+
+Jordan: They used a “non-equivalent dependent variable design”: they tracked variables expected to change—tension and perceived control of time—and a variable expected not to change, demands, meaning perceived, self-reported demands such as amount of work and external duties.
+
+Alex: So what changed after training?
+
+Jordan: Reported time management behaviour showed a nearly significant increase at 2 weeks, t(22)=1.62, p=0.060, and a significant increase at 4 weeks, t(22)=2.67, p<0.01. Trainees reported significantly less tension at 2 weeks, F(1, 22)=8.22, p<0.01, and 4 weeks, F(1, 22)=5.75, p=0.03.
+
+Alex: What about perceived control of time and demands?
+
+Jordan: Perceived control of time showed only a tendency in the expected direction at 2 weeks, F(1, 22)=3.38, p=0.08, but increased significantly at 4 weeks, F(1, 22)=11.62, p<0.01. Demands did not change significantly at 2 weeks, t(22)=1.68, p=0.107, or 4 weeks, t(22)=1.19, p=0.251.
+
+Alex: What is the key takeaway?
+
+Jordan: The authors conclude that the training led to lower perceived stress and higher perceived control of time, with transfer to daily work at least to some extent. But they call it preliminary because the sample was small, about half left before the second measurement, and stronger control conditions and larger samples are needed.

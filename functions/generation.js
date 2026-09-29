@@ -274,7 +274,9 @@ function checkAborted(isAborted) {
 // audio — two-host dialogue, study2's shape
 // ---------------------------------------------------------------------------
 
-async function generateAudio({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.audio, speech = true, onProgress = () => {}, isAborted = null }) {
+// `script`, when given, is voiced as it is instead of writing a new one: the
+// default podcast is picked from several scored drafts before any speech is paid for.
+async function generateAudio({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.audio, speech = true, script: givenScript = null, onProgress = () => {}, isAborted = null }) {
     const f = cleanFocus(focus);
     const words = audioWords(length);
     const minutes = (AUDIO_LENGTHS[length] || AUDIO_LENGTHS.default).minutes;
@@ -288,6 +290,8 @@ ${SOURCE_RULES}
 - Two hosts: Alex, who asks the questions a reader would ask, and Jordan, who explains clearly.
 - Mark every line with the speaker's name, exactly "Alex:" or "Jordan:". No stage directions, sound effects or headings.
 - Natural spoken English; explain any technical term the first time it comes up.
+- This is heard, not read. Give results in words -- significant, nearly significant, a tendency, no significant change -- and do not read out test statistics (F, t, p values, effect sizes). Plain figures a listener can take in, such as sample sizes, means or percentages, are fine, stated exactly as the paper gives them.
+- Write everything as it should be said: "4 hours", not "4 h"; no notation such as "SD=", "n =" or brackets.
 - At most one short line of greeting at the start. Spend the time on the paper.
 
 # Length
@@ -302,7 +306,7 @@ ${requestBlock(f, "podcast")}
 Write the script now.`;
 
     const SYSTEM = "You write accurate podcast scripts that stay strictly within the research paper you are given.";
-    let script = (await completeText({ keys, textModel, system: SYSTEM, turns: [{ role: "user", content: scriptPrompt }] })).text;
+    let script = givenScript || (await completeText({ keys, textModel, system: SYSTEM, turns: [{ role: "user", content: scriptPrompt }] })).text;
 
     // Language models write short of a word count far more often than long. One
     // follow-up turn, only when the draft is under the range, brings it up to
@@ -313,7 +317,7 @@ Write the script now.`;
         .join(" ").replace(/\b(Alex|Jordan)\s*:/gi, "").split(/\s+/).filter(Boolean).length;
     const low = Math.round(words * 0.9), high = Math.round(words * 1.1);
     const draftWords = spokenWords(script);
-    if (draftWords < low) {
+    if (!givenScript && draftWords < low) {
         checkAborted(isAborted);
         onProgress({ step: "script", message: "Bringing the script up to length" });
         try {
@@ -537,7 +541,7 @@ ${SOURCE_RULES}
 Return ONLY JSON, no markdown fences, in this shape:
 {"title": "...", "scenes": [{"scene_number": 1, "narration": "...", "key_text_elements": ["..."], "layout_description": "...", "visual_prompt": "..."}]}
 - Exactly ${n} scenes.
-- Narration: ${WORDS_PER_SCENE - 2} to ${WORDS_PER_SCENE + 2} words in every scene, about ${n * WORDS_PER_SCENE} words in total (about ${minutes} minutes spoken). Do not write shorter scenes: the video's length depends on it. Plain spoken sentences, no bullet points or markdown.
+- Narration: ${WORDS_PER_SCENE - 2} to ${WORDS_PER_SCENE + 2} words in every scene, about ${n * WORDS_PER_SCENE} words in total (about ${minutes} minutes spoken). Do not write shorter scenes: the video's length depends on it. Plain spoken sentences, no bullet points or markdown. The narration is read aloud by a voice, so write it as it should be said: "4 hours", not "4 h"; results in words (significant, a tendency), with no test statistics or notation such as "SD=", "F(1, 22)" or "p <".
 - key_text_elements: at most three short items per slide, at most four words each, in common words. They are hand-lettered into the picture, and long or unusual words come out misspelt. Use a number only if it is exactly the paper's.
 - visual_prompt: one clear illustration for the scene; carry the meaning in the drawing rather than in text.
 - layout_description: one sentence.
@@ -564,9 +568,10 @@ Return the JSON now.`;
     return { title: outline.title || "Video overview", scenes, length, targetScenes: n };
 }
 
-async function generateVideo({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.video, onProgress = () => {}, isAborted = null }) {
+// `plan`, when given, is drawn and narrated as it is (see generateAudio's `script`).
+async function generateVideo({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.video, plan: givenPlan = null, onProgress = () => {}, isAborted = null }) {
     onProgress({ step: "outline", message: "Planning the scenes" });
-    const plan = await planVideo({ keys, focus, length, textModel });
+    const plan = givenPlan || await planVideo({ keys, focus, length, textModel });
     const scenes = plan.scenes;
 
     checkAborted(isAborted);
