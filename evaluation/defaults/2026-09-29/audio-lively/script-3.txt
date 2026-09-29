@@ -1,0 +1,23 @@
+Alex: So this paper asks a very student-life question: can a short time management training reduce students’ perceived stress, measured with the “tension” scale, and increase perceived control of time?
+
+Jordan: Yes. The authors trained undergraduate students at a medium-sized German university; the main analyses used the 23 students who completed questionnaires directly before training, 2 weeks after, and 4 weeks after.
+
+Alex: And they did not use a classic control group. They used a “non-equivalent dependent variable design,” which I always have to say slowly.
+
+Jordan: The logic was: stress and perceived control of time should change, but demands should not. And demands means perceived, self-reported demands, like amount of work and external duties.
+
+Alex: What happened in the training, which lasted 4 hours? Please tell me it was more than “buy a planner.”
+
+Jordan: It focused on prioritizing, goal setting, strategy development, daily planning, and monitoring. Students reflected on academic and extracurricular activities, chose important ones, set deadlines, planned steps and obstacles, scheduled study work, and checked task completion.
+
+Alex: So basically, make the messy semester visible and then decide what matters first. I can see why students might use that.
+
+Jordan: They did, at least to some extent. Reported use of the taught strategies was nearly significant 2 weeks after training and significantly higher 4 weeks after training.
+
+Alex: Now the main result: did tension actually go down?
+
+Jordan: Yes. Perceived stress, measured as tension, was significantly lower 2 and 4 weeks after training. The means went from 3.30 before training to 2.96 after 2 weeks and 3.03 after 4 weeks.
+
+Alex: And control of time? Same pattern?
+
+Jordan: Not quite: at 2 weeks, perceived control of time showed only a tendency in the expected direction; at 4 weeks it significantly increased, from 2.75 before training to 3.05. Demands showed no significant change at either follow-up, so the takeaway is hopeful but cautious: this training lasting 4 hours might help, yet the authors call the study preliminary because the sample was small, about half dropped out before the second point of measurement, and stronger larger studies are needed.

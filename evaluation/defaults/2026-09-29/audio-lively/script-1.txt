@@ -1,0 +1,27 @@
+Alex: Today we’re unpacking Häfner, Stock, and Oberst’s study on whether a short time management training could reduce undergraduate students’ stress.
+
+Jordan: Right, and stress here means the paper’s “tension” scale: mental fatigue, trouble relaxing, and feelings of nervousness. They also measured perceived control of time and perceived, self-reported demands.
+
+Alex: So basically, they wanted to see: if students learn better time management, do they feel more in control and less tense, without their actual demands changing?
+
+Jordan: Exactly. The study began with 48 undergraduate students at a medium-sized German university, but the main analyses used the 23 students who completed all questionnaires before training, 2 weeks after, and 4 weeks after.
+
+Alex: And the training itself was only 4 hours, which surprised me. Not a whole semester-long program, just one focused intervention.
+
+Jordan: It covered prioritizing, setting concrete, challenging, proximal goals, developing strategies, daily planning, and monitoring task completion. Students reflected on academic and extracurricular activities, set deadlines, planned steps, and tracked what was done.
+
+Alex: The design is important here: there wasn’t a separate control group. Instead, they used demands as a control variable that should not change if the training was specifically affecting stress and control of time.
+
+Jordan: And that’s what happened. Demands showed no significant change 2 weeks or 4 weeks after training, while the intended outcomes moved in the expected direction.
+
+Alex: The headline result: trainees reported significantly less tension 2 weeks and 4 weeks after the training compared with before it.
+
+Jordan: Perceived control of time was a little slower. At 2 weeks, there was only a tendency in the expected direction, but by 4 weeks, the increase was significant.
+
+Alex: They also checked whether students actually used the strategies. Time management behaviour showed a nearly significant increase after 2 weeks and a significant increase after 4 weeks.
+
+Jordan: The authors interpret this as evidence that the training led to decreased perceived stress and increased perceived control of time, at least to some extent through changed behaviour.
+
+Alex: But they’re careful too: small sample, about half dropped out before the second measurement, and no experimental control group.
+
+Jordan: Key takeaway: this preliminary study suggests a 4-hour time management training might benefit undergraduate students’ well-being, but larger and stronger intervention studies are still needed.

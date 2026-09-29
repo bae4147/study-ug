@@ -287,15 +287,17 @@ async function generateAudio({ keys, focus = null, length = "default", textModel
 ${SOURCE_RULES}
 
 # Format
-- Two hosts: Alex, who asks the questions a reader would ask, and Jordan, who explains clearly.
+- Two hosts in a lively, friendly conversation, like a good study podcast -- a real back-and-forth, not an interview. Alex is curious and reacts: surprise, a quick paraphrase to check understanding ("So basically..."), a follow-up question, the odd light joke. Jordan explains clearly and reacts back. Mix short reactions in between the longer explanations so the rhythm varies.
+- Pick the few points that matter most and tell them as a story, rather than listing every detail: a listener keeps a story, not a list of figures.
+- Liveliness never adds content: reactions, paraphrases and plain-language ways of putting a point are welcome, but every fact still comes from the paper under the source rules above.
 - Mark every line with the speaker's name, exactly "Alex:" or "Jordan:". No stage directions, sound effects or headings.
 - Natural spoken English; explain any technical term the first time it comes up.
 - This is heard, not read. Give results in words -- significant, nearly significant, a tendency, no significant change -- and do not read out test statistics (F, t, p values, effect sizes). Plain figures a listener can take in, such as sample sizes, means or percentages, are fine, stated exactly as the paper gives them.
 - Write everything as it should be said: "4 hours", not "4 h"; no notation such as "SD=", "n =" or brackets.
-- At most one short line of greeting at the start. Spend the time on the paper.
+- A short, natural opening (a line or two) is fine; spend the rest on the paper.
 
 # Length
-${Math.round(words * 0.9)} to ${Math.round(words * 1.1)} words in total (about ${minutes} minutes spoken) -- roughly ${Math.round(words / 25)} lines of one or two sentences each. Do not stop short of this: a script that ends early leaves the listener with less than was promised.
+${Math.round(words * 0.9)} to ${Math.round(words * 1.1)} words in total (about ${minutes} minutes spoken). Spread them over many turns -- roughly ${Math.round(words / 14)} lines, most of one or two sentences and some of just a few words -- so the two hosts keep passing it back and forth; no one talks for more than about three sentences at a time. Do not stop short of the word count: a script that ends early leaves the listener with less than was promised.
 
 # Default content (use this when there is no request, and for whatever a request leaves open)
 What the study set out to do, how it was done, what it found and what that means, ending with the key takeaways.

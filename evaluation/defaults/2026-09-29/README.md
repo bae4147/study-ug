@@ -44,3 +44,22 @@ narration edits for speech only: scene 8 drops "SD=2.80", scene 9 "4 h" →
 | 2 | GARBLED 1, OVERSTATED 1 | charts of the means drawn correctly, but "Signifcanty", a duplicated label, and the authors' interpretation stated as a causal chain |
 | 3 | WRONG 1 | stress line keeps falling to 4 weeks (lowest is at 2 weeks) |
 | 4 | WRONG 2 | same stress line; demands line shaped wrong |
+
+## Audio, second round: a conversation instead of an interview
+
+The chosen script above was accurate but read as a question-and-answer drill
+(researcher's verdict: dull). Three causes, all in the prompt: the length rule
+asked for about words/25 lines (12 for two minutes), so each host spoke in long
+blocks; the hosts were defined only as "asks" and "explains"; and the opening
+was held to one line. gpt-5.5 is also terser than gpt-4o, whose liveliness came
+with overstatement ("Yes, it did!").
+
+Prompt changes: the hosts react to each other (surprise, "So basically...",
+follow-ups, the odd light joke), a few points told as a story rather than every
+detail, about words/14 lines with no one speaking for more than about three
+sentences, and liveliness never adds content (the source rules are unchanged).
+
+`audio-lively/`: script-1..3 were written before the line-count change (12-13
+lines), script-4..6 after (26-30 lines). All six: no flags.
+**script-4 chosen** (383 words, 26 lines, closest to length): voiced with
+tts-1, 2:36 — 6 s over the 2:30 upper bound, accepted by the researcher.

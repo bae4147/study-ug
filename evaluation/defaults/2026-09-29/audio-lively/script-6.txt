@@ -1,0 +1,51 @@
+Alex: Okay, this paper is basically asking: can time management training lower student stress?
+
+Jordan: Exactly. The authors focused on undergraduate students and tested whether a short time management training would increase perceived control of time and reduce perceived stress.
+
+Alex: And perceived stress here means the “tension” scale, right?
+
+Jordan: Right. The tension scale covered things like mental fatigue, trouble relaxing, and nervousness. They also measured perceived control of time, and self-reported demands, like amount of work and external duties.
+
+Alex: So demands were the “should not change” variable?
+
+Jordan: Yes. They used a non-equivalent dependent variable design. One group got the training, and the authors expected tension and perceived control of time to change, but demands not to change.
+
+Alex: No separate control group, then.
+
+Jordan: Correct. The full starting sample was 48 local undergraduate students, but the main analyses used the 23 who completed all questionnaires before training, 2 weeks after, and 4 weeks after.
+
+Alex: What did the training actually teach?
+
+Jordan: It lasted 4 hours and focused on prioritizing, goal setting, strategy development, daily planning, and monitoring. Students reflected on activities, set concrete goals and deadlines, planned steps, anticipated obstacles, scheduled study work, and monitored task completion.
+
+Alex: Very “make the chaos visible.”
+
+Jordan: Nicely put. And most of these 23 students had no or little prior experience with time management strategies, though some reported moderate experience.
+
+Alex: So, did they actually use the strategies afterward?
+
+Jordan: The authors checked that. Reported time management behaviour showed a nearly significant increase 2 weeks after training, and a significant increase 4 weeks after training.
+
+Alex: Now the headline finding: stress?
+
+Jordan: Trainees reported significantly less perceived stress 2 weeks after training compared with before training. They also reported significantly less perceived stress 4 weeks after training.
+
+Alex: Nice. What about feeling in control of time?
+
+Jordan: That one came with a delay. After 2 weeks, there was only a tendency in the expected direction. After 4 weeks, perceived control of time increased significantly.
+
+Alex: And demands?
+
+Jordan: No significant changes in demands at either 2 or 4 weeks. That matters because the authors argue the training changed students’ reactions and control, not their self-reported workload or duties.
+
+Alex: Any subgroup story?
+
+Jordan: The authors say students with no or little prior time management experience seemed to profit more than those with moderate or some experience, especially for perceived stress.
+
+Alex: But we should not overclaim.
+
+Jordan: Definitely. The authors call it a preliminary study: small sample, about half dropped out before the second measurement, and there was no control group or pseudo-training group.
+
+Alex: So the takeaway?
+
+Jordan: A 4-hour time management training might help undergraduate students’ well-being by lowering tension and, after a short lag, increasing perceived control of time. But larger and stronger intervention studies are still needed.

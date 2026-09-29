@@ -1,6 +1,6 @@
 {
   "what": "Default media every multimodal arm sees, for Häfner, Stock & Oberst (2014).",
-  "generatedBy": "functions/generation.js via scripts/generate-defaults.js: several drafts of each scored against evaluation/fact-checklist.md and the best voiced/drawn (evaluation/defaults/2026-09-29/README.md). Slides 14, 15, 22, 25 redrawn with scripts/fix-scenes.js after review.",
+  "generatedBy": "functions/generation.js via scripts/generate-defaults.js: several drafts of each scored against evaluation/fact-checklist.md and the best voiced/drawn (evaluation/defaults/2026-09-29/README.md). Slides 14, 15, 22, 25 redrawn with scripts/fix-scenes.js after review. Podcast re-scripted on 2026-09-29 with the conversational prompt (evaluation/defaults/2026-09-29/README.md, second round).",
   "focus": null,
   "models": {
     "audio": {

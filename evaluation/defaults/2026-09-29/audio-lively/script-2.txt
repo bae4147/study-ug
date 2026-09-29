@@ -1,0 +1,25 @@
+Alex: So this paper asks a very student-life question: can a short time management training reduce students’ perceived stress, not just make them feel busy in a more organized way?
+
+Jordan: Exactly. Häfner, Stock, and Oberst studied undergraduate students at a medium-sized German university. Forty-eight started, but the main analyses used the 23 who completed questionnaires before training, 2 weeks after, and 4 weeks after.
+
+Alex: The training was only 4 hours. What did they actually teach?
+
+Jordan: A focused package: reflecting on academic and extracurricular activities, prioritizing, setting concrete, challenging, proximal goals with deadlines, developing strategies, planning the work day, avoiding distractions, and monitoring task completion.
+
+Alex: So basically, “what matters, what’s my next step, when will I do it, and did I do it?” Very student survival mode.
+
+Jordan: Their key outcomes were perceived control of time and perceived stress, measured with the tension scale. They also measured demands, meaning perceived, self-reported demands like workload and external duties, which the training should not change.
+
+Alex: Ah, a reality check: if demands stayed stable but stress changed, that better fits the training story.
+
+Jordan: Right. The design was a non-equivalent dependent variable design: one trained group, with some variables expected to change and one similar stress-related variable expected not to change.
+
+Alex: So, after 2 weeks, did the students feel different?
+
+Jordan: Yes. They reported significantly less perceived stress than before training. Perceived control of time showed a tendency in the expected direction, not a significant increase. Use of the taught strategies was nearly significantly higher.
+
+Alex: And after 4 weeks?
+
+Jordan: Compared with before training, students reported significantly less perceived stress and significantly more perceived control of time. Their time management behaviour also increased significantly, while demands did not significantly change at either follow-up.
+
+Jordan: The authors interpret the pattern as supporting the training effect, but they are cautious: small sample, about half dropped out before the second measurement, and no experimental control group. Key takeaway: a 4-hour training might reduce tension and later increase perceived control of time, but the evidence is preliminary.
