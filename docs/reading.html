@@ -140,6 +140,10 @@
             }
         };
         const CUSTOM_WAIT = { video: '3 – 4 minutes', audio: 'about a minute', infographic: 'under a minute' };
+        // A job still "running" this long after it started died with its server
+        // instance (generateCustom times out at 15 min); it is shown as failed so
+        // the reader can try again. Same figure as CUSTOM_STALE_MS in functions/index.js.
+        const CUSTOM_STALE_MS = 16 * 60 * 1000;
         const MAX_FOCUS_CHARS = 300;
 
         // Icons
@@ -1554,7 +1558,7 @@
                 setCustomBusy(prev => ({ ...prev, [modality]: true }));
                 try {
                     const token = await currentUser.getIdToken();
-                    const res = await fetch(GENERATE_CUSTOM_URL, {
+                    const resP = fetch(GENERATE_CUSTOM_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                         body: JSON.stringify({
@@ -1564,8 +1568,14 @@
                             [CUSTOM_SETTING[modality].param]: settingFor(modality)
                         })
                     });
-                    if (!res.ok) {
-                        const e = await res.json().catch(() => ({}));
+                    // The function answers only when the work is done (so the server
+                    // keeps its CPU while it works); progress and the result arrive on
+                    // the job document. A refusal -- turn used, wrong arm -- still comes
+                    // back at once, so wait a few seconds for one, then carry on.
+                    resP.catch(() => {});
+                    const first = await Promise.race([resP, new Promise(r => setTimeout(() => r(null), 8000))]);
+                    if (first && !first.ok) {
+                        const e = await first.json().catch(() => ({}));
                         throw new Error(e.error || 'Could not start');
                     }
                     logEvent('custom_generation_started', {
@@ -3672,7 +3682,9 @@ Provide constructive feedback to help the reader think more critically about thi
                     if (!caps.customize) return null;
                     const copy = CUSTOM_COPY[modality];
                     const job = customJobs[modality];
-                    const status = job?.status;
+                    const startedMs = job?.startedAt?.toMillis ? job.startedAt.toMillis() : null;
+                    const stale = job?.status === 'running' && startedMs && Date.now() - startedMs > CUSTOM_STALE_MS;
+                    const status = stale ? 'error' : job?.status;
                     const running = status === 'running';
                     const done = status === 'done';
                     const focus = customFocus[modality] || '';

@@ -491,6 +491,11 @@ const MODALITIES = ["video", "audio", "infographic"];
 // a browser check is advice; this is the one that decides.
 const CUSTOMISING_CONDITIONS = ["mm_cimo_custom", "mm_chat_custom"];
 
+// generateCustom's time limit, and the age past which a "running" job is taken
+// to have died with its instance (docs/reading.html uses the same 16 minutes).
+const CUSTOM_TIMEOUT_S = 900;
+const CUSTOM_STALE_MS = (CUSTOM_TIMEOUT_S + 60) * 1000;
+
 async function publicUpload(buffer, destination, contentType) {
   const file = admin.storage().bucket().file(destination);
   await file.save(buffer, { contentType, metadata: { cacheControl: "public, max-age=31536000" } });
@@ -502,7 +507,7 @@ exports.generateCustom = onRequest(
   {
     cors: true,
     secrets: [openaiApiKey, geminiApiKey],
-    timeoutSeconds: 540,
+    timeoutSeconds: CUSTOM_TIMEOUT_S,
     memory: "1GiB"
   },
   async (req, res) => {
@@ -549,7 +554,11 @@ exports.generateCustom = onRequest(
         res.status(409).json({ error: "Already used for this modality" });
         return;
       }
-      if (existing.exists && existing.data().status === "running") {
+      // A job still marked running after the function's own time limit died with
+      // its instance and will never finish; it must not hold the turn hostage.
+      const startedMs = existing.exists && existing.data().startedAt ? existing.data().startedAt.toMillis() : 0;
+      const stale = Date.now() - startedMs > CUSTOM_STALE_MS;
+      if (existing.exists && existing.data().status === "running" && !stale) {
         res.status(409).json({ error: "Already running" });
         return;
       }
@@ -570,8 +579,14 @@ exports.generateCustom = onRequest(
         startedAt: admin.firestore.FieldValue.serverTimestamp()
       });
 
-      // Answer now. The work carries on; the browser follows the job document.
-      res.json({ ok: true, modality });
+      // The answer is sent only when the work is done (end of this handler).
+      // It used to go out here, before the work, with the work carrying on in
+      // the background -- but a 2nd-gen function gets almost no CPU once it has
+      // responded, so every job crawled (audio 190-350 s, infographic 670 s,
+      // video 930 s, against ~30 s / ~30 s / ~3 min run directly) and could be
+      // cut off when the instance was reclaimed, leaving the job "running" for
+      // good. The browser does not wait for this answer: it follows the job
+      // document, and only a quick refusal above comes back to it.
 
       const keys = { openai: openaiApiKey.value(), gemini: geminiApiKey.value() };
 
@@ -677,6 +692,7 @@ exports.generateCustom = onRequest(
       }
 
       console.log(`✅ custom ${modality} for ${uid} in ${Math.round((Date.now() - startedAt) / 1000)}s`);
+      res.json({ ok: true, modality });
 
     } catch (error) {
       const aborted = error && error.aborted;
