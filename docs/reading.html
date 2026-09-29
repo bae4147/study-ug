@@ -1549,6 +1549,24 @@
                     const next = {};
                     snap.forEach(doc => { next[doc.id] = doc.data(); });
                     setCustomJobs(next);
+                    // A finished version opens on "Yours" by default. Only the first
+                    // time it is seen: once the reader has picked a side with the
+                    // switch, their choice stands.
+                    const ready = Object.keys(next).filter(m => next[m].status === 'done');
+                    if (ready.length) {
+                        setShowingCustom(prev => {
+                            const fresh = ready.filter(m => prev[m] === undefined);
+                            if (fresh.length === 0) return prev;
+                            fresh.forEach(m => logEvent('custom_version_viewed', { modality: m, version: 'custom', auto: true }));
+                            if (fresh.includes('video')) {
+                                // different scenes, so the playhead cannot carry across
+                                setSlideshowPlaying(false);
+                                setCurrentSceneIndex(0);
+                                setSceneElapsed(0);
+                            }
+                            return { ...prev, ...Object.fromEntries(fresh.map(m => [m, true])) };
+                        });
+                    }
                 }, err => console.error('custom job watch failed:', err));
                 return () => unsub();
             }, [caps.customize, currentUser, sessionId]);

@@ -570,6 +570,30 @@ Return the JSON now.`;
     return { title: outline.title || "Video overview", scenes, length, targetScenes: n };
 }
 
+// Playing time of an MP3, from its frame headers. OpenAI's speech is 24 kHz
+// MPEG-2 Layer III (576 samples a frame, its own bitrate table); reading it as
+// MPEG-1 gives exactly half the real length. Same reader as scripts/promote-video.js.
+function mp3Seconds(buf) {
+    const RATES = { 3: [44100, 48000, 32000], 2: [22050, 24000, 16000], 0: [11025, 12000, 8000] };
+    const V1 = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
+    const V2 = [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160];
+    let i = 0, seconds = 0;
+    while (i < buf.length - 4) {
+        if (buf[i] === 0xff && (buf[i + 1] & 0xe0) === 0xe0 && ((buf[i + 1] >> 1) & 3) === 1) {
+            const version = (buf[i + 1] >> 3) & 3;
+            const b = (buf[i + 2] >> 4) & 0xf, r = (buf[i + 2] >> 2) & 3, pad = (buf[i + 2] >> 1) & 1;
+            if (version !== 1 && b > 0 && b < 15 && r < 3) {
+                const v1 = version === 3, rate = RATES[version][r], samples = v1 ? 1152 : 576;
+                seconds += samples / rate;
+                i += Math.floor((samples / 8) * (v1 ? V1 : V2)[b] * 1000 / rate) + pad;
+                continue;
+            }
+        }
+        i++;
+    }
+    return seconds;
+}
+
 // `plan`, when given, is drawn and narrated as it is (see generateAudio's `script`).
 async function generateVideo({ keys, focus = null, length = "default", textModel = DEFAULT_TEXT_MODELS.video, plan: givenPlan = null, onProgress = () => {}, isAborted = null }) {
     onProgress({ step: "outline", message: "Planning the scenes" });
@@ -624,7 +648,10 @@ async function generateVideo({ keys, focus = null, length = "default", textModel
         }));
         onProgress({ step: "narration", done: ++narrated, total: drawn.length });
         if (!res.ok) return null;
-        return { ...scene, audioBase64: Buffer.from(await res.arrayBuffer()).toString("base64") };
+        const audio = Buffer.from(await res.arrayBuffer());
+        // Measured, not estimated: the player's timeline and seeking are built on it,
+        // and the custom-video record cannot store a scene without one.
+        return { ...scene, audioBase64: audio.toString("base64"), duration: Math.round(mp3Seconds(audio) * 100) / 100 };
     });
     const withAudio = voiced.filter(Boolean);
     if (withAudio.length === 0) throw new Error("every narration failed");
