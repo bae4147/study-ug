@@ -3525,7 +3525,8 @@ Provide constructive feedback to help the reader think more critically about thi
 
                         await window.firebaseUpdateDoc(sessionRef, {
                             reading: readingData,
-                            currentPhase: 'survey'
+                            // Flow (2026-09-29): reading -> written task -> quiz -> survey
+                            currentPhase: 'post_task'
                         });
 
                         console.log('✅ Reading data saved to Firebase');
@@ -3536,7 +3537,7 @@ Provide constructive feedback to help the reader think more critically about thi
 
                 setShowFinishPopup(false);  // Reset popup state
 
-                // Redirect to the post-reading survey
+                // On to the written task (then the quiz, then the survey)
                 setIsRedirecting(true);
                 logEvent('reading_completed_redirecting');
 
@@ -3548,7 +3549,7 @@ Provide constructive feedback to help the reader think more critically about thi
                     condition,
                     paper: currentPaper
                 });
-                window.location.replace(`survey.html?${params.toString()}`);
+                window.location.replace(`post-task.html?${params.toString()}`);
             };
 
             // Return to start

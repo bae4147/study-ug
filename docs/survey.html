@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading Assignment - After-Reading Survey</title>
+    <title>Reading Assignment - Final Survey</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.9/babel.min.js"></script>
@@ -189,13 +189,16 @@
                     const sessionRef = db.collection('users').doc(currentUser.uid).collection('sessions').doc(sessionId);
                     await sessionRef.set({
                         survey: surveyData,
-                        currentPhase: 'post_task'
+                        currentPhase: 'survey2'
                     }, { merge: true });
 
                     console.log('✅ Survey saved');
 
+                    // The survey goes on in survey2.html (pages 2-3 of 3). It is one
+                    // survey to the participant; the two files keep the `survey` and
+                    // `survey2` records as they were.
                     const params = new URLSearchParams({ sessionId, mode, condition, paper });
-                    window.location.replace(`post-task.html?${params.toString()}`);
+                    window.location.replace(`survey2.html?${params.toString()}`);
 
                 } catch (error) {
                     console.error('Error saving survey:', error);
@@ -225,17 +228,27 @@
                             {/* Header */}
                             <div className="text-center mb-8">
                                 <div className="flex items-center justify-center space-x-3 mb-2">
-                                    <span className="flex-shrink-0 w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center text-base font-bold">3</span>
-                                    <h1 className="text-3xl font-bold text-gray-800">After-reading survey</h1>
+                                    <span className="flex-shrink-0 w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center text-base font-bold">5</span>
+                                    <h1 className="text-3xl font-bold text-gray-800">Final Survey</h1>
                                 </div>
-                                <p className="text-gray-600">Please evaluate your experience with the reading task.</p>
+                                <p className="text-gray-600">Please evaluate your experience with the reading session.</p>
+                            </div>
+
+                            {/* One survey across two files: this is page 1, survey2.html has 2 and 3 */}
+                            <div className="mb-6">
+                                <div className="flex justify-center items-center mb-2">
+                                    <span className="text-sm text-gray-600">Page 1 of 3</span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                    <div className="bg-blue-600 h-2 rounded-full" style={{ width: '33%' }}></div>
+                                </div>
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-8">
 {/* Section 1: NASA-TLX */}
                                 <div className="border-b pb-6">
                                     <h2 className="text-xl font-bold text-gray-800 mb-2">Section 1. Perceived Mental Demand</h2>
-                                    <p className="text-sm text-gray-600 mb-4">Please rate the following aspects of the reading task you just completed.</p>
+                                    <p className="text-sm text-gray-600 mb-4">Thinking back to the reading session, please rate the following.</p>
 
                                     <div className="space-y-8">
                                         <div>
@@ -270,7 +283,7 @@
 {/* Section 3: LLM Usefulness */}
                                 <div className="border-b pb-6">
                                     <h2 className="text-xl font-bold text-gray-800 mb-2">Section 2. Usefulness of GenAI</h2>
-                                    <p className="text-sm text-gray-600 mb-2">Please rate your experience during the task.</p>
+                                    <p className="text-sm text-gray-600 mb-2">Please rate your experience during the reading session.</p>
                                     <p className="text-sm text-gray-600 mb-4">
                                         <span>* <strong className="text-gray-800">GenAI</strong> refers to {genAiDefinition}.</span>
                                     </p>
@@ -411,7 +424,7 @@
 {/* Section 4: GenAI experiences */}
                                 <div className="border-b pb-6">
                                     <h2 className="text-xl font-bold text-gray-800 mb-2">Section 3. GenAI experiences</h2>
-                                    <p className="text-sm text-gray-600 mb-2">Please rate your experience during the task.</p>
+                                    <p className="text-sm text-gray-600 mb-2">Please rate your experience during the reading session.</p>
                                     <p className="text-sm text-gray-600 mb-4">
                                         <span>* <strong className="text-gray-800">GenAI</strong> refers to {genAiDefinition}.</span>
                                     </p>

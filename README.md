@@ -19,8 +19,16 @@ listed under *What changed* is study2's code, byte for byte.
 
 ```
 index → login (email link) → consent → instructions → pre-survey
-       → reading-instructions → reading → survey → post-task (CIMO reflection) → quiz → survey2 → complete
+       → reading-instructions → reading → post-task (CIMO reflection + takeaways) → quiz
+       → survey (page 1 of 3) → survey2 (pages 2–3) → complete
 ```
+
+Order since 2026-09-29 (the professor's revision): reading, then the written
+task and the quiz, then one survey. The survey is two files so its records stay
+`survey` and `survey2`, but participants see one "Final Survey" with pages 1–3
+of 3. Before that the survey's first part came straight after reading and the
+second after the quiz. `currentPhase` values are unchanged (`post_task`,
+`quiz`, `survey`, `survey2`), only the order in which the pages set them.
 
 `index.html` is the entry point (it is what the root URL serves). It checks the
 sign-in state: whoever is not signed in goes to `login.html`, and whoever is
@@ -80,7 +88,7 @@ shuffled per participant. `chat_only` gets the chatbot tab alone.
 | `pre-survey.html` | new; everyday GenAI use and demographics, taken before reading. Items from study-aom's final survey, reworded for undergraduates ("for your studies" instead of "at work"; year in school and major instead of the job items). Saved as `preSurvey` |
 | `post-task.html` | rebuilt as four open CIMO reflection questions, one text box each (Context / Intervention / Mechanism / Outcome); saved under `postTask.reflection` |
 | `quiz.html` | new; study-aom's closed-book quiz mechanics (single-choice + "Not Sure", timer, confidence rating, auto-grading) with 8 items on Häfner (2014), cut from the 15 marked `final_15` in `quiz_review.csv` by dropping detail-recall items first |
-| `survey.html` / `survey2.html` | `post-study-survey.html` split in two: reading experience before the quiz, comprehension and application after the post-task |
+| `survey.html` / `survey2.html` | `post-study-survey.html`, as one survey after the quiz (pages 1 and 2–3 of 3): reading experience with GenAI, then comprehension and application |
 | `complete.html` | asks for an OSU `name.#` when the participant signed in with a non-OSU address |
 | `reading.html` | fixed paper fetched from `papers/…/paper.pdf` into the existing renderer; static media; **paper shown as rendered page images instead of `<embed>`** (see below); study1's mp4 video tab; Pause button + veil; recorder wired in; `simplified` tab removed |
 | `functions/` | trimmed to `chatCompletion`, `sendLoginEmail`, `sendCompletionEmail` + new `ingestEvents` (beacon) and `devLogin` (trial); Node 22 |
