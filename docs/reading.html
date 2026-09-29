@@ -236,6 +236,11 @@
             const videoSeekFromRef = useRef(null);
             const [currentPaper, setCurrentPaper] = useState(''); // Will be set from URL params
             const [showFinishPopup, setShowFinishPopup] = useState(false);
+            // The steps of pressing Finish, shown in the page rather than as browser
+            // alert/confirm boxes, which readers clicked through without reading (and
+            // which froze the page's timers while open).
+            // null | { kind: 'minTime' } | { kind: 'noChat' } | { kind: 'confirm', llmQueryCount }
+            const [finishDialog, setFinishDialog] = useState(null);
             const [showStartPopup, setShowStartPopup] = useState(true); // Show start warning popup
             const [noExternalToolsAgreed, setNoExternalToolsAgreed] = useState(false); // Start popup checkbox
             const [usedExternalAi, setUsedExternalAi] = useState(null); // null, 'yes', 'no' - for finish popup
@@ -4100,8 +4105,72 @@ Provide constructive feedback to help the reader think more critically about thi
                     </div>
                 );
 
+                // Leaving the reading session, once the reader has confirmed it.
+                const finishReadingNow = (llmQueryCount, chatSkipped) => {
+                    setFinishDialog(null);
+                    logEvent('finish_reading_confirmed', { llmQueryCount, chatSkipped });
+                    // Anything still generating would run on after the reader has
+                    // gone, costing money for something nobody will ever see.
+                    Object.entries(customJobs).forEach(([modality, job]) => {
+                        if (job?.status === 'running') cancelCustom(modality, 'finished_reading');
+                    });
+                    completeReading();
+                };
+                const secondsLeft = Math.max(0, MIN_READING_SECONDS - activeSeconds);
+                const finishDialogBody = !finishDialog ? null
+                    : finishDialog.kind === 'minTime' ? {
+                        icon: '⏱',
+                        title: 'Please keep reading',
+                        text: <>The reading session lasts at least <strong>{Math.round(MIN_READING_SECONDS / 60)} minutes</strong>. You have <strong>{Math.floor(secondsLeft / 60)} min {secondsLeft % 60} s</strong> to go. Time spent paused does not count.</>,
+                        buttons: [{ label: 'Keep reading', primary: true, onClick: () => setFinishDialog(null) }]
+                    }
+                    : finishDialog.kind === 'noChat' ? {
+                        icon: '💬',
+                        title: 'You have not asked the AI chatbot anything yet',
+                        text: <>We recommend asking it <strong>at least one question</strong> about the article before you finish.</>,
+                        buttons: [
+                            { label: 'Finish without using it', onClick: () => { logEvent('finish_no_llm_skipped', { condition }); finishReadingNow(0, true); } },
+                            { label: 'Go back and use the chatbot', primary: true, onClick: () => { logEvent('finish_no_llm_returned', { condition }); setFinishDialog(null); } }
+                        ]
+                    }
+                    : {
+                        icon: '✅',
+                        title: 'Finish reading?',
+                        text: <>You will <strong>not be able to return to the article</strong> after this.</>,
+                        buttons: [
+                            { label: 'Keep reading', onClick: () => { logEvent('finish_reading_cancelled'); setFinishDialog(null); } },
+                            { label: 'Finish reading', primary: true, onClick: () => finishReadingNow(finishDialog.llmQueryCount, false) }
+                        ]
+                    };
+
                 return (
                     <div className="h-screen flex flex-col bg-gray-100">
+                        {finishDialogBody && (
+                            <div className="fixed inset-0 z-[110] flex items-center justify-center p-4"
+                                 style={{ background: 'rgba(10,12,15,0.6)' }}
+                                 role="dialog" aria-modal="true" aria-labelledby="finish-dialog-title">
+                                <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-7 text-center">
+                                    <div className="text-4xl mb-3">{finishDialogBody.icon}</div>
+                                    <h2 id="finish-dialog-title" className="text-xl font-bold text-gray-800 mb-3">{finishDialogBody.title}</h2>
+                                    <p className="text-gray-700 mb-6 leading-relaxed">{finishDialogBody.text}</p>
+                                    <div className="flex flex-col-reverse sm:flex-row sm:justify-center gap-3">
+                                        {finishDialogBody.buttons.map(b => (
+                                            <button
+                                                key={b.label}
+                                                type="button"
+                                                onClick={b.onClick}
+                                                autoFocus={b.primary}
+                                                className={`px-5 py-3 rounded-lg font-medium ${b.primary
+                                                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                                    : 'border border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                                            >
+                                                {b.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         {/* Header */}
                         {isPaused && (
                             <div className="fixed inset-0 z-[100] flex items-center justify-center text-center text-white"
@@ -4153,7 +4222,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                         if (!skip && activeSeconds < MIN_READING_SECONDS) {
                                             const left = MIN_READING_SECONDS - activeSeconds;
                                             logEvent('finish_blocked_min_time', { activeSeconds, wallSecondsUnpaused: wallUnpausedSeconds(), remainingSeconds: left });
-                                            window.alert(`Please keep reading. The reading session is at least ${Math.round(MIN_READING_SECONDS / 60)} minutes; you have ${Math.floor(left / 60)} min ${left % 60} s to go (time spent paused does not count).`);
+                                            setFinishDialog({ kind: 'minTime' });
                                             return;
                                         }
                                         // Every arm that is given a chatbot is asked to use it at least
@@ -4161,33 +4230,12 @@ Provide constructive feedback to help the reader think more critically about thi
                                         // to may go on, and the choice is logged so that the two groups
                                         // can be told apart in analysis.
                                         const llmQueryCount = messages.filter(m => m.role === 'user').length;
-                                        let chatSkipped = false;
                                         if (!skip && showRightPanel && llmQueryCount === 0) {
                                             logEvent('finish_no_llm_prompted', { condition });
-                                            const goBack = window.confirm(
-                                                'You have not asked the AI chatbot anything yet.\n\n' +
-                                                'We recommend asking it at least one question about the article before you finish.\n\n' +
-                                                'OK — go back and use the chatbot\n' +
-                                                'Cancel — finish without using it'
-                                            );
-                                            if (goBack) {
-                                                logEvent('finish_no_llm_returned', { condition });
-                                                return;
-                                            }
-                                            chatSkipped = true;
-                                            logEvent('finish_no_llm_skipped', { condition });
+                                            setFinishDialog({ kind: 'noChat' });
+                                            return;
                                         }
-                                        if (chatSkipped || window.confirm('Are you sure you want to finish reading?')) {
-                                            logEvent('finish_reading_confirmed', { llmQueryCount, chatSkipped });
-                                            // Anything still generating would run on after the reader has
-                                            // gone, costing money for something nobody will ever see.
-                                            Object.entries(customJobs).forEach(([modality, job]) => {
-                                                if (job?.status === 'running') cancelCustom(modality, 'finished_reading');
-                                            });
-                                            completeReading();
-                                        } else {
-                                            logEvent('finish_reading_cancelled');
-                                        }
+                                        setFinishDialog({ kind: 'confirm', llmQueryCount });
                                     }}
                                     className="flex items-center space-x-2 px-6 py-3 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700"
                                 >
