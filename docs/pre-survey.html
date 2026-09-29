@@ -52,8 +52,8 @@
             'Research/Information gathering',
             'Coding assistance',
             'Brainstorming/Ideation',
-            'Summarization',
-            'Translation',
+            // study-aom had Summarization and Translation as two options; merged here
+            'Reading assistance (e.g., summarization, translation)',
             'Other'
         ];
         const GENDERS = ['Male', 'Female', 'Non-binary', 'Other', 'Prefer not to say'];
@@ -214,9 +214,11 @@
                     <div className="max-w-3xl mx-auto">
                         <div className="bg-white rounded-xl shadow-2xl p-8">
                             <div className="text-center mb-8">
-                                <div className="text-5xl mb-4">🗒️</div>
-                                <h1 className="text-3xl font-bold text-gray-800 mb-2">About you</h1>
-                                <p className="text-gray-600">A few questions before you start reading.</p>
+                                <div className="flex items-center justify-center space-x-3 mb-2">
+                                    <span className="flex-shrink-0 w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center text-base font-bold">1</span>
+                                    <h1 className="text-3xl font-bold text-gray-800">Before-Reading Survey</h1>
+                                </div>
+                                <p className="text-gray-600">Please answer the questions below.</p>
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-8">
