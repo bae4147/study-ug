@@ -4643,10 +4643,17 @@ Provide constructive feedback to help the reader think more critically about thi
                                                                 >
                                                                     <span className={tab.iconClass}>{tab.icon}</span> {tab.label}
                                                                     {jobStatus === 'running' && (
-                                                                        <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" title="Still being made"></span>
+                                                                        <svg className="animate-spin h-3.5 w-3.5 text-purple-600" viewBox="0 0 24 24" aria-label="Still being made">
+                                                                            <title>Still being made</title>
+                                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                                                        </svg>
                                                                     )}
                                                                     {jobStatus === 'done' && (
-                                                                        <span className="w-2 h-2 rounded-full bg-green-500" title="Your version is ready"></span>
+                                                                        <svg className="h-3.5 w-3.5 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-label="Your version is ready">
+                                                                            <title>Your version is ready</title>
+                                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                                        </svg>
                                                                     )}
                                                                 </button>
                                                             );
