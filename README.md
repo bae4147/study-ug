@@ -25,7 +25,7 @@ index → login (email link) → consent → instructions → pre-survey
 
 Order since 2026-09-29 (the professor's revision): reading, then the written
 task and the quiz, then one survey. The survey is two files so its records stay
-`survey` and `survey2`, but participants see one "Final Survey" with pages 1–3
+`survey` and `survey2`, but participants see one "After-Reading Survey" with pages 1–3
 of 3. Before that the survey's first part came straight after reading and the
 second after the quiz. `currentPhase` values are unchanged (`post_task`,
 `quiz`, `survey`, `survey2`), only the order in which the pages set them.
