@@ -255,6 +255,24 @@
                 const id = setInterval(() => { if (!isPausedRef.current) setActiveSeconds(s => s + 1); }, 1000);
                 return () => clearInterval(id);
             }, [readingActive]);
+            // The same span measured on the wall clock: real time elapsed while reading
+            // and not paused, whether or not the tab was visible. The header clock above
+            // counts timer ticks, and browsers skip ticks -- a hidden or fully covered
+            // window (Chrome/Edge on Windows), a sleeping tab, an open alert, a busy page
+            // -- so it can fall behind real time. Both are saved (see readingData) and
+            // the difference shows how much the clock missed; which one gates Finish is
+            // unchanged for now (the tick clock).
+            const wallRef = useRef({ accMs: 0, since: null });
+            useEffect(() => {
+                const w = wallRef.current;
+                const running = readingActive && !isPaused;
+                if (running && w.since === null) w.since = Date.now();
+                if (!running && w.since !== null) { w.accMs += Date.now() - w.since; w.since = null; }
+            }, [readingActive, isPaused]);
+            const wallUnpausedSeconds = () => {
+                const w = wallRef.current;
+                return Math.round((w.accMs + (w.since !== null ? Date.now() - w.since : 0)) / 1000);
+            };
             const clock = `${String(Math.floor(activeSeconds / 60)).padStart(2, '0')}:${String(activeSeconds % 60).padStart(2, '0')}`;
             const fmtClock = (sec) => `${Math.floor((sec || 0) / 60)}:${String(Math.round((sec || 0) % 60)).padStart(2, '0')}`;
 
@@ -3443,6 +3461,10 @@ Provide constructive feedback to help the reader think more critically about thi
                             startedAt: phaseStartTime.current,
                             completedAt: Date.now(),
                             totalDuration: readingDuration,
+                            // Two measures of reading time, pauses excluded from both
+                            // (definitions in README.md, "Reading time"):
+                            clockSeconds: activeSeconds,                 // header clock: 1 per timer tick
+                            wallSecondsUnpaused: wallUnpausedSeconds(),  // real elapsed time
                             focusTimes: finalFocusTimes,
                             classificationSummary,
                             externalToolUsage: {
@@ -4087,7 +4109,7 @@ Provide constructive feedback to help the reader think more critically about thi
                                         const skip = (() => { try { return localStorage.getItem('devSkipMinTime') === '1'; } catch (e) { return false; } })();
                                         if (!skip && activeSeconds < MIN_READING_SECONDS) {
                                             const left = MIN_READING_SECONDS - activeSeconds;
-                                            logEvent('finish_blocked_min_time', { activeSeconds, remainingSeconds: left });
+                                            logEvent('finish_blocked_min_time', { activeSeconds, wallSecondsUnpaused: wallUnpausedSeconds(), remainingSeconds: left });
                                             window.alert(`Please keep reading. The reading session is at least ${Math.round(MIN_READING_SECONDS / 60)} minutes; you have ${Math.floor(left / 60)} min ${left % 60} s to go (time spent paused does not count).`);
                                             return;
                                         }

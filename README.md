@@ -104,10 +104,13 @@ text layer can be added on top of the images later.
 ```
 users/{uid}                       fullName, email, condition, createdAt, lastLoginAt
 users/{uid}/sessions/{sid}        condition, paper, paperMetadata, beaconToken, currentPhase,
-                                  reading: { startedAt, completedAt, totalDuration, focusTimes,
+                                  reading: { startedAt, completedAt, totalDuration,
+                                             clockSeconds, wallSecondsUnpaused, focusTimes,
                                              classificationSummary, externalToolUsage,
                                              resourcesUsed, chatHistory }      ← study2's summary, minus events[]
-                                  postTask / survey …                         ← study2 pages, unchanged
+                                  postTask: { reflection{context,intervention,mechanism,outcome},
+                                              takeaways[], completedAt }
+                                  survey …
 users/{uid}/sessions/{sid}/eventBatches/{batchId}   ← append-only, immutable
     batchSeq, writtenAt, final, viaBeacon
     points[]     { seq, t, sinceStart, type, phase, …payload }
@@ -145,10 +148,38 @@ Flushed every 25 events or 10 s; on `pagehide` the remainder goes by
 
 Reassemble a session: read all `eventBatches`, sort by `batchSeq`, then by `seq`.
 
+### Reading time — which number means what
+
+Three durations are saved in `reading` at Finish, plus the recorder's spans:
+
+| field | what it measures | includes paused time? | includes time the tab was hidden? |
+|---|---|---|---|
+| `totalDuration` (ms) | wall clock from the start of reading to Finish | yes | yes |
+| `wallSecondsUnpaused` (s) | wall clock while reading and not paused | no | yes |
+| `clockSeconds` (s) | the header clock `⏱`: +1 per one-second timer tick while not paused. This is what the 15-minute Finish check uses | no | partly — see below |
+| recorder `reading` + `window` streams | exact spans: on/paused, activated/deactivated (with `documentHidden`) | separable | separable |
+
+`clockSeconds` counts timer ticks, not time. Browsers skip ticks, so it falls
+behind `wallSecondsUnpaused` whenever the page cannot run its timer on time:
+the tab is in the background or the window minimised (after ~5 min Chrome/Edge
+fire timers only about once a minute), the window is fully covered by another
+window (Chrome/Edge on Windows treat that as hidden), Edge "sleeping tabs" or
+Windows efficiency mode freeze the tab, a browser `alert`/`confirm` is open, or
+the page is busy (PDF loading, a long chat re-render) on a slow machine. So:
+
+- `wallSecondsUnpaused − clockSeconds` = time the header clock missed. Near 0
+  means the clock was accurate; a large gap means the participant spent a
+  stretch with the page hidden, covered or frozen (and had to read longer than
+  15 real minutes before Finish was allowed).
+- For **time actually spent with the page visible**, use the recorder's
+  `window` stream (activated spans) intersected with `reading` = on.
+- Sessions that never reach Finish have neither field; use the recorder.
+
 ## Reading session rules
 
 - **Minimum 15 minutes** of reading before Finish is accepted, measured on the
-  header clock (`⏱`), which stops while paused. Refusals are logged as
+  header clock (`⏱`), which stops while paused — and falls behind real time when
+  the browser skips its ticks (see "Reading time" above). Refusals are logged as
   `finish_blocked_min_time`. The check is client-side, like the rest of
   study2's flow; the recorder's `reading` interval stream has the exact
   on/paused spans if a session ever needs auditing. Constant:
