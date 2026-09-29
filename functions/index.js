@@ -105,6 +105,10 @@ async function fetchWithRetry(url, options, maxRetries = 3, baseDelayMs = 5000) 
 }
 
 // OpenAI Chat Completion Proxy
+// Models the pages may ask chatCompletion for. The chatbot answers with gpt-5.5
+// (chosen in step 4, see GENERATION.md); the small helper calls still use gpt-4o-mini.
+const CHAT_MODELS = new Set(["gpt-5.5", "gpt-4o-mini"]);
+
 exports.chatCompletion = onRequest(
   {
     secrets: [openaiApiKey]
@@ -127,12 +131,23 @@ exports.chatCompletion = onRequest(
     }
 
     try {
-      const { messages, model = "gpt-4o-mini", max_tokens = 200, temperature = 0.7 } = req.body;
+      const { messages, model = "gpt-4o-mini", max_tokens = 200, temperature = 0.7, reasoning_effort } = req.body;
 
       if (!messages || !Array.isArray(messages)) {
         res.status(400).json({ error: "messages array is required" });
         return;
       }
+      // The endpoint is public, so only the models the pages use are passed on.
+      if (!CHAT_MODELS.has(model)) {
+        res.status(400).json({ error: `model not allowed: ${model}` });
+        return;
+      }
+      // The gpt-5 family takes max_completion_tokens instead of max_tokens, and
+      // gpt-5.5 accepts only its default temperature (the API rejects any other).
+      const gpt5 = model.startsWith("gpt-5");
+      const params = gpt5
+        ? { max_completion_tokens: max_tokens, ...(model === "gpt-5.5" ? {} : { temperature }), ...(reasoning_effort ? { reasoning_effort } : {}) }
+        : { max_tokens, temperature };
 
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
@@ -143,8 +158,7 @@ exports.chatCompletion = onRequest(
         body: JSON.stringify({
           model,
           messages,
-          max_tokens,
-          temperature
+          ...params
         })
       });
 
